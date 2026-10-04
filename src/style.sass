@@ -1,6 +1,7 @@
 @use './sass/function' as fn
 @use './sass/mixin' as oc
 @use './sass/include' as font
+@use './sass/spacing' as sp
 
 :root
   font-family: font.$font-body
@@ -55,7 +56,8 @@ button:focus-visible, input:focus-visible, select:focus-visible
   height: 5.133333rem
   padding: 0 5.2vw
   display: grid
-  grid-template-columns: 1fr auto 1fr
+  // grid-template-columns: 1fr auto 1fr
+  +sp.jcc
   align-items: center
   gap: 2.266667rem
   color: #262c2a
@@ -69,7 +71,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 1.066667rem
+    gap: 2rem
     button
       padding: 0.466667rem 0
       border: 0
@@ -89,7 +91,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     cursor: pointer
     .brand-logo
       display: block
-      width: clamp(6.666667rem, 7vw, 8.8rem)
+      width: auto
       height: auto
       filter: brightness(0) opacity(.84)
       transition: filter .45s
@@ -206,8 +208,9 @@ button:focus-visible, input:focus-visible, select:focus-visible
     width: 49%
     padding: 1.333333rem 1.466667rem
     background: rgba(255, 255, 255, .25)
+    +oc.radius(.5)
     color: #4a5954
-    backdrop-filter: blur(0.666667rem)
+    backdrop-filter: blur(.7rem)
     box-shadow: 0 0.333333rem 1.733333rem #0002
   .search-tabs
     display: grid
@@ -217,9 +220,12 @@ button:focus-visible, input:focus-visible, select:focus-visible
       border: 0
       padding: 0.6rem 0.266667rem
       border-radius: 0.4rem
-      background: #f5f5f3
+      background: #f5f5f3aa
       color: #53605d
       font-size: 1.2rem
+      &:hover
+        color: #fff
+        background: #287a79
       &.chosen
         color: #fff
         background: #3cb7b5
@@ -231,13 +237,15 @@ button:focus-visible, input:focus-visible, select:focus-visible
     label
       display: grid
       gap: 0.133333rem
-      font-size: 0.733333rem
+      // font-size: 0.733333rem
       color: #7a8781
+      span
+        display: none
     select
       min-width: 0
       width: 100%
       border: 0
-      border-bottom: 0.066667rem solid #a9b4b0
+      border-bottom: 0.066667rem solid #333
       padding: 0.266667rem 0 0.533333rem
       background: transparent
       color: #55635f
@@ -251,7 +259,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
       border: 0.066667rem solid #adb9b5
       padding: 0.666667rem 0.8rem
       background: #ffffff99
-      font-size: 0.866667rem
+      // font-size: 0.866667rem
     button
       border: 0
       color: #fff
@@ -508,6 +516,8 @@ button:focus-visible, input:focus-visible, select:focus-visible
   .site-header
     gap: 1rem
     padding: 0 3vw
+    +sp.jcc
+    +sp.tac
     .top-nav
       gap: 0.533333rem
       button

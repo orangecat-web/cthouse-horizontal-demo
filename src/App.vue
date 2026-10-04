@@ -72,9 +72,11 @@ onBeforeUnmount(() => { document.removeEventListener('wheel', onWheel, true); wi
 <template>
   <div class="site-shell" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
     <header class="site-header" :class="{ 'on-photo': active === 0, 'on-service': active === 1 }">
-      <nav class="top-nav" aria-label="主要導覽"><button v-for="item in site.navigation.primary" :key="item.label" @click="goToPage(item.page)">{{ item.label }}</button></nav>
-      <button class="brand" :aria-label="`${site.brand.name}，回首頁`" @click="goTo(0)"><img class="brand-logo" :src="imageUrl(site.images.logo)" alt="" width="80" height="37"></button>
-      <nav class="top-nav" aria-label="公司導覽"><button v-for="item in site.navigation.company" :key="item.label" @click="goToPage(item.page)">{{ item.label }}</button></nav>
+      <nav class="top-nav" aria-label="主要導覽">
+        <button v-for="item in site.navigation.primary" :key="item.label" @click="goToPage(item.page)">{{ item.label }}</button>
+        <button class="brand" :aria-label="`${site.brand.name}，回首頁`" @click="goTo(0)"><img class="brand-logo" :src="imageUrl(site.images.logo)" alt="" width="80" height="37"></button>
+        <button v-for="item in site.navigation.company" :key="item.label" @click="goToPage(item.page)">{{ item.label }}</button>
+      </nav>
     </header>
     <PageRail :pages="pages" :active="active" @change="goTo" />
     <main class="horizontal-track" :style="{ transform: `translate3d(-${active * 100}vw, 0, 0)` }">
