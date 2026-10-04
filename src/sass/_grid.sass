@@ -50,94 +50,94 @@
 // 無參數同舊版：小於 576px。未知名稱直接報錯，避免規則悄悄落到手機版。
 @mixin breakpoint($point: xs)
   @if $point == xs or $point == null
-    @media screen and (max-width: 575.98px)
+    @media screen and (max-width: 35.99875rem)
       @content
   @else if $point == sm
-    @media screen and (min-width: 576px) and (max-width: 767.98px)
+    @media screen and (min-width: 36rem) and (max-width: 47.99875rem)
       @content
   @else if $point == md
-    @media screen and (min-width: 768px) and (max-width: 991.98px)
+    @media screen and (min-width: 48rem) and (max-width: 61.99875rem)
       @content
   @else if $point == lg
-    @media screen and (min-width: 992px) and (max-width: 1199.98px)
+    @media screen and (min-width: 62rem) and (max-width: 74.99875rem)
       @content
   @else if $point == xl
-    @media screen and (min-width: 1200px)
+    @media screen and (min-width: 75rem)
       @content
   @else if $point == xxl
-    @media screen and (min-width: 1470px)
+    @media screen and (min-width: 91.875rem)
       @content
   @else if $point == d1280
-    @media screen and (min-width: 1280px)
+    @media screen and (min-width: 80rem)
       @content
   @else if $point == d1366
-    @media screen and (min-width: 1366px)
+    @media screen and (min-width: 85.375rem)
       @content
   @else if $point == d1440
-    @media screen and (min-width: 1440px)
+    @media screen and (min-width: 90rem)
       @content
   @else if $point == d1600
-    @media screen and (min-width: 1600px)
+    @media screen and (min-width: 100rem)
       @content
   @else if $point == d1680
-    @media screen and (min-width: 1680px)
+    @media screen and (min-width: 105rem)
       @content
   @else if $point == d1920
-    @media screen and (min-width: 1920px)
+    @media screen and (min-width: 120rem)
       @content
   @else if $point == ip5p
-    @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
+    @media only screen and (min-device-width: 20rem) and (max-device-width: 35.5rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
       @content
   @else if $point == ip5l
-    @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
+    @media only screen and (min-device-width: 20rem) and (max-device-width: 35.5rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
       @content
   @else if $point == ip6p
-    @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
+    @media only screen and (min-device-width: 23.4375rem) and (max-device-width: 41.6875rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
       @content
   @else if $point == ip6l
-    @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
+    @media only screen and (min-device-width: 23.4375rem) and (max-device-width: 41.6875rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
       @content
   @else if $point == iplusp
-    @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+    @media only screen and (min-device-width: 25.875rem) and (max-device-width: 46rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
       @content
   @else if $point == iplusl
-    @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
+    @media only screen and (min-device-width: 25.875rem) and (max-device-width: 46rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
       @content
   @else if $point == ipxp
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+    @media only screen and (min-device-width: 23.4375rem) and (max-device-width: 50.75rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
       @content
   @else if $point == ipxl
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
+    @media only screen and (min-device-width: 23.4375rem) and (max-device-width: 50.75rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
       @content
   @else if $point == ip11maxp
-    @media only screen and (min-device-width: 414px) and (max-device-width: 896px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+    @media only screen and (min-device-width: 25.875rem) and (max-device-width: 56rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
       @content
   @else if $point == ip11maxl
-    @media only screen and (min-device-width: 414px) and (max-device-width: 896px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
+    @media only screen and (min-device-width: 25.875rem) and (max-device-width: 56rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
       @content
   @else if $point == ip12prop
-    @media only screen and (min-device-width: 390px) and (max-device-width: 844px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+    @media only screen and (min-device-width: 24.375rem) and (max-device-width: 52.75rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
       @content
   @else if $point == ip12prol
-    @media only screen and (min-device-width: 390px) and (max-device-width: 844px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
+    @media only screen and (min-device-width: 24.375rem) and (max-device-width: 52.75rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
       @content
   @else if $point == ip12maxp
-    @media only screen and (min-device-width: 428px) and (max-device-width: 926px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+    @media only screen and (min-device-width: 26.75rem) and (max-device-width: 57.875rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
       @content
   @else if $point == ip12maxl
-    @media only screen and (min-device-width: 428px) and (max-device-width: 926px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
+    @media only screen and (min-device-width: 26.75rem) and (max-device-width: 57.875rem) and (-webkit-min-device-pixel-ratio: 3) and (orientation: landscape)
       @content
   @else if $point == ipadp
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2)
+    @media only screen and (min-device-width: 48rem) and (max-device-width: 64rem) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2)
       @content
   @else if $point == ipadl
-    @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2)
+    @media only screen and (min-device-width: 48rem) and (max-device-width: 64rem) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2)
       @content
   @else if $point == ipadprop
-    @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
+    @media only screen and (min-device-width: 64rem) and (max-device-width: 85.375rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
       @content
   @else if $point == ipadprol
-    @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
+    @media only screen and (min-device-width: 64rem) and (max-device-width: 85.375rem) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape)
       @content
   @else
     @error 'Unknown breakpoint: #{$point}'
@@ -152,12 +152,12 @@
       zoom: .7
 
 @mixin NavSwitch
-  @media screen and (min-width: 992px)
+  @media screen and (min-width: 62rem)
     nav.desktop
       display: block
     nav.mobile
       display: none
-  @media screen and (max-width: 991.98px)
+  @media screen and (max-width: 61.99875rem)
     nav.desktop
       display: none
     nav.mobile

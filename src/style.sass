@@ -12,6 +12,8 @@
 
 body
   margin: 0
+  // 預設文字 1rem = 16px；各區特別標示的字級依設計保留。
+  font-size: fn.$baseFont
 
 button, input, select
   font: inherit
@@ -20,8 +22,8 @@ button
   cursor: pointer
 
 button:focus-visible, input:focus-visible, select:focus-visible
-  outline: 3px solid #32a9a7
-  outline-offset: 3px
+  outline: 0.2rem solid #32a9a7
+  outline-offset: 0.2rem
 
 .site-shell
   position: relative
@@ -41,7 +43,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
   position: relative
   width: 100vw
   height: 100dvh
-  min-height: 620px
+  min-height: 41.333333rem
   overflow: hidden
 
 .site-header
@@ -50,12 +52,12 @@ button:focus-visible, input:focus-visible, select:focus-visible
   top: 0
   left: 0
   right: 0
-  height: 77px
+  height: 5.133333rem
   padding: 0 5.2vw
   display: grid
   grid-template-columns: 1fr auto 1fr
   align-items: center
-  gap: 34px
+  gap: 2.266667rem
   color: #262c2a
   transition: color .45s
   &.on-photo
@@ -67,14 +69,14 @@ button:focus-visible, input:focus-visible, select:focus-visible
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 16px
+    gap: 1.066667rem
     button
-      padding: 7px 0
+      padding: 0.466667rem 0
       border: 0
       background: none
       color: inherit
       white-space: nowrap
-      font-size: clamp(11px, .85vw, 15px)
+      font-size: clamp(0.733333rem, .85vw, 1rem)
       letter-spacing: .06em
       +oc.transition(opacity, .2s)
       &:hover
@@ -87,7 +89,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     cursor: pointer
     .brand-logo
       display: block
-      width: clamp(100px, 7vw, 132px)
+      width: clamp(6.666667rem, 7vw, 8.8rem)
       height: auto
       filter: brightness(0) opacity(.84)
       transition: filter .45s
@@ -101,45 +103,45 @@ button:focus-visible, input:focus-visible, select:focus-visible
   top: 29%
   left: 0
   display: grid
-  padding: 12px 6px
+  padding: 0.8rem 0.4rem
   background: rgba(255, 255, 255, .68)
-  border-radius: 0 8px 8px 0
-  box-shadow: 0 3px 22px #0002
-  backdrop-filter: blur(7px)
+  border-radius: 0 0.533333rem 0.533333rem 0
+  box-shadow: 0 0.2rem 1.466667rem #0002
+  backdrop-filter: blur(0.466667rem)
   button
-    width: 32px
-    height: 38px
+    width: 2.133333rem
+    height: 2.533333rem
     padding: 0
     border: 0
     background: transparent
     color: #61716d
-    font-size: 15px
+    font-size: 1rem
     &.selected, &:hover
       color: #169f9f
 
 .pager-controls
   position: fixed
   z-index: 31
-  right: 26px
-  bottom: 20px
+  right: 1.733333rem
+  bottom: 1.333333rem
   display: flex
   align-items: center
-  gap: 13px
-  padding: 7px 10px
-  border-radius: 4px
+  gap: 0.866667rem
+  padding: 0.466667rem 0.666667rem
+  border-radius: 0.266667rem
   background: rgba(255, 255, 255, .75)
   color: #34413e
-  font: 11px Arial, sans-serif
+  font: 0.733333rem Arial, sans-serif
   > div
     display: flex
-    gap: 7px
+    gap: 0.466667rem
   button
-    width: 34px
-    height: 30px
-    border: 1px solid #aab8b4
+    width: 2.266667rem
+    height: 2rem
+    border: 0.066667rem solid #aab8b4
     background: transparent
     color: inherit
-    font-size: 17px
+    font-size: 1.133333rem
     &:hover:not(:disabled)
       background: #30aaa8
       color: #fff
@@ -152,11 +154,11 @@ button:focus-visible, input:focus-visible, select:focus-visible
   opacity: 0
   transition: opacity .75s ease, transform .9s cubic-bezier(.2, .8, .2, 1)
   &.rise
-    transform: translateY(75px)
+    transform: translateY(5rem)
   &.from-right
-    transform: translateX(100px)
+    transform: translateX(6.666667rem)
   &.from-left
-    transform: translateX(-100px)
+    transform: translateX(-6.666667rem)
   &.fade
     transform: scale(.84)
 
@@ -191,11 +193,10 @@ button:focus-visible, input:focus-visible, select:focus-visible
     left: 34%
     width: 42%
     color: #fff
-    text-shadow: 0 2px 22px #24353088
+    text-shadow: 0 0.133333rem 1.466667rem #24353088
     h1
       margin: 0
-      font-size: clamp(35px, 3.2vw, 62px)
-      font-weight: 300
+      font-size: clamp(2.333333rem, 3.2vw, 4.133333rem)
       letter-spacing: .12em
       white-space: nowrap
   .search-card
@@ -203,55 +204,54 @@ button:focus-visible, input:focus-visible, select:focus-visible
     top: 58%
     left: 25%
     width: 49%
-    padding: 20px 22px
-    background: rgba(255, 255, 255, .5)
-    border-radius: 10px
+    padding: 1.333333rem 1.466667rem
+    background: rgba(255, 255, 255, .25)
     color: #4a5954
-    backdrop-filter: blur(20px)
-    box-shadow: 0 5px 26px #0002
+    backdrop-filter: blur(0.666667rem)
+    box-shadow: 0 0.333333rem 1.733333rem #0002
   .search-tabs
     display: grid
     grid-template-columns: repeat(4, 1fr)
-    gap: 9px
+    gap: 0.6rem
     button
       border: 0
-      padding: 9px 4px
-      border-radius: 6px
+      padding: 0.6rem 0.266667rem
+      border-radius: 0.4rem
       background: #f5f5f3
       color: #53605d
-      font-size: 14px
+      font-size: 1.2rem
       &.chosen
         color: #fff
         background: #3cb7b5
   .search-options
     display: grid
     grid-template-columns: repeat(4, 1fr)
-    gap: 12px
-    margin: 16px 0
+    gap: 0.8rem
+    margin: 1.066667rem 0
     label
       display: grid
-      gap: 2px
-      font-size: 11px
+      gap: 0.133333rem
+      font-size: 0.733333rem
       color: #7a8781
     select
       min-width: 0
       width: 100%
       border: 0
-      border-bottom: 1px solid #a9b4b0
-      padding: 4px 0 8px
+      border-bottom: 0.066667rem solid #a9b4b0
+      padding: 0.266667rem 0 0.533333rem
       background: transparent
       color: #55635f
-      font-size: 13px
+      font-size: 0.866667rem
   .search-keyword
     display: grid
-    grid-template-columns: 1fr 125px
-    gap: 12px
+    grid-template-columns: 1fr 8.333333rem
+    gap: 0.8rem
     input
       min-width: 0
-      border: 1px solid #adb9b5
-      padding: 10px 12px
+      border: 0.066667rem solid #adb9b5
+      padding: 0.666667rem 0.8rem
       background: #ffffff99
-      font-size: 13px
+      font-size: 0.866667rem
     button
       border: 0
       color: #fff
@@ -260,12 +260,12 @@ button:focus-visible, input:focus-visible, select:focus-visible
     position: absolute
     bottom: 8%
     left: 50%
-    width: 64px
-    height: 54px
+    width: 4.266667rem
+    height: 3.6rem
     border: 0
     background: transparent
     color: #fff
-    font-size: 45px
+    font-size: 3rem
     font-weight: 200
 
 .panel-service
@@ -283,8 +283,8 @@ button:focus-visible, input:focus-visible, select:focus-visible
     right: 4.5%
     width: 27%
     h2
-      margin: 0 0 35px
-      font-size: clamp(30px, 2.8vw, 54px)
+      margin: 0 0 2.333333rem
+      font-size: clamp(2rem, 2.8vw, 3.6rem)
       font-weight: 300
       letter-spacing: .07em
       line-height: 1.5
@@ -293,14 +293,14 @@ button:focus-visible, input:focus-visible, select:focus-visible
     padding: 0
     list-style: none
     li
-      padding: 14px 0
-      border-bottom: 1px solid #d9dfdc
+      padding: 0.933333rem 0
+      border-bottom: 0.066667rem solid #d9dfdc
       color: #63736d
-      font-size: 15px
+      font-size: 1rem
       letter-spacing: .08em
       &::before
         content: '⌂'
-        margin-right: 12px
+        margin-right: 0.8rem
         color: #34aaa5
   .service-bottom
     position: absolute
@@ -309,28 +309,28 @@ button:focus-visible, input:focus-visible, select:focus-visible
     left: 0
     right: 0
     min-height: 13%
-    padding: 22px 8% 22px 25%
+    padding: 1.466667rem 8% 1.466667rem 25%
     background: #fff
     display: flex
     align-items: center
-    gap: 14px
-    box-shadow: 0 -3px 18px #0001
+    gap: 0.933333rem
+    box-shadow: 0 -0.2rem 1.2rem #0001
     .service-caption
       margin-right: auto
       display: grid
-      gap: 6px
-      font-size: 13px
+      gap: 0.4rem
+      font-size: 0.866667rem
       strong
         font-weight: 400
       span
         color: #86928f
-        font-size: 11px
+        font-size: 0.733333rem
     button
       border: 0
-      padding: 13px 18px
+      padding: 0.866667rem 1.2rem
       color: #fff
       background: #2aa8a4
-      font-size: 13px
+      font-size: 0.866667rem
       &.solid
         background: #128e8b
 
@@ -349,13 +349,13 @@ button:focus-visible, input:focus-visible, select:focus-visible
   .advantage-item
     position: absolute
     h3
-      margin: 0 0 12px
-      font: 400 clamp(31px, 3.3vw, 60px)/1 Georgia, serif
+      margin: 0 0 0.8rem
+      font: 400 clamp(2.066667rem, 3.3vw, 4rem)/1 Georgia, serif
     p
-      max-width: 290px
+      max-width: 19.333333rem
       margin: 0
       color: #777f7c
-      font-size: 14px
+      font-size: 0.933333rem
       line-height: 1.8
     &.assets
       top: 9%
@@ -370,13 +370,13 @@ button:focus-visible, input:focus-visible, select:focus-visible
     position: absolute
     top: 48%
     right: 10%
-    width: 112px
-    height: 112px
+    width: 7.466667rem
+    height: 7.466667rem
     border: 0
     border-radius: 50%
     background: #f47722
     color: #fff
-    font-size: 18px
+    font-size: 1.2rem
     line-height: 1.4
   .advantage-slogan
     position: absolute
@@ -384,7 +384,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     bottom: 1%
     margin: 0
     white-space: nowrap
-    font-size: clamp(28px, 2.8vw, 54px)
+    font-size: clamp(1.866667rem, 2.8vw, 3.6rem)
     font-weight: 300
     letter-spacing: .07em
 
@@ -400,11 +400,11 @@ button:focus-visible, input:focus-visible, select:focus-visible
     color: #fff
     background: #333638
     span
-      font-size: clamp(25px, 2.4vw, 45px)
+      font-size: clamp(1.666667rem, 2.4vw, 3rem)
       font-weight: 300
     h2
-      margin: 12px 0
-      font: 400 clamp(70px, 8vw, 150px)/1 Georgia, serif
+      margin: 0.8rem 0
+      font: 400 clamp(4.666667rem, 8vw, 10rem)/1 Georgia, serif
   .news-content
     position: absolute
     inset: 0 13% 0 32%
@@ -414,22 +414,22 @@ button:focus-visible, input:focus-visible, select:focus-visible
         width: 100%
         display: flex
         justify-content: space-between
-        gap: 20px
-        padding: 23px 0
+        gap: 1.333333rem
+        padding: 1.533333rem 0
         border: 0
-        border-bottom: 1px solid #d2d8d5
+        border-bottom: 0.066667rem solid #d2d8d5
         background: transparent
         text-align: left
         color: #52605c
-        font-size: 15px
+        font-size: 1rem
         span:last-child
-          font-size: 21px
+          font-size: 1.4rem
     .news-date
       margin-top: 17vh
       display: flex
       justify-content: space-between
       color: #8c9a95
-      font-size: 12px
+      font-size: 0.8rem
   .forest-photo
     position: absolute
     inset: 0 0 0 87%
@@ -457,61 +457,61 @@ button:focus-visible, input:focus-visible, select:focus-visible
     flex-direction: column
     align-items: center
     justify-content: center
-    border: 1px solid #e0e4e1
+    border: 0.066667rem solid #e0e4e1
     color: #4d5b55
     text-align: center
     h2
       margin: 0
-      font-size: 34px
+      font-size: 2.266667rem
       letter-spacing: .15em
     p
-      font-size: 13px
+      font-size: 0.866667rem
       letter-spacing: .12em
     small
-      font-size: 10px
+      font-size: 0.666667rem
       color: #98a29d
     .qr-placeholder
-      width: 90px
-      height: 90px
+      width: 6rem
+      height: 6rem
       display: grid
       place-items: center
-      border: 2px solid #6c7d76
-      font-size: 70px
+      border: 0.133333rem solid #6c7d76
+      font-size: 4.666667rem
       line-height: 1
     .contact-icons
       display: flex
-      gap: 12px
-      margin: 10px 0 26px
+      gap: 0.8rem
+      margin: 0.666667rem 0 1.733333rem
       span
-        width: 30px
-        height: 30px
+        width: 2rem
+        height: 2rem
         display: grid
         place-items: center
-        border: 1px solid #899991
+        border: 0.066667rem solid #899991
         border-radius: 50%
 
 .toast
   position: fixed
   z-index: 50
-  bottom: 85px
+  bottom: 5.666667rem
   left: 50%
   transform: translateX(-50%)
-  padding: 12px 18px
+  padding: 0.8rem 1.2rem
   background: #25413d
   color: white
-  border-radius: 4px
-  box-shadow: 0 5px 24px #0003
+  border-radius: 0.266667rem
+  box-shadow: 0 0.333333rem 1.6rem #0003
   white-space: nowrap
-  font-size: 13px
+  font-size: 0.866667rem
 
-@media (max-width: 1100px)
+@media (max-width: 68.75rem)
   .site-header
-    gap: 15px
+    gap: 1rem
     padding: 0 3vw
     .top-nav
-      gap: 8px
+      gap: 0.533333rem
       button
-        font-size: 10px
+        font-size: 0.666667rem
   .panel-home .search-card
     width: 64%
     left: 18%
@@ -519,7 +519,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     width: 30%
     right: 3%
 
-@media (max-width: 760px) and (pointer: coarse)
+@media (max-width: 47.5rem) and (pointer: coarse)
   .site-shell
     height: auto
     overflow: visible
@@ -534,7 +534,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     min-height: 100svh
   .site-header
     position: absolute
-    height: 68px
+    height: 4.533333rem
     display: flex
     justify-content: center
     color: white
@@ -547,19 +547,19 @@ button:focus-visible, input:focus-visible, select:focus-visible
     transform: none !important
     transition: none
   .panel-home
-    min-height: 800px
+    min-height: 53.333333rem
     .home-title
       left: 8%
       top: 24%
       width: 84%
       h1
         white-space: normal
-        font-size: 40px
+        font-size: 4rem
     .search-card
       top: 42%
       left: 5%
       width: 90%
-      padding: 14px
+      padding: 0.933333rem
     .search-tabs
       grid-template-columns: repeat(2, 1fr)
     .search-options
@@ -567,7 +567,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     .slide-cue
       bottom: 2%
   .panel-service
-    min-height: 900px
+    min-height: 60rem
     .service-photo
       inset: 0 0 42% 0
     .service-copy
@@ -575,17 +575,17 @@ button:focus-visible, input:focus-visible, select:focus-visible
       right: 7%
       width: 86%
       h2
-        font-size: 33px
-        margin-bottom: 8px
+        font-size: 2.2rem
+        margin-bottom: 0.533333rem
     .service-points li
-      padding: 8px 0
+      padding: 0.533333rem 0
     .service-bottom
-      padding: 10px 7%
-      gap: 5px
+      padding: 0.666667rem 7%
+      gap: 0.333333rem
       .service-caption
         display: none
   .panel-advantage
-    min-height: 950px
+    min-height: 63.333333rem
     .building-photo
       inset: 0 0 65% 0
     .advantage-copy
@@ -595,34 +595,34 @@ button:focus-visible, input:focus-visible, select:focus-visible
       top: auto !important
       left: auto !important
       right: auto !important
-      margin-bottom: 25px
+      margin-bottom: 1.666667rem
       h3
-        font-size: 31px
+        font-size: 2.066667rem
     .witness
       top: 70%
       right: 0
-      width: 85px
-      height: 85px
+      width: 5.666667rem
+      height: 5.666667rem
     .advantage-slogan
       left: 0
       bottom: 1%
       white-space: normal
-      font-size: 27px
+      font-size: 1.8rem
   .panel-news
-    min-height: 900px
+    min-height: 60rem
     .news-title
       inset: 0 0 65% 0
       h2
-        font-size: 78px
+        font-size: 5.2rem
     .news-content
       inset: 35% 0 16% 0
-      padding: 35px 7%
+      padding: 2.333333rem 7%
       .news-date
-        margin-top: 55px
+        margin-top: 3.666667rem
     .forest-photo
       inset: 84% 0 0
   .panel-contact
-    min-height: 760px
+    min-height: 50.666667rem
     .contact-forest
       inset: 0 0 75% 0
     .contact-card

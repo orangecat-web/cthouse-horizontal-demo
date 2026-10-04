@@ -1,5 +1,5 @@
 {
-  "version": "0.6",
+  "version": "0.7",
   "brand": {
     "name": "中信房屋",
     "english": "CHINATRUST REAL ESTATE CO."
@@ -70,7 +70,7 @@
     "demoAction": "此為網站視覺提案 Demo，資料功能尚未串接。"
   },
   "images": {
-    "logo": "logo.webp",
+    "logo": "logo.png",
     "home": "bg_index.webp",
     "service": null,
     "assets": null,

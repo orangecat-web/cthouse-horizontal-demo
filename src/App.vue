@@ -18,7 +18,7 @@ let noticeTimer
 let touchX = 0
 let touchY = 0
 
-function compact() { return window.matchMedia('(max-width: 760px) and (pointer: coarse)').matches }
+function compact() { return window.matchMedia('(max-width: 47.5rem) and (pointer: coarse)').matches }
 function goTo(index) {
   const next = Math.max(0, Math.min(index, pages.length - 1))
   active.value = next
