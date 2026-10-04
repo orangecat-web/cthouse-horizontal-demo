@@ -1,0 +1,636 @@
+@use './sass/function' as fn
+@use './sass/mixin' as oc
+@use './sass/include' as font
+
+:root
+  font-family: font.$font-body
+  color: #313b37
+  background: white
+
+*
+  box-sizing: border-box
+
+body
+  margin: 0
+
+button, input, select
+  font: inherit
+
+button
+  cursor: pointer
+
+button:focus-visible, input:focus-visible, select:focus-visible
+  outline: 3px solid #32a9a7
+  outline-offset: 3px
+
+.site-shell
+  position: relative
+  width: 100vw
+  height: 100dvh
+  overflow: hidden
+
+.horizontal-track
+  display: flex
+  width: max-content
+  height: 100%
+  transition: transform 1000ms cubic-bezier(.22, 1, .36, 1)
+  will-change: transform
+
+.panel
+  flex: 0 0 100vw
+  position: relative
+  width: 100vw
+  height: 100dvh
+  min-height: 620px
+  overflow: hidden
+
+.site-header
+  position: fixed
+  z-index: 30
+  top: 0
+  left: 0
+  right: 0
+  height: 77px
+  padding: 0 5.2vw
+  display: grid
+  grid-template-columns: 1fr auto 1fr
+  align-items: center
+  gap: 34px
+  color: #262c2a
+  transition: color .45s
+  &.on-photo
+    color: #fff
+  &.on-service
+    .top-nav:first-child, .brand
+      color: #fff
+  .top-nav
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 16px
+    button
+      padding: 7px 0
+      border: 0
+      background: none
+      color: inherit
+      white-space: nowrap
+      font-size: clamp(11px, .85vw, 15px)
+      letter-spacing: .06em
+      +oc.transition(opacity, .2s)
+      &:hover
+        opacity: .58
+  .brand
+    display: block
+    padding: 0
+    border: 0
+    background: none
+    cursor: pointer
+    .brand-logo
+      display: block
+      width: clamp(100px, 7vw, 132px)
+      height: auto
+      filter: brightness(0) opacity(.84)
+      transition: filter .45s
+  &.on-photo, &.on-service
+    .brand-logo
+      filter: none
+
+.page-rail
+  position: fixed
+  z-index: 31
+  top: 29%
+  left: 0
+  display: grid
+  padding: 12px 6px
+  background: rgba(255, 255, 255, .68)
+  border-radius: 0 8px 8px 0
+  box-shadow: 0 3px 22px #0002
+  backdrop-filter: blur(7px)
+  button
+    width: 32px
+    height: 38px
+    padding: 0
+    border: 0
+    background: transparent
+    color: #61716d
+    font-size: 15px
+    &.selected, &:hover
+      color: #169f9f
+
+.pager-controls
+  position: fixed
+  z-index: 31
+  right: 26px
+  bottom: 20px
+  display: flex
+  align-items: center
+  gap: 13px
+  padding: 7px 10px
+  border-radius: 4px
+  background: rgba(255, 255, 255, .75)
+  color: #34413e
+  font: 11px Arial, sans-serif
+  > div
+    display: flex
+    gap: 7px
+  button
+    width: 34px
+    height: 30px
+    border: 1px solid #aab8b4
+    background: transparent
+    color: inherit
+    font-size: 17px
+    &:hover:not(:disabled)
+      background: #30aaa8
+      color: #fff
+    &:disabled
+      opacity: .3
+      cursor: default
+
+// 紅框指定的進場方向；每一頁到位後，子區塊才依序移動。
+.anim
+  opacity: 0
+  transition: opacity .75s ease, transform .9s cubic-bezier(.2, .8, .2, 1)
+  &.rise
+    transform: translateY(75px)
+  &.from-right
+    transform: translateX(100px)
+  &.from-left
+    transform: translateX(-100px)
+  &.fade
+    transform: scale(.84)
+
+.is-active .anim
+  opacity: 1
+  transform: translate(0, 0) scale(1)
+
+.delay-1
+  transition-delay: .15s
+.delay-2
+  transition-delay: .3s
+.delay-3
+  transition-delay: .45s
+.delay-4
+  transition-delay: .6s
+
+.proposal-photo
+  position: absolute
+  inset: 0
+  background: #60706d
+  background-image: var(--panel-image, linear-gradient(120deg, #5d716c, #b4c8c0 54%, #758e8b))
+  background-position: center
+  background-size: cover
+
+.panel-home
+  background: #66746e
+  .home-photo
+    filter: brightness(.8)
+  .home-title
+    position: absolute
+    top: 36%
+    left: 34%
+    width: 42%
+    color: #fff
+    text-shadow: 0 2px 22px #24353088
+    h1
+      margin: 0
+      font-size: clamp(35px, 3.2vw, 62px)
+      font-weight: 300
+      letter-spacing: .12em
+      white-space: nowrap
+  .search-card
+    position: absolute
+    top: 58%
+    left: 25%
+    width: 49%
+    padding: 20px 22px
+    background: rgba(255, 255, 255, .5)
+    border-radius: 10px
+    color: #4a5954
+    backdrop-filter: blur(20px)
+    box-shadow: 0 5px 26px #0002
+  .search-tabs
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+    gap: 9px
+    button
+      border: 0
+      padding: 9px 4px
+      border-radius: 6px
+      background: #f5f5f3
+      color: #53605d
+      font-size: 14px
+      &.chosen
+        color: #fff
+        background: #3cb7b5
+  .search-options
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+    gap: 12px
+    margin: 16px 0
+    label
+      display: grid
+      gap: 2px
+      font-size: 11px
+      color: #7a8781
+    select
+      min-width: 0
+      width: 100%
+      border: 0
+      border-bottom: 1px solid #a9b4b0
+      padding: 4px 0 8px
+      background: transparent
+      color: #55635f
+      font-size: 13px
+  .search-keyword
+    display: grid
+    grid-template-columns: 1fr 125px
+    gap: 12px
+    input
+      min-width: 0
+      border: 1px solid #adb9b5
+      padding: 10px 12px
+      background: #ffffff99
+      font-size: 13px
+    button
+      border: 0
+      color: #fff
+      background: #35b1ad
+  .slide-cue
+    position: absolute
+    bottom: 8%
+    left: 50%
+    width: 64px
+    height: 54px
+    border: 0
+    background: transparent
+    color: #fff
+    font-size: 45px
+    font-weight: 200
+
+.panel-service
+  background: #fff
+  .service-photo
+    position: absolute
+    inset: 0 35% 13% 0
+    background-color: #60727a
+    background-image: var(--panel-image, linear-gradient(125deg, #344750, #809ca3 55%, #b8c9c6))
+    background-position: center
+    background-size: cover
+  .service-copy
+    position: absolute
+    top: 16%
+    right: 4.5%
+    width: 27%
+    h2
+      margin: 0 0 35px
+      font-size: clamp(30px, 2.8vw, 54px)
+      font-weight: 300
+      letter-spacing: .07em
+      line-height: 1.5
+  .service-points
+    margin: 0
+    padding: 0
+    list-style: none
+    li
+      padding: 14px 0
+      border-bottom: 1px solid #d9dfdc
+      color: #63736d
+      font-size: 15px
+      letter-spacing: .08em
+      &::before
+        content: '⌂'
+        margin-right: 12px
+        color: #34aaa5
+  .service-bottom
+    position: absolute
+    z-index: 2
+    bottom: 0
+    left: 0
+    right: 0
+    min-height: 13%
+    padding: 22px 8% 22px 25%
+    background: #fff
+    display: flex
+    align-items: center
+    gap: 14px
+    box-shadow: 0 -3px 18px #0001
+    .service-caption
+      margin-right: auto
+      display: grid
+      gap: 6px
+      font-size: 13px
+      strong
+        font-weight: 400
+      span
+        color: #86928f
+        font-size: 11px
+    button
+      border: 0
+      padding: 13px 18px
+      color: #fff
+      background: #2aa8a4
+      font-size: 13px
+      &.solid
+        background: #128e8b
+
+.panel-advantage
+  background: #fff
+  .building-photo
+    position: absolute
+    inset: 0 66% 0 0
+    background-color: #6c9eb9
+    background-image: var(--panel-image, linear-gradient(145deg, #4b7895, #97bed0 50%, #d2e2e8))
+    background-position: center
+    background-size: cover
+  .advantage-copy
+    position: absolute
+    inset: 10% 4% 9% 38%
+  .advantage-item
+    position: absolute
+    h3
+      margin: 0 0 12px
+      font: 400 clamp(31px, 3.3vw, 60px)/1 Georgia, serif
+    p
+      max-width: 290px
+      margin: 0
+      color: #777f7c
+      font-size: 14px
+      line-height: 1.8
+    &.assets
+      top: 9%
+      left: 0
+    &.advantage
+      top: 28%
+      right: 0
+    &.benefit
+      top: 50%
+      left: 10%
+  .witness
+    position: absolute
+    top: 48%
+    right: 10%
+    width: 112px
+    height: 112px
+    border: 0
+    border-radius: 50%
+    background: #f47722
+    color: #fff
+    font-size: 18px
+    line-height: 1.4
+  .advantage-slogan
+    position: absolute
+    left: -9%
+    bottom: 1%
+    margin: 0
+    white-space: nowrap
+    font-size: clamp(28px, 2.8vw, 54px)
+    font-weight: 300
+    letter-spacing: .07em
+
+.panel-news
+  background: #fff
+  .news-title
+    position: absolute
+    inset: 0 68% 0 0
+    display: flex
+    flex-direction: column
+    justify-content: center
+    padding: 0 4vw
+    color: #fff
+    background: #333638
+    span
+      font-size: clamp(25px, 2.4vw, 45px)
+      font-weight: 300
+    h2
+      margin: 12px 0
+      font: 400 clamp(70px, 8vw, 150px)/1 Georgia, serif
+  .news-content
+    position: absolute
+    inset: 0 13% 0 32%
+    padding: 20vh 6vw 8vh
+    .faq
+      button
+        width: 100%
+        display: flex
+        justify-content: space-between
+        gap: 20px
+        padding: 23px 0
+        border: 0
+        border-bottom: 1px solid #d2d8d5
+        background: transparent
+        text-align: left
+        color: #52605c
+        font-size: 15px
+        span:last-child
+          font-size: 21px
+    .news-date
+      margin-top: 17vh
+      display: flex
+      justify-content: space-between
+      color: #8c9a95
+      font-size: 12px
+  .forest-photo
+    position: absolute
+    inset: 0 0 0 87%
+    background-color: #477a44
+    background-image: var(--panel-image, linear-gradient(145deg, #1c512f, #5a9347 55%, #98bd6c))
+    background-position: center
+    background-size: cover
+
+.panel-contact
+  background: #fff
+  .contact-forest
+    position: absolute
+    inset: 0 75% 0 0
+    background-color: #477a44
+    background-image: var(--panel-image, linear-gradient(145deg, #1c512f, #5a9347 55%, #98bd6c))
+    background-position: center
+    background-size: cover
+  .contact-card
+    position: absolute
+    top: 25%
+    left: 43%
+    width: 43%
+    min-height: 54%
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    border: 1px solid #e0e4e1
+    color: #4d5b55
+    text-align: center
+    h2
+      margin: 0
+      font-size: 34px
+      letter-spacing: .15em
+    p
+      font-size: 13px
+      letter-spacing: .12em
+    small
+      font-size: 10px
+      color: #98a29d
+    .qr-placeholder
+      width: 90px
+      height: 90px
+      display: grid
+      place-items: center
+      border: 2px solid #6c7d76
+      font-size: 70px
+      line-height: 1
+    .contact-icons
+      display: flex
+      gap: 12px
+      margin: 10px 0 26px
+      span
+        width: 30px
+        height: 30px
+        display: grid
+        place-items: center
+        border: 1px solid #899991
+        border-radius: 50%
+
+.toast
+  position: fixed
+  z-index: 50
+  bottom: 85px
+  left: 50%
+  transform: translateX(-50%)
+  padding: 12px 18px
+  background: #25413d
+  color: white
+  border-radius: 4px
+  box-shadow: 0 5px 24px #0003
+  white-space: nowrap
+  font-size: 13px
+
+@media (max-width: 1100px)
+  .site-header
+    gap: 15px
+    padding: 0 3vw
+    .top-nav
+      gap: 8px
+      button
+        font-size: 10px
+  .panel-home .search-card
+    width: 64%
+    left: 18%
+  .panel-service .service-copy
+    width: 30%
+    right: 3%
+
+@media (max-width: 760px) and (pointer: coarse)
+  .site-shell
+    height: auto
+    overflow: visible
+  .horizontal-track
+    width: auto
+    height: auto
+    display: block
+    transform: none !important
+    transition: none
+  .panel
+    height: auto
+    min-height: 100svh
+  .site-header
+    position: absolute
+    height: 68px
+    display: flex
+    justify-content: center
+    color: white
+    .top-nav
+      display: none
+  .page-rail, .pager-controls
+    display: none
+  .anim
+    opacity: 1
+    transform: none !important
+    transition: none
+  .panel-home
+    min-height: 800px
+    .home-title
+      left: 8%
+      top: 24%
+      width: 84%
+      h1
+        white-space: normal
+        font-size: 40px
+    .search-card
+      top: 42%
+      left: 5%
+      width: 90%
+      padding: 14px
+    .search-tabs
+      grid-template-columns: repeat(2, 1fr)
+    .search-options
+      grid-template-columns: repeat(2, 1fr)
+    .slide-cue
+      bottom: 2%
+  .panel-service
+    min-height: 900px
+    .service-photo
+      inset: 0 0 42% 0
+    .service-copy
+      top: 55%
+      right: 7%
+      width: 86%
+      h2
+        font-size: 33px
+        margin-bottom: 8px
+    .service-points li
+      padding: 8px 0
+    .service-bottom
+      padding: 10px 7%
+      gap: 5px
+      .service-caption
+        display: none
+  .panel-advantage
+    min-height: 950px
+    .building-photo
+      inset: 0 0 65% 0
+    .advantage-copy
+      inset: 36% 6% 5%
+    .advantage-item
+      position: relative
+      top: auto !important
+      left: auto !important
+      right: auto !important
+      margin-bottom: 25px
+      h3
+        font-size: 31px
+    .witness
+      top: 70%
+      right: 0
+      width: 85px
+      height: 85px
+    .advantage-slogan
+      left: 0
+      bottom: 1%
+      white-space: normal
+      font-size: 27px
+  .panel-news
+    min-height: 900px
+    .news-title
+      inset: 0 0 65% 0
+      h2
+        font-size: 78px
+    .news-content
+      inset: 35% 0 16% 0
+      padding: 35px 7%
+      .news-date
+        margin-top: 55px
+    .forest-photo
+      inset: 84% 0 0
+  .panel-contact
+    min-height: 760px
+    .contact-forest
+      inset: 0 0 75% 0
+    .contact-card
+      top: 28%
+      left: 8%
+      width: 84%
+      min-height: 60%
+  .toast
+    width: max-content
+    max-width: 90vw
+    white-space: normal

@@ -1,0 +1,79 @@
+{
+  "version": "0.6",
+  "brand": {
+    "name": "中信房屋",
+    "english": "CHINATRUST REAL ESTATE CO."
+  },
+  "navigation": {
+    "primary": [
+      { "label": "我要買屋", "page": "home" },
+      { "label": "我要租屋", "page": "home" },
+      { "label": "售屋委託", "page": "service" },
+      { "label": "成交行情", "page": "news" }
+    ],
+    "company": [
+      { "label": "服務據點", "page": "service" },
+      { "label": "關於中信", "page": "advantage" },
+      { "label": "徵才公告", "page": "news" },
+      { "label": "會員專區", "page": "contact" }
+    ]
+  },
+  "pages": [
+    { "id": "home", "label": "首頁", "number": "01", "icon": "⌂" },
+    { "id": "service", "label": "星級服務", "number": "02", "icon": "♧" },
+    { "id": "advantage", "label": "品牌優勢", "number": "03", "icon": "◈" },
+    { "id": "news", "label": "最新消息", "number": "04", "icon": "▤" },
+    { "id": "contact", "label": "聯絡資訊", "number": "05", "icon": "✉" }
+  ],
+  "home": {
+    "title": "找到你的最適生活圈",
+    "modes": ["CP 值找屋", "區域找屋", "捷運找屋", "地圖找屋"],
+    "defaultMode": "區域找屋",
+    "filters": [
+      { "label": "地區", "options": ["臺北市全區", "新北市全區"] },
+      { "label": "總價", "options": ["總價不拘", "1,000 萬以下"] },
+      { "label": "坪數", "options": ["坪數不拘", "20–40 坪"] },
+      { "label": "類型", "options": ["類型不拘", "住宅"] }
+    ],
+    "keywordPlaceholder": "關鍵字、房屋編號、街道、社區大樓或學校",
+    "searchButton": "搜尋"
+  },
+  "service": {
+    "title": ["全面到位的", "星級委託服務"],
+    "points": ["專業委託與需求諮詢", "完整資訊與貼心服務", "安心透明的交易流程"],
+    "caption": "讓每一步，都更接近理想的家。",
+    "subcaption": "服務據點・專人諮詢・房屋委託",
+    "buttons": ["了解更多 →", "我要委託 →"]
+  },
+  "advantage": {
+    "items": [
+      { "heading": "ASSETS", "description": "穩健資源，成就更多可能。" },
+      { "heading": "ADVANTAGE", "description": "專業優勢，陪伴每一次選擇。" },
+      { "heading": "BENEFIT", "description": "共享成長，創造更好的未來。" }
+    ],
+    "witness": ["見證", "中信"],
+    "slogan": "選擇中信房屋做為您的事業好夥伴"
+  },
+  "news": {
+    "label": "最新消息",
+    "heading": "NEWS",
+    "questions": ["中信房屋提供哪些找屋服務？", "如何預約看屋與了解物件？", "售屋委託流程如何進行？"],
+    "signature": "中信房屋",
+    "english": "NEWS & INFORMATION"
+  },
+  "contact": {
+    "description": "服務據點・房屋搜尋・品牌資訊",
+    "socialIcons": ["f", "▶", "◎", "✉"],
+    "copyright": "© CHINATRUST REAL ESTATE CO."
+  },
+  "messages": {
+    "demoAction": "此為網站視覺提案 Demo，資料功能尚未串接。"
+  },
+  "images": {
+    "logo": "logo.webp",
+    "home": "bg_index.webp",
+    "service": null,
+    "assets": null,
+    "closing": null
+  }
+}
