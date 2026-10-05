@@ -5,7 +5,7 @@
     "brand": "品牌名稱與英文；name 同時用於 Logo 按鈕的朗讀名稱和聯絡頁標題。",
     "navigation.primary / navigation.company": "上方導覽的兩組連結；label 是顯示文字，page 對應 pages[].id。",
     "pages": "左側頁籤及頁碼資料；順序須與 App.vue 五個 section／active 索引同步，不能只改此處來重排場景。",
-    "pages[].id / label / number / icon": "id 對應 section ID；label 是頁籤朗讀名稱；number 是右下頁碼；icon 是示意字元。",
+    "pages[].id / label / number / icon": "id 對應 section ID；label 是頁籤朗讀名稱；number 是右下頁碼；icon 是 Google Material Symbols Outlined 的圖示名稱，例如 home、star、verified、article、mail。",
     "home": "01 首頁／找屋介面。",
     "home.title": "首頁主標題，使用從下方進場動畫。",
     "home.modes / defaultMode": "找屋方式按鈕及預設選中項目；defaultMode 必須是 modes 其中一項。",
@@ -24,7 +24,8 @@
     "contact.description / socialIcons / copyright": "服務說明、社群示意字元及版權文字；社群字元目前没有連結。",
     "messages.demoAction": "搜尋、服務、見證、消息按鈕共同使用的 Demo 提示，三秒後消失。",
     "images": "圖片檔名相對於 public/images/；未填場景圖片時用 null，保留 Sass 佔位背景。",
-    "images.logo / home / service / assets / closing": "logo 導覽 Logo；home 首頁；service 服務照片；assets 建築照片；closing 同時用於消息及聯絡頁森林。"
+    "images.logo / home / service / assets / closing": "logo 導覽 Logo；home 首頁；service 服務照片；assets 建築照片；closing 同時用於消息及聯絡頁森林。",
+    "sidebarLinks": "側邊攔"
   },
   "version": "0.9",
   "brand": {
@@ -46,11 +47,19 @@
     ]
   },
   "pages": [
-    { "id": "home", "label": "首頁", "number": "01", "icon": "⌂" },
-    { "id": "service", "label": "星級服務", "number": "02", "icon": "♧" },
-    { "id": "advantage", "label": "品牌優勢", "number": "03", "icon": "◈" },
-    { "id": "news", "label": "最新消息", "number": "04", "icon": "▤" },
-    { "id": "contact", "label": "聯絡資訊", "number": "05", "icon": "✉" }
+    { "id": "home", "label": "首頁", "number": "01", "icon": "home" },
+    { "id": "service", "label": "星級服務", "number": "02", "icon": "star" },
+    { "id": "advantage", "label": "品牌優勢", "number": "03", "icon": "verified" },
+    { "id": "news", "label": "最新消息", "number": "04", "icon": "article" },
+    { "id": "contact", "label": "聯絡資訊", "number": "05", "icon": "mail" }
+  ],
+  "sidebarLinks": [
+    { "id": "home", "label": "回首頁", "href": "", "icon": "home" },
+    { "id": "bookmark", "label": "瀏覽記錄", "href": "", "icon": "bookmark" },
+    { "id": "laptop", "label": "Laptop", "href": "", "icon": "laptop" },
+    { "id": "notifications_active", "label": "降價提醒", "href": "", "icon": "notifications_active" },
+    { "id": "settings", "label": "設定", "href": "", "icon": "settings" },
+    { "id": "logout", "label": "登出", "href": "", "icon": "logout" }
   ],
   "home": {
     "title": "找到你的最適生活圈",

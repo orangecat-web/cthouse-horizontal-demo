@@ -57,3 +57,7 @@ npm run dev
 - 註解必須隨功能變動同步更新；說明用途與原因，不逐行翻譯簡單語法。
 
 同樣規範已寫入 `AGENTS.md`，供後續開發與 AI 修改時遵循。
+
+### 左側 Google 圖示
+
+`pages[].icon` 填 Google Material Symbols Outlined 的圖示名稱（如 `home`），由 `PageRail.vue` 的 `.material-symbols-outlined` 顯示。字型網址維持在 `src/sass/_icons.sass`，圖示大小在 `src/style.sass` 的 `.page-rail .material-symbols-outlined` 調整。

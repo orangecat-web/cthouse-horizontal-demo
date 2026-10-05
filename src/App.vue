@@ -107,8 +107,8 @@ onBeforeUnmount(() => {
         img.brand-logo(:src="imageUrl(site.images.logo)" alt="" width="80" height="37")
       button(v-for="item in site.navigation.company" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
 
-  //- 左側頁籤：接收頁面資料與索引；change 事件交由主畫面切頁。
-  PageRail(:pages="pages" :active="active" @change="goTo")
+  //- 側邊欄：連結到其他頁面
+  PageRail(:links="site.sidebarLinks")
 
   //- 橫向場景軌道：每頁佔 100vw；active 改變位移，滑動動畫由 Sass 控制。
   main.horizontal-track(:style="{ transform: 'translate3d(-' + (active * 100) + 'vw, 0, 0)' }")
