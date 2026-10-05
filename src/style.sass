@@ -116,7 +116,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     padding: 0
     border: 0
     background: transparent
-    color: #61716d
+    color: #333
     font-size: 1rem
     &.selected, &:hover
       color: #169f9f
@@ -199,6 +199,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     h1
       margin: 0
       font-size: clamp(2.333333rem, 3.2vw, 4.133333rem)
+      +oc.fontWeight(100)
       letter-spacing: .12em
       white-space: nowrap
   .search-card
@@ -248,8 +249,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
       border-bottom: 0.066667rem solid #333
       padding: 0.266667rem 0 0.533333rem
       background: transparent
-      color: #55635f
-      font-size: 0.866667rem
+      color: #333
   .search-keyword
     display: grid
     grid-template-columns: 1fr 8.333333rem
