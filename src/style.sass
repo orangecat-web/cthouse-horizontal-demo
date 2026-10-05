@@ -68,7 +68,8 @@ button:focus-visible, input:focus-visible, select:focus-visible
   +sp.jcc
   align-items: center
   gap: 2.266667rem
-  color: #262c2a
+  mix-blend-mode: luminosity
+  color: #333
   transition: color .45s
   &.on-photo
     color: #fff
@@ -207,7 +208,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
   background-position: center
   background-size: cover
 
-// 01 首頁／找屋介面：背景、標題、模式切換、條件下拉、關鍵字與下一頁箭頭。
+// 01 首頁／找屋介面：背景、標題、條件下拉、關鍵字與下一頁箭頭。
 .panel-home
   background: #66746e
   .home-photo
@@ -279,10 +280,11 @@ button:focus-visible, input:focus-visible, select:focus-visible
     gap: 0.8rem
     input
       min-width: 0
-      border: 0.066667rem solid #adb9b5
+      border: 0.066667rem solid #333
       padding: 0.666667rem 0.8rem
-      background: #ffffff99
-      // font-size: 0.866667rem
+      background: #ffffff00
+      &::placeholder
+        color: #666
     button
       border: 0
       color: #fff
