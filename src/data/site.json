@@ -329,10 +329,10 @@
   "images": {
     "logo": "logo.png",
     "home": "bg_index.webp",
-    "service": null,
-    "assets": null,
-    "closing": null,
-    "assetsEdge": null,
+    "service": "bg_server.webp",
+    "assets": "bg_assets02.webp",
+    "closing": "bg_closing.webp",
+    "assetsEdge": "bg_assets01.webp",
     "qrCode": null
   },
   "layout": {
