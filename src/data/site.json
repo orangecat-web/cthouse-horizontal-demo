@@ -218,7 +218,12 @@
       "codeLabel": "驗證碼",
       "codePlaceholder": "請輸入驗證碼",
       "captcha": "NHvd",
-      "consentLabel": "同意事項（待補）",
+      "TimeLabel": "聯絡時間",
+      "consentLabel": "皆可",
+      "morningLabel": "上午",
+      "noonLabel": "中午",
+      "afternoonLabel": "下午",
+      "eveningLabel": "晚上",
       "submitLabel": "送出"
     }
   },

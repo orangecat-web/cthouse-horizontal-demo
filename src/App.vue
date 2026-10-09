@@ -185,8 +185,17 @@ onBeforeUnmount(() => {
               input(:placeholder="site.service.inquiry.codePlaceholder")
           //- 同意事項：先補回可勾選欄位，文字由 JSON 管理，等待正式設計稿文案。
           label.inquiry-consent
+            span {{ site.service.inquiry.TimeLabel }}
             input(type="checkbox" name="inquiryConsent")
             span {{ site.service.inquiry.consentLabel }}
+            input(type="checkbox" name="inquiryConsent")
+            span {{ site.service.inquiry.morningLabel }}
+            input(type="checkbox" name="inquiryConsent")
+            span {{ site.service.inquiry.noonLabel }}
+            input(type="checkbox" name="inquiryConsent")
+            span {{ site.service.inquiry.afternoonLabel }}
+            input(type="checkbox" name="inquiryConsent")
+            span {{ site.service.inquiry.eveningLabel }}
           button.inquiry-submit(type="submit")
             span.material-symbols-outlined(aria-hidden="true") arrow_upward
             span {{ site.service.inquiry.submitLabel }}
