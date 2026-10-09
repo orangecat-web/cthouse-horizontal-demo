@@ -374,8 +374,10 @@ button:focus-visible, input:focus-visible, select:focus-visible
     .inquiry-form
       flex: 1
       min-width: 0
+      // 表單內 cqw 隨剩餘寬度縮放，預留右側兩個服务入口。
+      container-type: inline-size
       display: grid
-      grid-template-columns: repeat(4, minmax(0, 1fr)) 6.6cqw
+      grid-template-columns: repeat(4, minmax(0, 1fr)) 5.3cqw
       gap: 1.2cqw 1.3cqw
       align-items: start
     // 視覺隱藏欄位名稱，保留朗讀與 label 關聯。
@@ -486,6 +488,31 @@ button:focus-visible, input:focus-visible, select:focus-visible
     .inquiry-submit-arrow
       font-size: 1.6cqw
       font-weight: 200
+    // 右側兩個等寬圓角服務入口，圖示與文案由 JSON 提供。
+    .service-actions
+      flex: 0 0 auto
+      display: flex
+      gap: .8cqw
+      button
+        width: 13.2cqw
+        min-height: 5.3cqw
+        display: flex
+        align-items: center
+        justify-content: center
+        gap: .7cqw
+        padding: .7cqw
+        border: 0
+        border-radius: 1.4cqw
+        font: inherit
+        font-size: 1cqw
+        white-space: nowrap
+        color: #fff
+        background: #139fa2
+        cursor: pointer
+      .service-action-icon
+        flex: 0 0 auto
+        width: 2cqw
+        height: 2cqw
 
 // 03 品牌優勢：全高左窄圖、懸浮建築圖、三組錯位圖文與跨圖片的底部標語。
 .panel-advantage
@@ -899,6 +926,22 @@ button:focus-visible, input:focus-visible, select:focus-visible
         font-size: 1rem
       .inquiry-submit-arrow
         font-size: 1.4rem
+      .service-actions
+        margin-top: 1rem
+        gap: .7rem
+        button
+          flex: 1
+          min-width: 0
+          width: auto
+          min-height: 3.5rem
+          gap: .4rem
+          padding: .5rem
+          border-radius: 1rem
+          font-size: .85rem
+          white-space: normal
+        .service-action-icon
+          width: 1.5rem
+          height: 1.5rem
   .panel-advantage
     min-height: 67rem
     padding: 25rem 7% 2rem

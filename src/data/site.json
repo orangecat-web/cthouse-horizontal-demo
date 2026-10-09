@@ -13,7 +13,8 @@
     "home.keywordPlaceholder / searchButton": "關鍵字輸入提示與搜尋按鈕文字。",
     "service": "02 星級服務。",
     "service.title / points": "title 的前兩筆分成兩行標題；points 產生服務項目清單，從右方進場。",
-    "service.caption / subcaption / buttons": "舊版資料保留；新版立即委託表單不渲染這些文案與兩個行動按鈕。",
+    "service.caption / subcaption / buttons": "舊版資料保留；新版立即委託表單不渲染這些文案與舊按鈕資料。",
+    "service.actions": "表單右側兩個圓角服務入口；label 為文案，icon 選擇本地 SVG 人物／據點圖示，不依賴遠端字型，點擊顯示 Demo 提示。",
     "advantage": "03 品牌優勢。",
     "advantage.items[].heading / description": "前三組優勢的標題與說明，依序套用 assets／advantage／benefit 的定位與延遲；新增項目需同步版型。",
     "advantage.witness / slogan": "witness 前兩筆為見證圓形按鈕的兩行字；slogan 是底部主標語。",
@@ -205,6 +206,10 @@
     "buttons": [
       "了解更多 →",
       "我要委託 →"
+    ],
+    "actions": [
+      { "label": "經紀人快搜", "icon": "person_search" },
+      { "label": "聯絡在地服務據點", "icon": "location_city" }
     ],
     "pointIcons": [
       "storefront",

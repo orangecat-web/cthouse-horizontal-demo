@@ -206,6 +206,7 @@ Google 遠端字型通常涉及 `fonts.googleapis.com`（樣式）及 `fonts.gst
 ## 待辦與限制
 
 - 立即委託表單依清晰局部圖重排為四欄輸入、聯絡時間 checkbox、個資告知、驗證碼與送出按鈕；手機改為直向排列。
+- 底列右側保留「經紀人快搜」與「聯絡在地服務據點」兩顆圓角按鈕，資料在 service.actions；本地 SVG 不依賴 Google 字型，點擊仍為 Demo 提示，手機置於表單下方。
 - 表單資料由 src/data/site.json 的 service.inquiry 管理；contactTimes 是五個聯絡時段，privacyNotice 為使用者提供的原文。
 - [ ] 補齊正式地區與加盟商選項；目前地區只有「臺北市全區」，加盟商只顯示選擇提示。
 - 驗證碼與更新按鈕為前端 Demo，不提供真正安全驗證；送出仍僅顯示 Demo 提示。

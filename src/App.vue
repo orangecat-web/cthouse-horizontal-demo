@@ -214,6 +214,19 @@ onBeforeUnmount(() => {
           button.inquiry-submit(type="submit")
             span.inquiry-submit-arrow(aria-hidden="true") ↑
             span {{ site.service.inquiry.submitLabel }}
+        //- 表單右側服務入口：沿用 Demo 提示，目標網址尚待提供。
+        .service-actions
+          button(v-for="action in site.service.actions" :key="action.label" type="button" @click="demoAction")
+            //- 本地線條圖示：避免遠端字型未載入時顯示圖示名稱並撑開按鈕。
+            svg.service-action-icon(viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round")
+              circle(cx="13" cy="13" r="10")
+              path(d="M20 21L29 30")
+              g(v-if="action.icon === 'person_search'")
+                circle(cx="13" cy="10" r="3")
+                path(d="M7 19v-2c0-4 12-4 12 0v2")
+              g(v-else)
+                path(d="M8 20V6h10v14M11 9v2m4-2v2m-4 2v2m4-2v2m-2 2v3")
+            span {{ action.label }}
 
     //- 03 品牌優勢：建築照片、三組優勢文案、見證按鈕及底部標語。
     section#advantage.panel.panel-advantage(
