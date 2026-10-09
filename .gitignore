@@ -1,5 +1,20 @@
+# 安裝與建置產物
 node_modules/
 dist/
+
+# 本機環境與秘密
+.env
+.env.*
+!.env.example
+
+# 記錄與快取
+*.log
+.vite/
+coverage/
+
+# 系統雜項
 .DS_Store
 Thumbs.db
-*.log
+
+# 專案備份壓縮包
+cthouse-*.zip
