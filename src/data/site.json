@@ -13,7 +13,7 @@
     "home.keywordPlaceholder / searchButton": "關鍵字輸入提示與搜尋按鈕文字。",
     "service": "02 星級服務。",
     "service.title / points": "title 的前兩筆分成兩行標題；points 產生服務項目清單，從右方進場。",
-    "service.caption / subcaption / buttons": "底列主副文案與兩個按鈕；buttons[0] 一般按鈕，buttons[1] 實色按鈕。",
+    "service.caption / subcaption / buttons": "舊版資料保留；新版立即委託表單不渲染這些文案與兩個行動按鈕。",
     "advantage": "03 品牌優勢。",
     "advantage.items[].heading / description": "前三組優勢的標題與說明，依序套用 assets／advantage／benefit 的定位與延遲；新增項目需同步版型。",
     "advantage.witness / slogan": "witness 前兩筆為見證圓形按鈕的兩行字；slogan 是底部主標語。",
@@ -27,13 +27,16 @@
     "images.logo / home / service / assets / closing": "logo 導覽 Logo；home 首頁；service 服務照片；assets 建築大圖；closing 是消息區右側森林，與右側聯絡尾段連續呈現。",
     "sidebarLinks": "側邊 a 連結，href 由使用者指定；與首頁橫向切頁無關。",
     "layout": "以原圖第一個場景寬 469、高 234 換算為 1920×960；最後灰色聯絡區僅約 36.67vw，切到末端時限制軌道位移以免露出空白。",
-    "service.inquiry": "設計稿底部的橫向諮詢表單列；細字無法從低解析參考圖辨識，目前為可替換的示意文案。",
-    "service.inquiry.consentLabel": "諮詢表單最下方 checkbox 文案；目前依使用者指示先提供待補文字，不代表正式條款，未設定必填。",
+    "service.inquiry": "依使用者提供的清晰表單圖：四欄輸入、五個聯絡時間 checkbox、個資告知及驗證碼列；label 僅供朗讀，立即委託為直排標題。",
+    "service.inquiry.privacyNotice": "checkbox 下方的個資告知文字，依使用者提供的原文顯示。",
     "service.pointIcons": "服務項目使用 Google 圖示名稱，順序與 points 對應。",
     "advantage.items[].subtitle": "英文優勢標題下的中文副標；description 是內文，二者之間有短分隔線。",
     "news.dates / moreLabel": "消息日期與更多按鈕；原圖細字無法辨識，日期留空待補。",
     "contact.topIcons / lines / partnerLabels / downloads": "右上社群、QR 下方文字、關係品牌素材佔位與黑色下載按鈕；照片、QR、品牌標誌須置換正式素材。",
-    "images.assetsEdge / qrCode": "assetsEdge 是品牌優勢最左側全高窄圖；qrCode 是聯絡資訊 QR 圖。null 時保留素材佔位。"
+    "images.assetsEdge / qrCode": "assetsEdge 是品牌優勢最左側全高窄圖；qrCode 是聯絡資訊 QR 圖。null 時保留素材佔位。",
+    "service.inquiry.regions / dealers": "regions 目前只有圖示的臺北市全區；dealers 未提供正式清單，留空，不虛構加盟商。",
+    "service.inquiry.contactTimes": "五個可複選聯絡時段，使用獨立 label 與相同欄位名稱，值以時段文字區分。",
+    "service.inquiry.captcha / refreshLabel": "純前端示意驗證碼，更新僅替換顯示文字，沒有後端驗證能力。"
   },
   "version": "1.0",
   "brand": {
@@ -210,20 +213,31 @@
       "lock"
     ],
     "inquiry": {
-      "label": "專人諮詢",
-      "nameLabel": "您的姓名",
-      "namePlaceholder": "請輸入姓名",
-      "phoneLabel": "聯絡電話",
-      "phonePlaceholder": "請輸入電話",
+      "label": "立即委託",
+      "nameLabel": "您的大名或稱謂",
+      "namePlaceholder": "您的大名或稱謂",
+      "phoneLabel": "您的手機",
+      "phonePlaceholder": "您的手機",
+      "regionLabel": "服務地區",
+      "regions": [
+        "臺北市全區"
+      ],
+      "dealerLabel": "加盟商",
+      "dealerPlaceholder": "請選擇加盟商",
+      "dealers": [],
+      "timeLabel": "聯絡時間",
+      "contactTimes": [
+        "皆可",
+        "上午",
+        "中午",
+        "下午",
+        "晚上"
+      ],
       "codeLabel": "驗證碼",
       "codePlaceholder": "請輸入驗證碼",
       "captcha": "NHvd",
-      "TimeLabel": "聯絡時間",
-      "consentLabel": "皆可",
-      "morningLabel": "上午",
-      "noonLabel": "中午",
-      "afternoonLabel": "下午",
-      "eveningLabel": "晚上",
+      "refreshLabel": "更新驗證碼",
+      "privacyNotice": "※當您留下個人資料時，表示您已了解閱讀並同意中信房仲網之隱私權政策。",
       "submitLabel": "送出"
     }
   },

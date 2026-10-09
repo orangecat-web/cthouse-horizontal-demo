@@ -350,6 +350,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
     .material-symbols-outlined
       flex: 0 0 auto
       font-size: 1.8cqw
+  // 立即委託底列依清晰參考圖排列，四欄與下方兩組資訊共用同一網格。
   .service-bottom
     position: absolute
     bottom: 0
@@ -360,22 +361,24 @@ button:focus-visible, input:focus-visible, select:focus-visible
     background: #fff
     display: flex
     align-items: center
-    gap: 1.5cqw
+    gap: 1.3cqw
+    color: #666
     .inquiry-label
       writing-mode: vertical-rl
-      border-right: .066667rem solid #aaa
-      padding-right: .75cqw
-      color: #777
-      font-size: 1.6cqw
-      letter-spacing: .12em
+      border-right: .066667rem solid #ccc
+      padding-right: 1.2cqw
+      font-size: 2.1cqw
+      font-weight: 200
+      line-height: 1.1
+      letter-spacing: .1em
     .inquiry-form
       flex: 1
       min-width: 0
       display: grid
-      grid-template-columns: 1fr 1fr 1.2fr 5.2cqw
-      gap: .7cqw 1.4cqw
-      align-items: end
-    // 欄位名稱保留 label 關聯與朗讀能力，視覺上由 placeholder 提示。
+      grid-template-columns: repeat(4, minmax(0, 1fr)) 6.6cqw
+      gap: 1.2cqw 1.3cqw
+      align-items: start
+    // 視覺隱藏欄位名稱，保留朗讀與 label 關聯。
     .inquiry-field-label
       position: absolute
       width: 1px
@@ -388,80 +391,101 @@ button:focus-visible, input:focus-visible, select:focus-visible
       border: 0
     label
       min-width: 0
-      display: flex
-      flex-direction: column
-      gap: .6cqw
-      font-size: 1cqw
-      color: #555
-    input
+    input:not([type="checkbox"]), select
       width: 100%
       min-width: 0
-      border: 0
-      border-bottom: .066667rem solid #aaa
+      height: 2.7cqw
+      border: .066667rem solid #c4c4c4
       border-radius: 0
-      padding: .4cqw 0
-      font-size: .9cqw
-      background: transparent
+      padding: 0 1cqw
+      font: inherit
+      font-size: 1.05cqw
+      color: #666
+      background-color: #fff
+      &::placeholder
+        color: #c4c4c4
+        opacity: 1
     .inquiry-name
       grid-column: 1
     .inquiry-phone
       grid-column: 2
-    .inquiry-code
+    .inquiry-region
       grid-column: 3
-    // 同意勾選列位於輸入欄位下方；原生 checkbox 保留鍵盤操作與焦點。
-    label.inquiry-consent
-      grid-column: 1 / 4
+    .inquiry-dealer
+      grid-column: 4
+    // 左下時段與個資告知：時段可自然換行，不擠壓右側驗證碼。
+    .inquiry-details
+      grid-column: 1 / 3
       grid-row: 2
-      flex-direction: row
+      min-width: 0
+    .inquiry-times
+      display: flex
+      flex-wrap: wrap
       align-items: center
-      align-self: start
-      cursor: pointer
+      gap: .4cqw .65cqw
+      font-size: 1.05cqw
+      label
+        display: inline-flex
+        align-items: center
+        gap: .4cqw
+        cursor: pointer
       input
-        flex: 0 0 auto
-        width: 1rem
-        height: 1rem
+        width: .8cqw
+        height: .8cqw
         margin: 0
-        padding: 0
-        accent-color: #1caaa9
-    .captcha-row
+        accent-color: #139fa2
+    .inquiry-privacy-notice
+      margin: .65cqw 0 0
+      font-size: .9cqw
+      line-height: 1.6
+      overflow-wrap: anywhere
+    // 右下示意驗證碼：色點只是視覺佔位，並非真實安全驗證圖。
+    .inquiry-code
+      grid-column: 3 / 5
+      grid-row: 2
+      min-width: 0
       display: flex
       align-items: center
-      gap: .7cqw
+      gap: 1.3cqw
+      label
+        flex: 0 1 11.4cqw
     .captcha
-      font: italic 700 2cqw Georgia, serif
+      flex: 0 0 9cqw
+      height: 2.7cqw
+      border: .066667rem solid #c4c4c4
+      text-align: center
+      font: italic 700 2.7cqw/1 Georgia, serif
       color: #675187
-    button
+      background: radial-gradient(circle, #64bfa8 .05rem, transparent .09rem) 0 0 / .4rem .5rem, radial-gradient(circle, #df85b7 .05rem, transparent .09rem) .15rem .2rem / .5rem .4rem, #fff
+    .captcha-refresh
       border: 0
-      background: #1caaa9
-      color: white
+      padding: 0
+      font: inherit
+      font-size: 1.05cqw
+      white-space: nowrap
+      color: #666
+      background: transparent
       cursor: pointer
     .inquiry-submit
-      grid-column: 4
-      grid-row: 1
-      height: 5.2cqw
+      grid-column: 5
+      grid-row: 1 / 3
+      min-height: 6.7cqw
+      align-self: stretch
       display: flex
       flex-direction: column
       align-items: center
       justify-content: center
-      gap: .3cqw
-      font-size: .9cqw
-      .material-symbols-outlined
-        font-size: 1.5cqw
-    .service-actions
-      display: flex
-      gap: .8cqw
-      button
-        display: flex
-        align-items: center
-        justify-content: center
-        gap: .6cqw
-        width: 12.8cqw
-        height: 5.2cqw
-        border-radius: .85cqw
-        font-size: 1.2cqw
-        white-space: nowrap
-        .material-symbols-outlined
-          font-size: 2.2cqw
+      gap: .4cqw
+      border: 0
+      padding: .8cqw
+      font: inherit
+      font-size: 1.2cqw
+      background: #139fa2
+      color: #fff
+      cursor: pointer
+    .inquiry-submit-arrow
+      font-size: 1.6cqw
+      font-weight: 200
 
 // 03 品牌優勢：全高左窄圖、懸浮建築圖、三組錯位圖文與跨圖片的底部標語。
 .panel-advantage
@@ -814,6 +838,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
         font-size: 1rem
       .material-symbols-outlined
         font-size: 1.3rem
+    // 手機直向閱讀：四欄改兩欄，時段、驗證碼與送出各自獨立一列。
     .service-bottom
       position: static
       height: auto
@@ -824,45 +849,56 @@ button:focus-visible, input:focus-visible, select:focus-visible
         writing-mode: horizontal-tb
         border: 0
         padding: 0
-        font-size: 1.2rem
+        font-size: 1.5rem
       .inquiry-form
-        grid-template-columns: 1fr 1fr
+        grid-template-columns: repeat(2, minmax(0, 1fr))
         gap: 1rem
         margin-top: 1rem
-      label
+      input:not([type="checkbox"]), select
+        height: 2.7rem
+        padding: 0 .6rem
         font-size: .9rem
-      input
-        padding: .5rem 0
-        font-size: .9rem
-      .inquiry-name
+      .inquiry-name, .inquiry-region
         grid-column: 1
-      .inquiry-phone
+      .inquiry-phone, .inquiry-dealer
         grid-column: 2
-      .inquiry-code
-        grid-column: 1
-      label.inquiry-consent
+      .inquiry-details
         grid-column: 1 / -1
         grid-row: 3
-      .captcha
-        font-size: 1.4rem
-      .inquiry-submit
-        grid-column: 2
-        grid-row: auto
-        height: 3.5rem
-        font-size: 1rem
-        .material-symbols-outlined
-          font-size: 1.3rem
-      .service-actions
-        gap: 1rem
-        margin-top: 1rem
-        button
+      .inquiry-times
+        gap: .5rem .7rem
+        font-size: .9rem
+        label
+          gap: .4rem
+        input
+          width: 1rem
+          height: 1rem
+      .inquiry-privacy-notice
+        margin-top: .6rem
+        font-size: .85rem
+      .inquiry-code
+        grid-column: 1 / -1
+        grid-row: 4
+        flex-wrap: wrap
+        gap: .7rem
+        label
           flex: 1
-          width: auto
-          height: 3.5rem
-          border-radius: .5rem
-          font-size: 1rem
-          .material-symbols-outlined
-            font-size: 1.4rem
+          min-width: 7rem
+      .captcha
+        flex-basis: 6rem
+        height: 2.7rem
+        font-size: 2rem
+      .captcha-refresh
+        font-size: .9rem
+      .inquiry-submit
+        grid-column: 1 / -1
+        grid-row: 5
+        min-height: 3.5rem
+        flex-direction: row
+        gap: .6rem
+        font-size: 1rem
+      .inquiry-submit-arrow
+        font-size: 1.4rem
   .panel-advantage
     min-height: 67rem
     padding: 25rem 7% 2rem

@@ -11,6 +11,14 @@ const active = ref(0)
 // 首頁搜尋模式與 Demo 提示訊息；目前尚未串接房屋搜尋 API。
 const searchMode = ref(site.home.defaultMode)
 const notice = ref('')
+// 示意驗證碼獨立於 JSON 初始值；只更新顯示，不作安全驗證或送出資料。
+const inquiryCaptcha = ref(site.service.inquiry.captcha)
+function refreshInquiryCaptcha() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789'
+  // 首字元往下一個候選移動，確保更新後與上一組不同。
+  const first = alphabet[(alphabet.indexOf(inquiryCaptcha.value[0]) + 1) % alphabet.length]
+  inquiryCaptcha.value = first + Array.from({ length: 3 }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join('')
+}
 const current = computed(() => pages[active.value])
 // 原圖末端灰色聯絡區較窄；最後一頁停在軌道右端，讓森林與聯絡資訊連續呈現。
 const trackOffset = computed(() => Math.min(active.value * 100, (pages.length - 2) * 100 + site.layout.contactWidthVw))
@@ -168,41 +176,44 @@ onBeforeUnmount(() => {
           li(v-for="(point, index) in site.service.points" :key="point")
             span.material-symbols-outlined(aria-hidden="true") {{ site.service.pointIcons[index] }}
             span {{ point }}
-      //- 底部諮詢表單：保留直排區塊標題；欄位名稱僅供輔助科技朗讀，不顯示於畫面。
+      //- 底部立即委託：四欄輸入、聯絡時間與個資告知在左，驗證碼在右，保留向上進場動畫。
       .service-bottom.anim.rise.delay-2
         .inquiry-label {{ site.service.inquiry.label }}
         form.inquiry-form(@submit.prevent="demoAction")
+          //- 第一列：姓名、手機、地區與加盟商；隱藏名稱仍提供 label 關聯。
           label.inquiry-name
             span.inquiry-field-label {{ site.service.inquiry.nameLabel }}
             input(:placeholder="site.service.inquiry.namePlaceholder" autocomplete="name")
           label.inquiry-phone
             span.inquiry-field-label {{ site.service.inquiry.phoneLabel }}
             input(type="tel" :placeholder="site.service.inquiry.phonePlaceholder" autocomplete="tel")
-          label.inquiry-code
-            span.inquiry-field-label {{ site.service.inquiry.codeLabel }}
-            .captcha-row
-              span.captcha(aria-label="驗證碼示意") {{ site.service.inquiry.captcha }}
-              input(:placeholder="site.service.inquiry.codePlaceholder")
-          //- 同意事項：先補回可勾選欄位，文字由 JSON 管理，等待正式設計稿文案。
-          label.inquiry-consent
-            span {{ site.service.inquiry.TimeLabel }}
-            input(type="checkbox" name="inquiryConsent")
-            span {{ site.service.inquiry.consentLabel }}
-            input(type="checkbox" name="inquiryConsent")
-            span {{ site.service.inquiry.morningLabel }}
-            input(type="checkbox" name="inquiryConsent")
-            span {{ site.service.inquiry.noonLabel }}
-            input(type="checkbox" name="inquiryConsent")
-            span {{ site.service.inquiry.afternoonLabel }}
-            input(type="checkbox" name="inquiryConsent")
-            span {{ site.service.inquiry.eveningLabel }}
+          label.inquiry-region
+            span.inquiry-field-label {{ site.service.inquiry.regionLabel }}
+            select(name="inquiryRegion")
+              option(v-for="region in site.service.inquiry.regions" :key="region" :value="region") {{ region }}
+          label.inquiry-dealer
+            span.inquiry-field-label {{ site.service.inquiry.dealerLabel }}
+            select(name="inquiryDealer" :value="''")
+              option(value="" disabled) {{ site.service.inquiry.dealerPlaceholder }}
+              option(v-for="dealer in site.service.inquiry.dealers" :key="dealer" :value="dealer") {{ dealer }}
+          //- 左下方：聯絡時間可複選，各 checkbox 分別包在 label 內，避免多個控制項共用名稱。
+          .inquiry-details
+            .inquiry-times(role="group" :aria-label="site.service.inquiry.timeLabel")
+              span {{ site.service.inquiry.timeLabel }}
+              label(v-for="time in site.service.inquiry.contactTimes" :key="time")
+                input(type="checkbox" name="inquiryContactTime" :value="time")
+                span {{ time }}
+            p.inquiry-privacy-notice {{ site.service.inquiry.privacyNotice }}
+          //- 右下方：驗證碼僅為 Demo；更新按鈕不提交表單。
+          .inquiry-code
+            span.captcha(aria-label="驗證碼示意" aria-live="polite") {{ inquiryCaptcha }}
+            label
+              span.inquiry-field-label {{ site.service.inquiry.codeLabel }}
+              input(:placeholder="site.service.inquiry.codePlaceholder" autocomplete="off")
+            button.captcha-refresh(type="button" @click="refreshInquiryCaptcha") {{ site.service.inquiry.refreshLabel }}
           button.inquiry-submit(type="submit")
-            span.material-symbols-outlined(aria-hidden="true") arrow_upward
+            span.inquiry-submit-arrow(aria-hidden="true") ↑
             span {{ site.service.inquiry.submitLabel }}
-        .service-actions
-          button(v-for="(label, index) in site.service.buttons" :key="label" @click="demoAction")
-            span.material-symbols-outlined(aria-hidden="true") {{ index ? 'real_estate_agent' : 'search' }}
-            span {{ label }}
 
     //- 03 品牌優勢：建築照片、三組優勢文案、見證按鈕及底部標語。
     section#advantage.panel.panel-advantage(
