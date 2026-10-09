@@ -27,9 +27,13 @@ button, input, select
 button
   cursor: pointer
 
-button:focus-visible, input:focus-visible, select:focus-visible
+button:focus-visible
   outline: 0.2rem solid #32a9a7
   outline-offset: 0.2rem
+
+// 表單焦點不顯示 outline；包含首頁搜尋及委託表單的所有欄位與按鈕。
+input:focus, select:focus, textarea:focus, form button:focus, .search-card button:focus
+  outline: none
 
 // 整頁容器：桌機固定一個視窗高度，隱藏超出的場景。
 .site-shell

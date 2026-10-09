@@ -72,6 +72,7 @@
 
 ## 文件維護
 
+- 每批修改完成時同步遞增專案版號；一般修正增加 patch（例如 1.0.1 → 1.0.2），較大功能再依範圍調整 minor／major。同步 package.json、package-lock.json 根套件、site.json 的 DEMO 版號及 CHANGELOG，不變更依賴版本。
 - README：更新當前規格、設計決策、限制、環境與待辦。
 - CHANGELOG：按版號記錄版本變更，不列日期；未知歷史不補造，未發布內容放下一版版號下並標註「未發布」。
 - AGENTS：維護規則，不堆放操作日誌與所有版本歷史。
