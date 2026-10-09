@@ -1,10 +1,10 @@
 {
   "_comments": {
     "_usage": "此區是說明資料，App.vue 不使用它產生畫面；標準 JSON 不支援 //，因此用 _comments 記錄欄位用途。",
-    "version": "右下角顯示的 DEMO 版本；本次為 0.9。",
+    "version": "右下角 DEMO 版本，本次為 1.0。",
     "brand": "品牌名稱與英文；name 同時用於 Logo 按鈕的朗讀名稱和聯絡頁標題。",
     "navigation.primary / navigation.company": "上方導覽的兩組連結；label 是顯示文字，page 對應 pages[].id。",
-    "pages": "左側頁籤及頁碼資料；順序須與 App.vue 五個 section／active 索引同步，不能只改此處來重排場景。",
+    "pages": "首頁橫向區塊與頁碼；與側邊外部連結 sidebarLinks 分開。",
     "pages[].id / label / number / icon": "id 對應 section ID；label 是頁籤朗讀名稱；number 是右下頁碼；icon 是 Google Material Symbols Outlined 的圖示名稱，例如 home、star、verified、article、mail。",
     "home": "01 首頁／找屋介面。",
     "home.title": "首頁主標題，使用從下方進場動畫。",
@@ -19,13 +19,20 @@
     "advantage.witness / slogan": "witness 前兩筆為見證圓形按鈕的兩行字；slogan 是底部主標語。",
     "news": "04 最新消息。",
     "news.label / heading / questions": "中文標籤、英文大標題、可點擊的問題清單；問題目前只顯示 Demo 提示。",
-    "news.signature / english": "消息清單下方的品牌署名與英文文字。",
+    "news.signature / english": "舊版署名資料保留；此次圖面改用三列消息、日期與更多按鈕，因此現版未渲染此兩欄。",
     "contact": "05 聯絡資訊／頁尾。",
-    "contact.description / socialIcons / copyright": "服務說明、社群示意字元及版權文字；社群字元目前没有連結。",
+    "contact.description / socialIcons / copyright": "description 保留原服務文案；socialIcons 為舊版資料，現版改用 topIcons；copyright 是聯絡尾段版權文字。",
     "messages.demoAction": "搜尋、服務、見證、消息按鈕共同使用的 Demo 提示，三秒後消失。",
     "images": "圖片檔名相對於 public/images/；未填場景圖片時用 null，保留 Sass 佔位背景。",
-    "images.logo / home / service / assets / closing": "logo 導覽 Logo；home 首頁；service 服務照片；assets 建築照片；closing 同時用於消息及聯絡頁森林。",
-    "sidebarLinks": "側邊攔"
+    "images.logo / home / service / assets / closing": "logo 導覽 Logo；home 首頁；service 服務照片；assets 建築大圖；closing 是消息區右側森林，與右側聯絡尾段連續呈現。",
+    "sidebarLinks": "側邊 a 連結，href 由使用者指定；與首頁橫向切頁無關。",
+    "layout": "以原圖第一個場景寬 469、高 234 換算為 1920×960；最後灰色聯絡區僅約 36.67vw，切到末端時限制軌道位移以免露出空白。",
+    "service.inquiry": "設計稿底部的橫向諮詢表單列；細字無法從低解析參考圖辨識，目前為可替換的示意文案。",
+    "service.pointIcons": "服務項目使用 Google 圖示名稱，順序與 points 對應。",
+    "advantage.items[].subtitle": "英文優勢標題下的中文副標；description 是內文，二者之間有短分隔線。",
+    "news.dates / moreLabel": "消息日期與更多按鈕；原圖細字無法辨識，日期留空待補。",
+    "contact.topIcons / lines / partnerLabels / downloads": "右上社群、QR 下方文字、關係品牌素材佔位與黑色下載按鈕；照片、QR、品牌標誌須置換正式素材。",
+    "images.assetsEdge / qrCode": "assetsEdge 是品牌優勢最左側全高窄圖；qrCode 是聯絡資訊 QR 圖。null 時保留素材佔位。"
   },
   "version": "1.0",
   "brand": {
@@ -34,73 +41,263 @@
   },
   "navigation": {
     "primary": [
-      { "label": "我要買屋", "page": "home" },
-      { "label": "我要租屋", "page": "home" },
-      { "label": "售屋委託", "page": "service" },
-      { "label": "成交行情", "page": "news" }
+      {
+        "label": "我要買屋",
+        "page": "home"
+      },
+      {
+        "label": "我要租屋",
+        "page": "home"
+      },
+      {
+        "label": "售屋委託",
+        "page": "service"
+      },
+      {
+        "label": "成交行情",
+        "page": "news"
+      }
     ],
     "company": [
-      { "label": "服務據點", "page": "service" },
-      { "label": "關於中信", "page": "advantage" },
-      { "label": "徵才公告", "page": "news" },
-      { "label": "會員專區", "page": "contact" }
+      {
+        "label": "服務據點",
+        "page": "service"
+      },
+      {
+        "label": "徵才公告",
+        "page": "news"
+      },
+      {
+        "label": "會員專區",
+        "page": "contact"
+      }
     ]
   },
   "pages": [
-    { "id": "home", "label": "首頁", "number": "01", "icon": "home" },
-    { "id": "service", "label": "星級服務", "number": "02", "icon": "star" },
-    { "id": "advantage", "label": "品牌優勢", "number": "03", "icon": "verified" },
-    { "id": "news", "label": "最新消息", "number": "04", "icon": "article" },
-    { "id": "contact", "label": "聯絡資訊", "number": "05", "icon": "mail" }
+    {
+      "id": "home",
+      "label": "首頁",
+      "number": "01",
+      "icon": "home"
+    },
+    {
+      "id": "service",
+      "label": "星級服務",
+      "number": "02",
+      "icon": "star"
+    },
+    {
+      "id": "advantage",
+      "label": "品牌優勢",
+      "number": "03",
+      "icon": "verified"
+    },
+    {
+      "id": "news",
+      "label": "最新消息",
+      "number": "04",
+      "icon": "article"
+    },
+    {
+      "id": "contact",
+      "label": "聯絡資訊",
+      "number": "05",
+      "icon": "mail"
+    }
   ],
   "sidebarLinks": [
-    { "id": "home", "label": "回首頁", "href": "", "icon": "home" },
-    { "id": "bookmark", "label": "瀏覽記錄", "href": "", "icon": "bookmark" },
-    { "id": "laptop", "label": "Laptop", "href": "", "icon": "laptop" },
-    { "id": "notifications_active", "label": "降價提醒", "href": "", "icon": "notifications_active" },
-    { "id": "settings", "label": "設定", "href": "", "icon": "settings" },
-    { "id": "logout", "label": "登出", "href": "", "icon": "logout" }
+    {
+      "id": "home",
+      "label": "回首頁",
+      "href": "",
+      "icon": "home"
+    },
+    {
+      "id": "bookmark",
+      "label": "瀏覽記錄",
+      "href": "",
+      "icon": "bookmark"
+    },
+    {
+      "id": "laptop",
+      "label": "Laptop",
+      "href": "",
+      "icon": "laptop"
+    },
+    {
+      "id": "notifications_active",
+      "label": "降價提醒",
+      "href": "",
+      "icon": "notifications_active"
+    },
+    {
+      "id": "settings",
+      "label": "設定",
+      "href": "",
+      "icon": "settings"
+    },
+    {
+      "id": "logout",
+      "label": "登出",
+      "href": "",
+      "icon": "logout"
+    }
   ],
   "home": {
     "title": "找到你的最適生活圈",
-    "modes": ["CP 值找屋", "區域找屋", "捷運找屋", "地圖找屋"],
+    "modes": [
+      "CP 值找屋",
+      "區域找屋",
+      "捷運找屋",
+      "地圖找屋"
+    ],
     "defaultMode": "區域找屋",
     "filters": [
-      { "label": "地區", "options": ["臺北市全區", "新北市全區"] },
-      { "label": "總價", "options": ["總價不拘", "1,000 萬以下"] },
-      { "label": "坪數", "options": ["坪數不拘", "20–40 坪"] },
-      { "label": "類型", "options": ["類型不拘", "住宅"] }
+      {
+        "label": "地區",
+        "options": [
+          "臺北市全區",
+          "新北市全區"
+        ]
+      },
+      {
+        "label": "總價",
+        "options": [
+          "總價不拘",
+          "1,000 萬以下"
+        ]
+      },
+      {
+        "label": "坪數",
+        "options": [
+          "坪數不拘",
+          "20–40 坪"
+        ]
+      },
+      {
+        "label": "類型",
+        "options": [
+          "類型不拘",
+          "住宅"
+        ]
+      }
     ],
     "keywordPlaceholder": "關鍵字、房屋編號、街道、社區大樓或學校",
     "searchButton": "搜尋"
   },
   "service": {
-    "title": ["全面到位的", "星級委託服務"],
-    "points": ["專業委託與需求諮詢", "完整資訊與貼心服務", "安心透明的交易流程"],
+    "title": [
+      "全面到位的",
+      "星級委託服務"
+    ],
+    "points": [
+      "專業委託與需求諮詢",
+      "完整資訊與貼心服務",
+      "安心透明的交易流程",
+      "即時諮詢與貼心服務"
+    ],
     "caption": "讓每一步，都更接近理想的家。",
     "subcaption": "服務據點・專人諮詢・房屋委託",
-    "buttons": ["了解更多 →", "我要委託 →"]
+    "buttons": [
+      "了解更多 →",
+      "我要委託 →"
+    ],
+    "pointIcons": [
+      "storefront",
+      "real_estate_agent",
+      "account_tree",
+      "lock"
+    ],
+    "inquiry": {
+      "label": "專人諮詢",
+      "title": "讓每一步，都更接近理想的家。",
+      "description": "服務據點・專人諮詢・房屋委託",
+      "nameLabel": "您的姓名",
+      "namePlaceholder": "請輸入姓名",
+      "phoneLabel": "聯絡電話",
+      "phonePlaceholder": "請輸入電話",
+      "codeLabel": "驗證碼",
+      "codePlaceholder": "請輸入驗證碼",
+      "captcha": "NHvd",
+      "submitLabel": "送出"
+    }
   },
   "advantage": {
     "items": [
-      { "heading": "ASSETS", "description": "穩健資源，成就更多可能。" },
-      { "heading": "ADVANTAGE", "description": "專業優勢，陪伴每一次選擇。" },
-      { "heading": "BENEFIT", "description": "共享成長，創造更好的未來。" }
+      {
+        "heading": "ASSETS",
+        "description": "穩健資源，成就更多可能。",
+        "subtitle": "實力資產"
+      },
+      {
+        "heading": "ADVANTAGE",
+        "description": "專業優勢，陪伴每一次選擇。",
+        "subtitle": "競爭優勢"
+      },
+      {
+        "heading": "BENEFIT",
+        "description": "共享成長，創造更好的未來。",
+        "subtitle": "品牌效益"
+      }
     ],
-    "witness": ["見證", "中信"],
+    "witness": [
+      "見證",
+      "中信"
+    ],
     "slogan": "選擇中信房屋做為您的事業好夥伴"
   },
   "news": {
     "label": "最新消息",
     "heading": "NEWS",
-    "questions": ["中信房屋提供哪些找屋服務？", "如何預約看屋與了解物件？", "售屋委託流程如何進行？"],
+    "questions": [
+      "中信房屋提供哪些找屋服務？",
+      "如何預約看屋與了解物件？",
+      "售屋委託流程如何進行？"
+    ],
     "signature": "中信房屋",
-    "english": "NEWS & INFORMATION"
+    "english": "NEWS & INFORMATION",
+    "dates": [
+      "",
+      "",
+      ""
+    ],
+    "moreLabel": "更多"
   },
   "contact": {
     "description": "服務據點・房屋搜尋・品牌資訊",
-    "socialIcons": ["f", "▶", "◎", "✉"],
-    "copyright": "© CHINATRUST REAL ESTATE CO."
+    "socialIcons": [
+      "f",
+      "▶",
+      "◎",
+      "✉"
+    ],
+    "copyright": "© CHINATRUST REAL ESTATE CO.",
+    "topIcons": [
+      "language",
+      "public",
+      "mail"
+    ],
+    "lines": [
+      "中信房屋",
+      "CHINATRUST REAL ESTATE CO.",
+      "服務據點・房屋搜尋・品牌資訊"
+    ],
+    "partnerLabels": [
+      "品牌 01",
+      "品牌 02",
+      "品牌 03",
+      "品牌 04",
+      "品牌 05",
+      "品牌 06",
+      "品牌 07",
+      "品牌 08"
+    ],
+    "downloads": [
+      "App Store",
+      "Google Play",
+      "網站導覽",
+      "聯絡我們"
+    ]
   },
   "messages": {
     "demoAction": "此為網站視覺提案 Demo，資料功能尚未串接。"
@@ -110,6 +307,15 @@
     "home": "bg_index.webp",
     "service": null,
     "assets": null,
-    "closing": null
+    "closing": null,
+    "assetsEdge": null,
+    "qrCode": null
+  },
+  "layout": {
+    "referenceViewport": {
+      "width": 1920,
+      "height": 960
+    },
+    "contactWidthVw": 36.67
   }
 }

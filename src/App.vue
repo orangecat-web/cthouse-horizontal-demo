@@ -12,6 +12,8 @@ const active = ref(0)
 const searchMode = ref(site.home.defaultMode)
 const notice = ref('')
 const current = computed(() => pages[active.value])
+// 原圖末端灰色聯絡區較窄；最後一頁停在軌道右端，讓森林與聯絡資訊連續呈現。
+const trackOffset = computed(() => Math.min(active.value * 100, (pages.length - 2) * 100 + site.layout.contactWidthVw))
 // 圖片位置依 Vite base 組合，支援子目錄部署；空圖片保留 Sass 漸層佔位。
 const imageUrl = (name) => `${import.meta.env.BASE_URL}images/${encodeURI(name)}`
 const photoStyle = (key) => site.images[key] ? { '--panel-image': `url('${imageUrl(site.images[key])}')` } : undefined
@@ -103,15 +105,17 @@ onBeforeUnmount(() => {
   header.site-header(:class="{ 'on-photo': active === 0, 'on-service': active === 1 }")
     nav.top-nav(aria-label="主要導覽")
       button(v-for="item in site.navigation.primary" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
-      button.brand(:aria-label="site.brand.name + '，回首頁'" @click="goTo(0)")
-        img.brand-logo(:src="imageUrl(site.images.logo)" alt="" width="80" height="37")
+      //- 網站唯一 H1：品牌 Logo；品牌文字作為圖片替代文字。
+      h1.brand-heading
+        button.brand(:aria-label="site.brand.name + '，回首頁'" @click="goTo(0)")
+          img.brand-logo(:src="imageUrl(site.images.logo)" :alt="site.brand.name" width="80" height="37")
       button(v-for="item in site.navigation.company" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
 
   //- 側邊欄：連結到其他頁面
   PageRail(:links="site.sidebarLinks")
 
   //- 橫向場景軌道：每頁佔 100vw；active 改變位移，滑動動畫由 Sass 控制。
-  main.horizontal-track(:style="{ transform: 'translate3d(-' + (active * 100) + 'vw, 0, 0)' }")
+  main.horizontal-track(:style="{ transform: 'translate3d(-' + trackOffset + 'vw, 0, 0)' }")
     //- 01 首頁／找屋介面：背景、主標題、搜尋卡片及下一頁箭頭。
     section#home.panel.panel-home(
       :class="{ 'is-active': active === 0 }"
@@ -122,7 +126,7 @@ onBeforeUnmount(() => {
       .proposal-photo.home-photo(aria-hidden="true")
       //- 首頁主標題：rise 從下方進場；is-active 控制顯示。
       .home-title.anim.rise
-        h1#home-title {{ site.home.title }}
+        h2#home-title {{ site.home.title }}
       //- 首頁搜尋卡片：從下方延遲進場。
       .search-card.anim.rise.delay-1
         //- 找屋模式：點選後更新 searchMode 與 chosen 外觀。
@@ -161,20 +165,42 @@ onBeforeUnmount(() => {
           br
           | {{ site.service.title[1] }}
         ul.service-points.anim.from-right.delay-1
-          li(v-for="point in site.service.points" :key="point") {{ point }}
-      //- 服務底列：說明文字與兩個按鈕，從下方延遲進場。
+          li(v-for="(point, index) in site.service.points" :key="point")
+            span.material-symbols-outlined(aria-hidden="true") {{ site.service.pointIcons[index] }}
+            span {{ point }}
+      //- 原圖底部表單列：左侧直排標籤、說明、姓名／電話／驗證碼及右側行動按鈕。
       .service-bottom.anim.rise.delay-2
-        .service-caption
-          strong {{ site.service.caption }}
-          span {{ site.service.subcaption }}
-        button(@click="demoAction") {{ site.service.buttons[0] }}
-        button.solid(@click="demoAction") {{ site.service.buttons[1] }}
+        .inquiry-label {{ site.service.inquiry.label }}
+        form.inquiry-form(@submit.prevent="demoAction")
+          .service-caption
+            strong {{ site.service.inquiry.title }}
+            span {{ site.service.inquiry.description }}
+          label.inquiry-name
+            span {{ site.service.inquiry.nameLabel }}
+            input(:placeholder="site.service.inquiry.namePlaceholder" autocomplete="name")
+          label.inquiry-phone
+            span {{ site.service.inquiry.phoneLabel }}
+            input(type="tel" :placeholder="site.service.inquiry.phonePlaceholder" autocomplete="tel")
+          label.inquiry-code
+            span {{ site.service.inquiry.codeLabel }}
+            .captcha-row
+              span.captcha(aria-label="驗證碼示意") {{ site.service.inquiry.captcha }}
+              input(:placeholder="site.service.inquiry.codePlaceholder")
+          button.inquiry-submit(type="submit")
+            span.material-symbols-outlined(aria-hidden="true") arrow_upward
+            span {{ site.service.inquiry.submitLabel }}
+        .service-actions
+          button(v-for="(label, index) in site.service.buttons" :key="label" @click="demoAction")
+            span.material-symbols-outlined(aria-hidden="true") {{ index ? 'real_estate_agent' : 'search' }}
+            span {{ label }}
 
     //- 03 品牌優勢：建築照片、三組優勢文案、見證按鈕及底部標語。
     section#advantage.panel.panel-advantage(
       :class="{ 'is-active': active === 2 }"
       aria-labelledby="advantage-title"
     )
+      //- 左側窄圖：原圖在建築大圖左側另有一條全高素材。
+      .advantage-strip(:style="photoStyle('assetsEdge')" aria-hidden="true")
       //- 建築照片：由 images.assets 指定。
       .building-photo(:style="photoStyle('assets')" aria-hidden="true")
       //- 優勢文案：前三筆依序使用 assets／advantage／benefit 定位與進場延遲。
@@ -185,12 +211,15 @@ onBeforeUnmount(() => {
           :class="[['assets', 'advantage', 'benefit'][index], index ? 'delay-' + index : '']"
         )
           h3 {{ item.heading }}
+          .advantage-subtitle {{ item.subtitle }}
+          .advantage-rule(aria-hidden="true")
           p {{ item.description }}
         //- 見證圓形按鈕：fade 使用縮放加淡入。
         button.witness.anim.fade.delay-3(@click="demoAction")
           | {{ site.advantage.witness[0] }}
           br
           | {{ site.advantage.witness[1] }}
+          span.witness-arrow(aria-hidden="true") →
         //- 品牌主標語：從右方延遲進場。
         h2#advantage-title.advantage-slogan.anim.from-right.delay-4 {{ site.advantage.slogan }}
 
@@ -199,37 +228,44 @@ onBeforeUnmount(() => {
       :class="{ 'is-active': active === 3 }"
       aria-labelledby="news-title"
     )
-      //- 消息標題區：中文標籤與英文大字。
+      //- 左側深色帶與底部 NEWS 跨色標題；中文標籤落在白色區域。
+      .news-band(aria-hidden="true")
       .news-title
         span {{ site.news.label }}
         h2#news-title {{ site.news.heading }}
-      //- 消息內容：問題列表從下方進場，點擊顯示 Demo 提示。
+      //- 三列消息與日期：位於白色欄頂部；點擊顯示 Demo 提示。
       .news-content
         .faq.anim.rise
-          button(v-for="question in site.news.questions" :key="question" @click="demoAction")
-            span {{ question }}
-            span ＋
-        .news-date
-          span {{ site.news.signature }}
-          span {{ site.news.english }}
+          button(v-for="(question, index) in site.news.questions" :key="question" @click="demoAction")
+            .news-entry
+              time(v-if="site.news.dates[index]") {{ site.news.dates[index] }}
+              span {{ question }}
+            span.news-arrow(aria-hidden="true") →
+        button.news-more(@click="demoAction") {{ site.news.moreLabel }}
       //- 消息森林圖片：與聯絡頁共用 images.closing。
       .forest-photo(:style="photoStyle('closing')" aria-hidden="true")
 
     //- 05 聯絡資訊／頁尾：森林、品牌資訊卡、QR 示意、社群與版權。
     section#contact.panel.panel-contact(
       :class="{ 'is-active': active === 4 }"
+      :style="{ '--contact-width': site.layout.contactWidthVw + 'vw' }"
       aria-labelledby="contact-title"
     )
-      //- 聯絡頁森林圖片：同樣使用 images.closing。
-      .contact-forest(:style="photoStyle('closing')" aria-hidden="true")
-      //- 聯絡資訊卡：從下方進場；QR 與社群字元目前為示意。
+      //- 森林已位於消息頁末端；此灰色區域接續其右側，不重複放第二張森林圖。
+      h2#contact-title.sr-only {{ site.brand.name }}
+      .contact-social-top(aria-label="社群與服務")
+        button(v-for="icon in site.contact.topIcons" :key="icon" :aria-label="icon" @click="demoAction")
+          span.material-symbols-outlined(aria-hidden="true") {{ icon }}
+      //- 原圖資訊靠右排列，沒有白色卡片邊框；QR 和素材區可由 JSON 替換。
       .contact-card.anim.rise
-        h2#contact-title {{ site.brand.name }}
-        p {{ site.brand.english }}
-        .qr-placeholder(aria-label="QR Code 示意位置") ▦
-        p {{ site.contact.description }}
-        .contact-icons(aria-label="社群與服務連結")
-          span(v-for="(icon, index) in site.contact.socialIcons" :key="index") {{ icon }}
+        img.qr-image(v-if="site.images.qrCode" :src="imageUrl(site.images.qrCode)" alt="中信房屋 QR Code")
+        .qr-placeholder(v-else aria-label="QR Code 素材待置換") ▦
+        .contact-copy
+          p(v-for="line in site.contact.lines" :key="line") {{ line }}
+        .partner-logos(aria-label="關係品牌素材待置換")
+          span(v-for="label in site.contact.partnerLabels" :key="label") {{ label }}
+        .download-links
+          button(v-for="label in site.contact.downloads" :key="label" @click="demoAction") {{ label }}
         small {{ site.contact.copyright }}
 
   //- 右下控制列：DEMO 版本、當前頁碼與前後頁按鈕。
