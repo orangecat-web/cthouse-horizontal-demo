@@ -69,6 +69,10 @@
         "page": "service"
       },
       {
+        "label": "關於中信",
+        "page": "about"
+      },
+      {
         "label": "徵才公告",
         "page": "news"
       },
