@@ -28,6 +28,7 @@
     "sidebarLinks": "側邊 a 連結，href 由使用者指定；與首頁橫向切頁無關。",
     "layout": "以原圖第一個場景寬 469、高 234 換算為 1920×960；最後灰色聯絡區僅約 36.67vw，切到末端時限制軌道位移以免露出空白。",
     "service.inquiry": "設計稿底部的橫向諮詢表單列；細字無法從低解析參考圖辨識，目前為可替換的示意文案。",
+    "service.inquiry.consentLabel": "諮詢表單最下方 checkbox 文案；目前依使用者指示先提供待補文字，不代表正式條款，未設定必填。",
     "service.pointIcons": "服務項目使用 Google 圖示名稱，順序與 points 對應。",
     "advantage.items[].subtitle": "英文優勢標題下的中文副標；description 是內文，二者之間有短分隔線。",
     "news.dates / moreLabel": "消息日期與更多按鈕；原圖細字無法辨識，日期留空待補。",
@@ -210,8 +211,6 @@
     ],
     "inquiry": {
       "label": "專人諮詢",
-      "title": "讓每一步，都更接近理想的家。",
-      "description": "服務據點・專人諮詢・房屋委託",
       "nameLabel": "您的姓名",
       "namePlaceholder": "請輸入姓名",
       "phoneLabel": "聯絡電話",
@@ -219,6 +218,7 @@
       "codeLabel": "驗證碼",
       "codePlaceholder": "請輸入驗證碼",
       "captcha": "NHvd",
+      "consentLabel": "同意事項（待補）",
       "submitLabel": "送出"
     }
   },

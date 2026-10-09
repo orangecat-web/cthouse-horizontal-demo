@@ -168,24 +168,25 @@ onBeforeUnmount(() => {
           li(v-for="(point, index) in site.service.points" :key="point")
             span.material-symbols-outlined(aria-hidden="true") {{ site.service.pointIcons[index] }}
             span {{ point }}
-      //- 原圖底部表單列：左侧直排標籤、說明、姓名／電話／驗證碼及右側行動按鈕。
+      //- 底部諮詢表單：保留直排區塊標題；欄位名稱僅供輔助科技朗讀，不顯示於畫面。
       .service-bottom.anim.rise.delay-2
         .inquiry-label {{ site.service.inquiry.label }}
         form.inquiry-form(@submit.prevent="demoAction")
-          .service-caption
-            strong {{ site.service.inquiry.title }}
-            span {{ site.service.inquiry.description }}
           label.inquiry-name
-            span {{ site.service.inquiry.nameLabel }}
+            span.inquiry-field-label {{ site.service.inquiry.nameLabel }}
             input(:placeholder="site.service.inquiry.namePlaceholder" autocomplete="name")
           label.inquiry-phone
-            span {{ site.service.inquiry.phoneLabel }}
+            span.inquiry-field-label {{ site.service.inquiry.phoneLabel }}
             input(type="tel" :placeholder="site.service.inquiry.phonePlaceholder" autocomplete="tel")
           label.inquiry-code
-            span {{ site.service.inquiry.codeLabel }}
+            span.inquiry-field-label {{ site.service.inquiry.codeLabel }}
             .captcha-row
               span.captcha(aria-label="驗證碼示意") {{ site.service.inquiry.captcha }}
               input(:placeholder="site.service.inquiry.codePlaceholder")
+          //- 同意事項：先補回可勾選欄位，文字由 JSON 管理，等待正式設計稿文案。
+          label.inquiry-consent
+            input(type="checkbox" name="inquiryConsent")
+            span {{ site.service.inquiry.consentLabel }}
           button.inquiry-submit(type="submit")
             span.material-symbols-outlined(aria-hidden="true") arrow_upward
             span {{ site.service.inquiry.submitLabel }}
