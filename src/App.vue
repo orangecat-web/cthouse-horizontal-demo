@@ -34,11 +34,64 @@ let lastWheelDirection = 0
 let noticeTimer
 let touchX = 0
 let touchY = 0
+// 滑鼠拖曳只處理桌機左鍵；位移以 CSS 像素表示，與觸控既有 60px 門檻一致。
+const mouseDragOffset = ref(0)
+const isMouseDragging = ref(false)
+let mouseDrag = null
+const dragStartThreshold = 8
+const dragPageThreshold = 60
+
+// 表單、連結與按鈕維持原本操作，不從互動元件開始拖曳。
+function onMouseDragStart(event) {
+  if (compact() || event.pointerType !== 'mouse' || event.button !== 0 || !event.isPrimary || mouseDrag) return
+  if (event.target.closest('a, button, input, select, textarea, label, [contenteditable]:not([contenteditable="false"]), [role="button"]')) return
+  const track = event.currentTarget
+  mouseDrag = { id: event.pointerId, x: event.clientX, y: event.clientY, page: active.value, offset: trackOffset.value, track }
+  // 捕捉指標讓滑鼠移出軌道仍可結束；阻止原生圖片拖放與文字反白干擾場景拖曳。
+  track.setPointerCapture(event.pointerId)
+  event.preventDefault()
+}
+function onMouseDragMove(event) {
+  if (!mouseDrag || event.pointerId !== mouseDrag.id) return
+  if (!(event.buttons & 1) || compact()) { cancelMouseDrag(); return }
+  const dx = event.clientX - mouseDrag.x
+  const dy = event.clientY - mouseDrag.y
+  // 小幅抖動不啟動；明顯直向手勢直接取消，不當作橫向切頁。
+  if (!isMouseDragging.value) {
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < dragStartThreshold) return
+    if (Math.abs(dy) >= Math.abs(dx)) { cancelMouseDrag(); return }
+    isMouseDragging.value = true
+  }
+  event.preventDefault()
+  // 跟隨滑鼠，但限制在整條軌道首尾，較窄聯絡尾段亦不露出空白。
+  const maxOffset = (pages.length - 2) * 100 + site.layout.contactWidthVw
+  const nextOffset = Math.max(0, Math.min(maxOffset, mouseDrag.offset - dx / window.innerWidth * 100))
+  mouseDragOffset.value = (mouseDrag.offset - nextOffset) / 100 * window.innerWidth
+}
+function onMouseDragEnd(event) {
+  if (!mouseDrag || event.pointerId !== mouseDrag.id) return
+  const dx = event.clientX - mouseDrag.x
+  const dy = event.clientY - mouseDrag.y
+  const page = mouseDrag.page
+  const shouldTurn = isMouseDragging.value && Math.abs(dx) >= dragPageThreshold && Math.abs(dx) > Math.abs(dy)
+  cancelMouseDrag()
+  // 每次放開最多切一區；左拖前進、右拖返回，不足門檻則動畫回原位。
+  if (shouldTurn) goTo(page - Math.sign(dx))
+}
+// 取消／失焦／元件移除皆清掉狀態與捕捉，避免游標卡在拖曳中。
+function cancelMouseDrag() {
+  const previous = mouseDrag
+  mouseDrag = null
+  isMouseDragging.value = false
+  mouseDragOffset.value = 0
+  if (previous?.track.hasPointerCapture(previous.id)) previous.track.releasePointerCapture(previous.id)
+}
 
 // 與 style.sass 的手機斷點相同：窄螢幕且使用粗略指標時改成直向閱讀。
 function compact() { return window.matchMedia('(max-width: 47.5rem) and (pointer: coarse)').matches }
 // 所有切頁操作共用此入口；限制索引範圍，手機則捲到對應 section。
 function goTo(index) {
+  cancelMouseDrag()
   const next = Math.max(0, Math.min(index, pages.length - 1))
   active.value = next
   if (compact()) document.getElementById(pages[next].id)?.scrollIntoView({ behavior: 'smooth' })
@@ -52,6 +105,8 @@ function goToPage(id) {
 function onWheel(event) {
   if (compact() || event.ctrlKey) return
   event.preventDefault()
+  // 拖曳中不混入滾輪位移，結束後恢復原本滾輪控制。
+  if (mouseDrag) return
   // 取較大的滾動軸，讓滑鼠滾輪與橫向觸控板都能操作。
   const axis = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX
   // deltaMode 可能以像素、行或頁表示；先統一成像素尺度。
@@ -97,11 +152,14 @@ function demoAction() {
 onMounted(() => {
   document.addEventListener('wheel', onWheel, { passive: false, capture: true })
   window.addEventListener('keydown', onKey)
+  window.addEventListener('blur', cancelMouseDrag)
 })
 // 元件移除：解除全域監聽與計時器，避免再次掛載時事件重複執行。
 onBeforeUnmount(() => {
   document.removeEventListener('wheel', onWheel, true)
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('blur', cancelMouseDrag)
+  cancelMouseDrag()
   clearTimeout(noticeTimer)
 })
 </script>
@@ -123,7 +181,15 @@ onBeforeUnmount(() => {
   PageRail(:links="site.sidebarLinks")
 
   //- 橫向場景軌道：每頁佔 100vw；active 改變位移，滑動動畫由 Sass 控制。
-  main.horizontal-track(:style="{ transform: 'translate3d(-' + trackOffset + 'vw, 0, 0)' }")
+  main.horizontal-track(
+    :class="{ 'is-mouse-dragging': isMouseDragging }"
+    :style="{ transform: 'translate3d(calc(-' + trackOffset + 'vw + ' + mouseDragOffset + 'px), 0, 0)' }"
+    @pointerdown="onMouseDragStart"
+    @pointermove="onMouseDragMove"
+    @pointerup="onMouseDragEnd"
+    @pointercancel="cancelMouseDrag"
+    @lostpointercapture="cancelMouseDrag"
+  )
     //- 01 首頁／找屋介面：背景、主標題、搜尋卡片及下一頁箭頭。
     section#home.panel.panel-home(
       :class="{ 'is-active': active === 0 }"

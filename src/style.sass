@@ -45,6 +45,11 @@ button:focus-visible, input:focus-visible, select:focus-visible
   height: 100%
   transition: transform 1000ms cubic-bezier(.22, 1, .36, 1)
   will-change: transform
+  // 水平拖曳時跟隨滑鼠，不套用切頁緩動；放開後恢復既有滑動动画。
+  &.is-mouse-dragging
+    transition: none
+    cursor: grabbing
+    user-select: none
 
 // 場景共同尺寸：每頁固定 100vw，由 App.vue 的 active 決定位移。
 .panel
