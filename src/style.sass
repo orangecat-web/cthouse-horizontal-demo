@@ -61,7 +61,7 @@ button:focus-visible, input:focus-visible, select:focus-visible
   container-type: inline-size
   overflow: hidden
 
-// 共用導覽列：頂部固定；首頁與服務頁切換字色、Logo 顯示效果。
+// 共用導覽列：上黑下透明的垂直漸層；文字及原始白色 Logo 固定呈現，不使用混色濾鏡。
 .site-header
   position: fixed
   z-index: 30
@@ -75,30 +75,26 @@ button:focus-visible, input:focus-visible, select:focus-visible
   +sp.jcc
   align-items: center
   gap: 2.266667rem
-  mix-blend-mode: luminosity
-  color: #333
-  transition: color .45s
-  &.on-photo
-    color: #fff
-  &.on-service
-    .top-nav:first-child, .brand
-      color: #fff
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(255, 255, 255, 0))
+  color: #fff
   .top-nav
     display: flex
     align-items: center
     justify-content: space-between
     gap: 2rem
     button
-      padding: 0.466667rem 0
+      // 預留 1px 透明底線，hover 顯示白色底線時導覽高度與位置不跳動。
+      padding: 0.466667rem .5rem
       border: 0
+      border-bottom: 1px solid transparent
       background: none
       color: inherit
       white-space: nowrap
       font-size: clamp(0.733333rem, .85vw, 1rem)
       letter-spacing: .06em
-      +oc.transition(opacity, .2s)
-      &:hover
-        opacity: .58
+      +oc.transition(border-bottom-color, .2s)
+      &:hover, &:focus-visible
+        border-bottom-color: #fff
   .brand-heading
     margin: 0
     font-size: 1rem
@@ -114,11 +110,6 @@ button:focus-visible, input:focus-visible, select:focus-visible
       display: block
       width: 5.333333rem
       height: auto
-      filter: brightness(0) opacity(.84)
-      transition: filter .45s
-  &.on-photo, &.on-service
-    .brand-logo
-      filter: none
 
 // 左側頁籤：固定定位，selected 標示目前場景。
 .page-rail

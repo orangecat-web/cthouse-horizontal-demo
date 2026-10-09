@@ -167,8 +167,8 @@ onBeforeUnmount(() => {
 <template lang="pug">
 //- 整頁容器：接收觸控手勢；以下 //- 為 Pug 原始碼註解，不會產生畫面元素。
 .site-shell(@touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd")
-  //- 共用導覽：兩組連結與中央 Logo；依目前頁面切換明暗配色。
-  header.site-header(:class="{ 'on-photo': active === 0, 'on-service': active === 1 }")
+  //- 共用導覽：黑至透明漸層、固定白色文字及原始白色 Logo，不隨場景變色。
+  header.site-header
     nav.top-nav(aria-label="主要導覽")
       button(v-for="item in site.navigation.primary" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
       //- 網站唯一 H1：品牌 Logo；品牌文字作為圖片替代文字。
