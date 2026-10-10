@@ -1,0 +1,839 @@
+// 物件頁獨立樣式：沿用 rem 布局與共用 cqw 字級，不載入首頁橫向場景規則。
+@use '../../sass/include' as font
+@use '../../sass/typography' as type
+
+:root
+  font-size: 93.75%
+  font-family: font.$font-body
+  color: #646866
+  background: #fff
+  scroll-behavior: smooth
+
+*
+  box-sizing: border-box
+
+body
+  margin: 0
+  font-size: type.size('body', 'property')
+
+body:has(.property-gallery-dialog[open])
+  overflow: hidden
+
+button, input, select
+  font: inherit
+
+button, a
+  -webkit-tap-highlight-color: transparent
+
+button
+  cursor: pointer
+
+button, input, select
+  color: inherit
+
+a
+  color: inherit
+  text-decoration: none
+
+button, input, select
+  &:focus
+    outline: none
+
+.property-page
+  container-type: inline-size
+  line-height: 1.65
+  --property-teal: #12a2a5
+  --property-line: #ededed
+  --property-red: #f02626
+  // 容器沿用原稿約 73.5% 寬，在桌機最多 1410px。
+  .property-container
+    width: min(73.5%, 94rem)
+    margin-inline: auto
+    container-type: inline-size
+  h1, h2, h3, p
+    margin: 0
+  button
+    border: 0
+    background: transparent
+  input, select
+    min-width: 0
+    border: 1px solid #ddd
+    background: white
+    font-size: type.size('small', 'property')
+  input
+    padding: .45rem .6rem
+    width: 100%
+    &::placeholder
+      color: #a9aeab
+  select
+    padding: .45rem .6rem
+  section[id], aside[id]
+    scroll-margin-top: 9rem
+
+.property-icon
+  width: 1.6rem
+  height: 1.6rem
+  flex: 0 0 auto
+  vertical-align: middle
+  &.is-favorited
+    fill: #f02626
+    stroke: #f02626
+
+// 物件頁 Header：原稿為白底深灰字；彩色 Logo 空值時保留品牌文字與位置。
+.property-header
+  border-bottom: 1px solid var(--property-line)
+  padding-block: 1.3rem
+  .property-nav
+    width: min(73.5%, 94rem)
+    margin-inline: auto
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 1.2rem
+    font-size: type.size('small', 'property')
+    > a
+      white-space: nowrap
+      padding-bottom: .3rem
+      border-bottom: 1px solid transparent
+      cursor: pointer
+      &:hover
+        border-bottom-color: var(--property-teal)
+  .property-brand
+    border: none
+    img
+      display: block
+      width: 5.8rem
+      height: auto
+    .brand-placeholder
+      display: flex
+      align-items: center
+      flex-direction: column
+      color: var(--property-teal)
+      font-weight: 700
+      small
+        color: #999
+        font-size: type.size('small', 'property')
+        font-weight: 300
+
+// 左側工具與右側浮動工具使用本地圖示，素材空值保留小型 QR 位置。
+.property-rail
+  position: fixed
+  z-index: 20
+  left: .7rem
+  top: 14rem
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  a
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 2.4rem
+    height: 2.4rem
+    color: #8b8f8d
+
+.property-floating-tools
+  position: fixed
+  z-index: 20
+  right: 1.8rem
+  bottom: 5rem
+  display: flex
+  flex-direction: column
+  gap: .4rem
+  width: 4.3rem
+  .floating-qr, a
+    width: 100%
+    aspect-ratio: 1
+    background: #fff
+    border: 1px solid var(--property-line)
+  a
+    display: grid
+    place-items: center
+    .property-icon
+      width: 2rem
+      height: 2rem
+  .floating-qr .media-placeholder
+    gap: .1rem
+    padding: .2rem
+    .property-icon
+      display: none
+    span
+      text-align: center
+
+// 頂部資訊：麵包屑與工具、標題與紅色價格。
+.property-overview
+  padding-top: 1.2rem
+.property-breadcrumb-row
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 1rem
+  margin-bottom: 1.6rem
+.property-breadcrumbs
+  display: flex
+  flex-wrap: wrap
+  font-size: type.size('small', 'property')
+  color: #969b98
+  span::before
+    content: '›'
+    padding-inline: .5rem
+.property-tools
+  display: flex
+  gap: .7rem
+  button
+    padding: .2rem
+    color: #8b8f8d
+.property-title-row
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  gap: 2rem
+  margin-bottom: 1.5rem
+  > div
+    min-width: 0
+  h1
+    font-size: type.size('subheading', 'property')
+    font-weight: 400
+    line-height: 1.5
+    letter-spacing: .02em
+  .property-number
+    font-size: type.size('body', 'property')
+    white-space: nowrap
+  .property-address
+    font-size: type.size('small', 'property')
+    color: #9b9e9c
+.property-price
+  display: flex
+  gap: .3rem
+  align-items: baseline
+  white-space: nowrap
+  strong
+    color: var(--property-red)
+    font-size: type.size('callout', 'property')
+    line-height: 1.2
+  span
+    font-size: type.size('small', 'property')
+
+// 通用素材佔位：保留比例而非設計稿截圖；替換後的圖片與 iframe 填滿同一位置。
+.property-media
+  position: relative
+  overflow: hidden
+  width: 100%
+  height: 100%
+  background: #f0f2f0
+  img, iframe
+    display: block
+    width: 100%
+    height: 100%
+    border: 0
+    object-fit: cover
+  .media-placeholder
+    width: 100%
+    height: 100%
+    min-height: 0
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: .65rem
+    color: #a3aaa6
+    padding: 1rem
+    font-size: type.size('small', 'property')
+    font-weight: 300
+    text-align: center
+    .property-icon
+      width: 2.5rem
+      height: 2.5rem
+
+// 五格相簿：主圖占左半部、右半部兩欄兩列；桌機比例對照設計稿。
+.property-gallery
+  position: relative
+  display: grid
+  grid-template-columns: 2fr 1fr 1fr
+  grid-template-rows: 1fr 1fr
+  gap: 1rem
+  aspect-ratio: 2.72
+  border-radius: 1.2rem
+  overflow: hidden
+  .gallery-tile
+    min-width: 0
+    min-height: 0
+    padding: 0
+    text-align: inherit
+    &:first-child
+      grid-row: 1 / 3
+    &:hover .media-placeholder
+      color: #697a72
+      background: #e9edeb
+  .gallery-actions
+    position: absolute
+    right: 1.2rem
+    bottom: 1.1rem
+    display: flex
+    gap: .5rem
+    button
+      display: flex
+      align-items: center
+      gap: .3rem
+      background: #fff
+      padding: .3rem .75rem
+      border-radius: 2rem
+      font-size: type.size('small', 'property')
+      box-shadow: 0 1px 6px #0001
+      .property-icon
+        width: 1.2rem
+        height: 1.2rem
+.property-summary-row
+  display: flex
+  align-items: center
+  gap: 1.5rem
+  padding-block: 1.8rem
+  font-size: type.size('small', 'property')
+.property-summary
+  list-style: none
+  margin: 0
+  padding: 0
+  display: flex
+  flex: 1
+  flex-wrap: wrap
+  gap: 1.3rem
+  li
+    display: flex
+    align-items: center
+    gap: .5rem
+    small
+      display: block
+      font-size: type.size('small', 'property')
+      color: #959b97
+.property-quick-actions
+  display: flex
+  flex-wrap: wrap
+  gap: .5rem
+  button
+    border: 1px solid #d7ddda
+    border-radius: 2rem
+    padding: .3rem .8rem
+    font-size: type.size('small', 'property')
+    white-space: nowrap
+
+// 各區標題：灰色細字、橘色小三角、保留稿中的留白。
+.property-section-heading
+  text-align: center
+  font-size: type.size('subheading', 'property')
+  letter-spacing: .08em
+  font-weight: 300
+  color: #929994
+  margin-bottom: 2rem !important
+  &::after
+    content: ''
+    display: block
+    width: 0
+    height: 0
+    margin: .45rem auto 0
+    border-left: .28rem solid transparent
+    border-right: .28rem solid transparent
+    border-top: .3rem solid #f39544
+.property-details
+  padding-top: 2rem
+  padding-bottom: 2.6rem
+.property-details-layout
+  display: flex
+  align-items: flex-start
+  gap: 4rem
+.property-facts
+  flex: 1
+  min-width: 0
+  margin: 0
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 1.5rem 2rem
+  font-size: type.size('body', 'property')
+  > div
+    display: flex
+    align-items: baseline
+    gap: 1.2rem
+    min-width: 0
+  dt
+    flex: 0 0 auto
+    color: #8b938e
+  dd
+    margin: 0
+    overflow-wrap: anywhere
+.property-agent-card
+  flex: 0 0 32%
+  min-width: 0
+  border: 1px solid var(--property-line)
+  border-radius: .6rem
+  padding: 1.3rem
+  font-size: type.size('small', 'property')
+  .agent-profile
+    display: flex
+    align-items: center
+    gap: .8rem
+    margin-bottom: 1.1rem
+  .agent-avatar
+    flex: 0 0 4.5rem
+    width: 4.5rem
+    height: 4.5rem
+    border-radius: 50%
+    img
+      object-position: center 30%
+  .agent-name
+    flex: 1
+    min-width: 0
+    h3
+      font-size: type.size('body', 'property')
+      font-weight: 400
+  .agent-qr-group
+    display: flex
+    gap: .5rem
+    flex: 0 1 8.5rem
+  .agent-qr
+    aspect-ratio: 1
+    height: auto
+    .media-placeholder
+      padding: .25rem
+      gap: 0
+      .property-icon
+        display: none
+  .agent-phones
+    display: flex
+    flex-wrap: wrap
+    gap: 1rem
+    margin-bottom: 1.2rem
+    a
+      display: inline-flex
+      align-items: center
+      gap: .4rem
+  .agent-address
+    display: flex
+    gap: .5rem
+    margin-bottom: 1rem
+    p
+      font-size: type.size('small', 'property')
+  .inquiry-tabs
+    display: flex
+    margin-bottom: .8rem
+    button
+      width: 50%
+      padding: .45rem
+      border-bottom: 1px solid #e5e8e6
+      font-size: type.size('small', 'property')
+      &.is-selected
+        color: var(--property-teal)
+        border-bottom-color: var(--property-teal)
+  .inquiry-fields
+    display: flex
+    gap: .4rem
+    margin-bottom: .5rem
+  .inquiry-time
+    display: flex
+    align-items: center
+    gap: .5rem
+    margin-bottom: .5rem
+    select
+      flex: 1
+  .property-submit
+    width: 100%
+    padding: .5rem
+    background: var(--property-teal)
+    color: white
+    font-size: type.size('small', 'property')
+  .inquiry-privacy
+    margin-top: .6rem
+    font-size: type.size('small', 'property')
+    color: #999
+
+// 聯絡摘要與區塊錨點：原稿在資料之後，捲動時固定在頂部。
+.property-contact-strip
+  position: sticky
+  z-index: 25
+  top: 0
+  border-top: 1px solid #58bfc0
+  border-bottom: 1px solid var(--property-line)
+  background: #fffffff5
+  font-size: type.size('small', 'property')
+  .contact-strip-main
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 1rem
+    padding-block: .8rem
+    > p
+      min-width: 0
+    strong
+      margin-left: .3rem
+      font-size: type.size('body', 'property')
+      color: var(--property-red)
+    small
+      font-size: type.size('small', 'property')
+  .contact-strip-actions
+    display: flex
+    align-items: center
+    gap: .8rem
+    flex: 0 0 auto
+    a
+      display: flex
+      align-items: center
+      gap: .4rem
+    .contact-agent-link
+      color: white
+      background: #282d2a
+      padding: .2rem .8rem
+  .property-section-nav
+    display: flex
+    justify-content: space-between
+    gap: 1rem
+    padding-block: .6rem
+    color: #929994
+    a
+      white-space: nowrap
+      &:hover
+        color: var(--property-teal)
+
+// 介紹、VR、地圖、行情與影音：維持原稿直向順序與相對大小。
+.property-introduction
+  padding-block: 2rem
+  font-size: type.size('body', 'property')
+  line-height: 2
+  .introduction-notice
+    color: #999
+    margin-bottom: 1rem
+  h2
+    font-size: type.size('body-large', 'property')
+    font-weight: 400
+    margin-top: .5rem
+  > div p
+    min-height: 3.4rem
+.property-section
+  padding-block: 2.6rem
+  border-bottom: 1px solid var(--property-line)
+.property-vr
+  aspect-ratio: 1.78
+  height: auto
+.property-environment-layout
+  display: flex
+  gap: 1.4rem
+  align-items: stretch
+  .property-map
+    flex: 0 0 67%
+    height: auto
+    aspect-ratio: 2.4
+  .property-environment-list
+    flex: 1
+    min-width: 0
+    border: 1px solid var(--property-line)
+    font-size: type.size('small', 'property')
+    select
+      width: 100%
+      border: 0
+      border-bottom: 1px solid var(--property-line)
+      text-align: center
+    > p
+      padding: 1.5rem
+      color: #a1a7a3
+    ul
+      list-style: none
+      padding: 1rem
+      margin: 0
+      li
+        display: flex
+        justify-content: space-between
+        gap: 1rem
+        padding-block: .5rem
+.property-insights
+  display: flex
+  gap: 1.5rem
+  > section
+    width: calc(50% - .75rem)
+    min-width: 0
+  .property-market, .property-video
+    aspect-ratio: 1.25
+    height: auto
+  .market-notes
+    font-size: type.size('small', 'property')
+    padding-top: 1rem
+    color: #949c96
+.property-recommendations
+  padding-bottom: 7rem
+.recommendation-grid
+  display: grid
+  grid-template-columns: repeat(4, 1fr)
+  gap: 2.4rem
+  .recommendation-card
+    min-width: 0
+    font-size: type.size('small', 'property')
+    .property-media
+      aspect-ratio: 1.5
+      height: auto
+    h3
+      font-size: type.size('body', 'property')
+      font-weight: 400
+      margin-top: .7rem
+    p
+      color: #9fa5a1
+      margin-top: .4rem
+    strong
+      display: block
+      text-align: right
+      color: var(--property-red)
+      font-weight: 400
+      margin-top: .5rem
+
+// Footer：導覽白底、資訊灰底；品牌與下載素材先保留位置。
+.property-footer
+  font-size: type.size('small', 'property')
+  .property-footer-nav
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 1.5rem
+    padding-block: 2rem
+  .property-footer-body
+    background: #dcdedd
+    padding-top: 2rem
+  .footer-columns
+    display: flex
+    align-items: flex-end
+    gap: 3rem
+    min-height: 9rem
+    padding-bottom: 2rem
+    > div
+      flex: 1
+      min-width: 0
+  .footer-brand
+    margin-bottom: 1.6rem
+    color: var(--property-teal)
+    img
+      width: 6rem
+      height: auto
+  .partner-logo-row
+    display: flex
+    gap: .4rem
+    margin-bottom: 1rem
+    .property-media
+      aspect-ratio: 1
+      height: auto
+      .media-placeholder
+        padding: .15rem
+        .property-icon
+          display: none
+  .property-downloads
+    display: flex
+    gap: .6rem
+    a
+      background: #202723
+      color: white
+      border-radius: .2rem
+      padding: .2rem .8rem
+      img
+        width: 6rem
+        height: auto
+  .property-copyright
+    text-align: center
+    padding: 1rem
+    border-top: 1px solid #c6cac7
+
+// 照片原生對話框與提示：Escape 自動關閉，沒有全域事件或額外套件。
+.property-gallery-dialog
+  width: min(90vw, 80rem)
+  padding: 1.2rem
+  border: 0
+  border-radius: .5rem
+  color: #646866
+  font-size: type.size('body', 'property')
+  &::backdrop
+    background: #0009
+  .gallery-dialog-toolbar
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 1rem
+    margin-bottom: 1rem
+  > .property-media
+    height: min(60vh, 40rem)
+  .gallery-dialog-controls
+    display: flex
+    justify-content: center
+    gap: 2rem
+    margin-top: 1rem
+  button
+    padding: .5rem
+  .chevron-back
+    transform: rotate(180deg)
+.property-toast
+  position: fixed
+  bottom: 2rem
+  left: 50%
+  transform: translateX(-50%)
+  z-index: 60
+  padding: .8rem 1.2rem
+  border-radius: .3rem
+  background: #263d35
+  color: white
+  max-width: 90vw
+  font-size: type.size('small', 'property')
+.sr-only
+  position: absolute
+  width: 1px
+  height: 1px
+  overflow: hidden
+  clip-path: inset(50%)
+  white-space: nowrap
+
+// 平板：導覽可水平閱讀、諮詢卡移至詳細資料下方，避免 16px 下限造成擠字。
+@media (max-width: 75rem)
+  .property-page .property-container
+    width: 86%
+  .property-header
+    padding-inline: 7%
+    overflow-x: auto
+    .property-nav
+      width: max-content
+      min-width: 100%
+      gap: 1.6rem
+  .property-summary-row
+    flex-direction: column
+    align-items: flex-start
+    gap: 1rem
+  .property-details-layout
+    flex-direction: column
+    gap: 2rem
+  .property-facts
+    width: 100%
+  .property-agent-card
+    width: min(100%, 36rem)
+    flex-basis: auto
+    align-self: flex-end
+  .property-floating-tools
+    right: .5rem
+    width: 3.2rem
+  .property-rail
+    left: .2rem
+
+// 手機：保持全部區塊、原生直向捲動，素材位置改為便於閱讀的上下排列。
+@media (max-width: 48rem)
+  .property-page
+    .property-container
+      width: 92%
+    section[id], aside[id]
+      scroll-margin-top: 11rem
+  .property-header
+    padding: .8rem 4%
+    .property-nav
+      gap: 1.1rem
+  .property-rail, .property-floating-tools
+    display: none
+  .property-breadcrumb-row
+    align-items: flex-start
+    margin-bottom: 1rem
+  .property-breadcrumbs
+    flex: 1
+  .property-tools
+    gap: .3rem
+  .property-title-row
+    flex-direction: column
+    gap: .6rem
+    h1
+      font-size: type.size('subheading', 'property')
+  .property-gallery
+    aspect-ratio: auto
+    grid-template-columns: 1fr 1fr
+    grid-template-rows: 14rem 6rem 6rem
+    gap: .4rem
+    border-radius: .6rem
+    .gallery-tile:first-child
+      grid-row: 1
+      grid-column: 1 / 3
+    .gallery-actions
+      right: .5rem
+      top: 10.8rem
+      bottom: auto
+      button
+        padding: .3rem .55rem
+    .media-placeholder
+      padding: .2rem
+      gap: .2rem
+      .property-icon
+        width: 1.8rem
+        height: 1.8rem
+  .property-summary-row
+    padding-block: 1.2rem
+  .property-summary
+    gap: .8rem
+    li
+      width: calc(50% - .4rem)
+      align-items: flex-start
+  .property-facts
+    grid-template-columns: 1fr
+    gap: 1rem
+    > div
+      justify-content: space-between
+  .property-agent-card
+    width: 100%
+    padding: 1rem
+    .agent-profile
+      gap: .5rem
+    .agent-qr-group
+      flex-basis: 7rem
+    .agent-avatar
+      width: 3.6rem
+      height: 3.6rem
+      flex-basis: 3.6rem
+  .property-contact-strip
+    .contact-strip-main
+      gap: .4rem
+      p > span
+        display: none
+      .contact-strip-actions > a:first-child
+        display: none
+    .property-section-nav
+      justify-content: flex-start
+      overflow-x: auto
+      gap: 1.2rem
+      padding-block: .7rem
+  .property-section-heading
+    margin-bottom: 1.2rem !important
+  .property-section
+    padding-block: 2rem
+  .property-environment-layout
+    flex-direction: column
+    .property-map
+      flex-basis: auto
+      aspect-ratio: 1.4
+    .property-environment-list
+      min-height: 10rem
+  .property-insights
+    flex-direction: column
+    gap: 0
+    > section
+      width: 100%
+  .recommendation-grid
+    grid-template-columns: 1fr 1fr
+    gap: 1.8rem 1rem
+  .property-recommendations
+    padding-bottom: 3rem
+  .property-footer
+    .property-footer-nav
+      justify-content: flex-start
+      gap: 1rem 1.5rem
+    .footer-columns
+      flex-direction: column
+      align-items: stretch
+      gap: 2rem
+    .partner-logo-row
+      flex-wrap: wrap
+      .property-media
+        width: calc(25% - .4rem)
+
+// 列印只呈現物件內容，避免工具遮住資料。
+@media print
+  .property-page
+    .property-container
+      width: 100%
+    .property-header, .property-rail, .property-floating-tools, .property-tools, .property-contact-strip, .property-footer, .property-toast, .gallery-actions
+      display: none
+    .property-agent-card
+      break-inside: avoid
+  .property-gallery-dialog
+    display: none

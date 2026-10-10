@@ -4,7 +4,7 @@
 
 原提案未採用，目前作為作品集 Demo 持續整理。設計範圍只有「首頁」與「房屋物件內容頁」；首頁的五個橫向區塊不代表五個獨立網頁。
 
-目前程式版號為 **1.0.6**，與 package.json、package-lock.json 根套件及右下角 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
+目前程式版號為 **1.1.0**，與 package.json、package-lock.json 根套件及頁面 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
 
 文件整理日期：2026-10-09（Asia/Taipei）。內容依本對話可見的 v1.0 更新快照、已確認規格，以及使用者提供的 Codex 環境回報整理；本次未直接讀取 Codex repository 的最新提交。接手時請先核對目前分支與原始碼，不能把這份交接文件當作最新程式驗證結果。
 
@@ -43,9 +43,52 @@ npm run preview
 
 `build` 產生 `dist/`；`preview` 用來檢查正式建置產物。開發、預覽與正式部署是不同步驟。Vite 開發伺服器不是正式網站主機。
 
-`vite.config.js` 使用 `base: './'`，方便部署到子目錄。`App.vue` 依頁面網址與 Vite base 將圖片解析為完整網址，避免 CSS 背景的相對路徑指向 `assets/images/`。此專案沒有要求主機執行 Node.js 服務；正式建置的前端靜態檔可放到支援靜態檔案的主機。
+`vite.config.js` 使用 `base: './'`，方便部署到子目錄。`HomePage.vue` 依頁面網址與 Vite base 將圖片解析為完整網址，避免 CSS 背景的相對路徑指向 `assets/images/`。此專案沒有要求主機執行 Node.js 服務；正式建置的前端靜態檔可放到支援靜態檔案的主機。
 
 部署時將 `dist/` **裡面的全部內容**上傳至網站目錄，例如 `/cthouse-horizontal-demo/`，包含 `index.html`、`assets/` 與 `images/`，不要只上傳 HTML 或 CSS。每次修改需重新 `npm run build` 再上傳；Git 推送不會自動更新這台網站伺服器。
+
+## 資料夾規範與用途
+
+後續 Vue／Vite／Pug／Sass 專案沿用以下分工；本次先整理此 repository，其他專案另行遷移。檔案依責任放置，各頁的完整畫面與樣式放在同一頁面資料夾，共用內容集中管理，不把新頁面檔案持續堆在 src 根目錄。
+
+```text
+cthouse-horizontal-demo/
+├── index.html                 首頁 HTML 入口
+├── property.html              物件頁 HTML 入口
+├── src/
+│   ├── entries/               Vue 掛載、字型與頁面樣式載入
+│   │   ├── home.js
+│   │   └── property.js
+│   ├── pages/                 各頁完整畫面與該頁 Sass
+│   │   ├── home/              HomePage.vue、style.sass
+│   │   └── property/          PropertyPage.vue、style.sass
+│   ├── components/            可重用元件；專屬元件按頁面分組
+│   │   ├── PageRail.vue
+│   │   └── property/          PropertyMedia.vue、PropertyIcon.vue
+│   ├── data/                  文案、選項、連結與素材設定 JSON
+│   ├── sass/                  共用字級、字型、mixin 與 Sass partial
+│   ├── utils/                 不依賴畫面狀態的共用 JavaScript 工具
+│   └── legacy/                目前保留的未使用舊檔；新功能不放這裡
+├── public/
+│   └── images/                原樣複製到 dist 的照片、Logo 等靜態圖片
+├── dist/                      npm run build 產物，不手動修改、不提交
+└── node_modules/              npm 安裝的依賴，不手動修改、不提交
+```
+
+| 位置 | 放什麼／怎麼維護 |
+| --- | --- |
+| repository 根目錄 | HTML 入口、Vite／套件設定、README、AGENTS、CHANGELOG；不堆放頁面元件與圖片 |
+| `src/entries/` | 每個 HTML 對應一個掛載檔；只負責建立 App、載入字型與樣式 |
+| `src/pages/<page>/` | 完整頁面 Vue 與 `style.sass`；頁面內互動及布局放這裡 |
+| `src/components/` | 共用介面元件；只供單頁使用的元件放 `components/<page>/` |
+| `src/data/` | 合法 JSON；可變文案、資料、圖片檔名與連結，說明放 `_comments` |
+| `src/sass/` | 全站可共用的變數、字級函式、mixin、partial；不混入單頁大段布局 |
+| `src/utils/` | 圖片 URL 等純工具，避免兩個頁面各複製同一段邏輯 |
+| `src/legacy/` | 本專案既有舊版保留檔，目前是未載入的 `media.js`；不是新專案必建目錄 |
+| `public/images/` | 靜態圖片；檔名優先使用小寫英數與連字號，新物件素材可按物件建立子目錄。既有圖片檔名保留 |
+| `dist/`、`node_modules/` | 自動生成與安裝的內容，由 .gitignore 排除 |
+
+設計稿與參考文件需要放入 repository 時，統一放 `docs/reference/`（有資料時再建立），不混在上線圖片裡。需要經 Vite 匯入處理的資源才建立 `src/assets/`；目前照片走 public/images，不另外維護重複素材目錄。新增真正共用的邏輯時才擴充其他資料夾，不預先建立空的 services／stores 等目錄。
 
 ## 專案位置
 
@@ -66,8 +109,42 @@ npm run preview
 | 設計範圍 | 狀態 |
 | --- | --- |
 | 首頁：找屋、星級服務、品牌優勢、最新消息、聯絡資訊 | 可見 v1.0 快照有五區結構與互動程式，尚待瀏覽器視覺驗證 |
-| 房屋物件內容頁 | 提案範圍的一部分；本次可見快照未包含此頁，需先核對 Codex 是否已有後續實作 |
+| 房屋物件內容頁 | 已建立獨立 property.html；依使用者指示先留圖片與媒體位置，正式資料待補 |
 | 搜尋、會員、委託、消息等業務功能 | Demo 示意，尚未串接 API 或正式資料服務 |
+
+## 房屋物件內容頁
+
+入口為 **`property.html`**，例如正式主機的 `/cthouse-horizontal-demo/property.html`。與首頁採 Vite 靜態多頁建置，`npm run build` 同時產生 `dist/index.html` 與 `dist/property.html`；上傳完整 dist 內容即可，不需要伺服器做 SPA 路由改寫。上方 Nav 仍沿用使用者要求的空 href，沒有將「我要買屋」直接連到單一示意物件。
+
+依使用者附上的 1920 × 5218 長頁設計稿建立：白底導覽、標題與價格、左大右四小的五格相簿、物件摘要、雙欄詳細資料與右側經紀人諮詢卡、聯絡列與區塊錨點、介紹、VR、地圖與設施、行情與影音、四張推薦物件及灰底頁尾。聊天附件實際可見的是 754 × 2048 縮圖，未宣稱逐像素還原。手機保留全部內容，資料與媒體改成上下排列；Nav 可橫向捲動閱讀。
+
+物件頁使用獨立 `src/entries/property.js` 與 `src/pages/property/style.sass`，不載入首頁攔截滾輪、拖曳或鍵盤切場景的行為。字級沿用 `_typography.sass`，新增 `property: 1410px` 設計寬度，所有文字至少 16px；布局仍用 rem 與比例。
+
+### 替換資料與素材
+
+全部可變內容放在 **`src/data/property.json`**。可辨識標題、物件編號與部分數字只作設計稿示意，非即時房源。地址、經紀人姓名／電話／店名、介紹與成交資料未確認，留 null 或空陣列，畫面顯示待補；請核對正式資料後替換。
+
+| 要補的內容 | JSON 欄位 |
+| --- | --- |
+| 彩色 Logo | `brandLogo` |
+| 五張物件照片 | `gallery[].image` |
+| 物件資訊與介紹 | `title`、`address`、`price`、`details`、`introduction` |
+| 經紀人頭像、聯絡資料、QR | `agent.avatar`、`agent`、`agent.qrCodes[].image` |
+| VR、地圖與影音圖片／iframe | `media.vr`、`media.map`、`media.video` 的 `image`／`embedUrl` |
+| 設施分類資料 | `environment.items`（`category`、`name`、`distance`） |
+| 區域行情圖與說明 | `market.image`、`market.notes` |
+| 四張推薦卡 | `recommendations[].image`／`title`／`subtitle`／`price`／`href` |
+| 頁尾公司資訊與徽章 | `footer` |
+
+圖片檔放 `public/images/`，JSON 填相對檔名，支援子資料夾；完整圖片網址由 `src/utils/images.js` 依部署目錄解析，避免再次誤向 assets/images 請求。照片、VR、地圖、影音、QR 與行情圖目前依使用者指示保留位置；沒有假地圖、假 QR、假成交曲線或擷取設計稿照片。正式 iframe 的網址填 `embedUrl`，無須將平台觀看頁網址冒充嵌入網址。
+
+`public/images/property-agent.png` 是依使用者指示生成的虛構成年女性手繪動畫風格插畫，並非稿中或真實經紀人的照片。可在 `agent.avatar` 替換；彩色品牌 Logo 仍留空，不對首頁白色 Logo 套濾鏡。
+
+相簿可開啟原生 dialog，支援上一張／下一張、方向鍵及 Escape；收藏只維持本次頁面狀態。預約看屋／房屋詢問表單只顯示 Demo 提示，沒有送出資料。貸款、降價通知、成交查詢尚未串接。區塊錨點、回頂部、複製連結與列印由瀏覽器執行。
+
+正式建置及 Chromium 驗證通過：根目錄／子目錄入口、1920／1440／1024／768／390／320px 頁面無橫向溢出且文字至少 16px，生成頭像可載入，相簿、表單、錨點、收藏、複製及列印入口正常，無 JS 錯誤。已檢視桌機／手機截圖；首頁五區與背景圖片仍正常。
+
+使用者提供的 <https://orangecat.com.tw/lab.html> 已確認使用 Vue 3 自製 WebGL 環景檢視器，可拖曳、縮放、全螢幕與切場景，需要 2:1 等距柱狀全景圖。本版僅保留 VR 區塊；後續拿到原元件及此房源全景素材再移植，尚未複製該網站程式或引用其他房間的照片。
 
 ## 已確認的首頁規格
 
@@ -158,19 +235,21 @@ QR、品牌標誌、下載徽章與無法辨識的細字仍需正式素材；佔
 
 | 要修改的內容 | 檔案／搜尋名稱 |
 | --- | --- |
-| 主畫面與五區結構、標題層級 | `src/App.vue` |
+| 主畫面與五區結構、標題層級 | `src/pages/home/HomePage.vue` |
+| 房屋物件頁、媒體與版面 | `src/pages/property/PropertyPage.vue`、`src/components/property/PropertyMedia.vue`、`src/pages/property/style.sass` |
+| 物件頁文案、素材及聯絡資料 | `src/data/property.json` |
 | 首頁場景切換 | `goTo`、`trackOffset` |
 | 上方頁面連結及 Logo 首頁網址 | `navigation.primary`、`navigation.company`、`navigation.homeHref` |
 | 滾輪、鍵盤、觸控 | `onWheel`、`onKey`、`onTouchStart`、`onTouchEnd` |
 | 全域事件註冊與清理 | `onMounted`、`onBeforeUnmount` |
 | 側邊連結 | `src/components/PageRail.vue` |
 | 文案、圖示名、圖片與導覽 | `src/data/site.json` |
-| 版面、動畫、RWD | `src/style.sass` |
+| 版面、動畫、RWD | `src/pages/home/style.sass` |
 | Sass 基底 | `src/sass/` |
-| 應用掛載與本地字型 | `src/main.js` |
+| 應用掛載與本地字型 | `src/entries/home.js` |
 | Vite 設定 | `vite.config.js` |
 
-`src/media.js` 是舊版保留檔，可見快照的 `App.vue` 未使用它；更換圖片應修改 `site.json.images`。
+`src/legacy/media.js` 是舊版保留檔，可見快照的 `HomePage.vue` 未使用它；更換圖片應修改 `site.json.images`。
 
 ## Codex 環境交接：2026-10-09
 

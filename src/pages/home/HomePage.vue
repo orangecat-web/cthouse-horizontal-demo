@@ -2,8 +2,9 @@
 // 主畫面：五個場景共用此元件；文案與圖片設定由 site.json 提供。
 // Vue 工具、頁籤元件與網站資料
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import PageRail from './components/PageRail.vue'
-import site from './data/site.json'
+import PageRail from '../../components/PageRail.vue'
+import site from '../../data/site.json'
+import { imageUrl } from '../../utils/images'
 
 // 頁面狀態：active 是從 0 開始的索引；current 供右下頁碼顯示。
 const pages = site.pages
@@ -22,12 +23,7 @@ function refreshInquiryCaptcha() {
 const current = computed(() => pages[active.value])
 // 原圖末端灰色聯絡區較窄；最後一頁停在軌道右端，讓森林與聯絡資訊連續呈現。
 const trackOffset = computed(() => Math.min(active.value * 100, (pages.length - 2) * 100 + site.layout.contactWidthVw))
-// 依頁面與 Vite base 解析成完整圖片網址，避免 CSS 變數中的相對路徑被當成 assets/ 下的資源。
-// 非瀏覽器渲染保留相對路徑；空圖片仍使用 Sass 漸層佔位。
-const imageUrl = (name) => {
-  const path = `${import.meta.env.BASE_URL}images/${encodeURI(name)}`
-  return typeof document === 'undefined' ? path : new URL(path, document.baseURI).href
-}
+// 圖片網址由共用工具解析，支援子目錄；空圖片仍使用 Sass 漸層佔位。
 const photoStyle = (key) => site.images[key] ? { '--panel-image': `url('${imageUrl(site.images[key])}')` } : undefined
 // 滾輪累積量、時間與方向：限制同方向切頁頻率，反向時可立即返回。
 let wheelTotal = 0

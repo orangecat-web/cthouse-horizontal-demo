@@ -1,0 +1,150 @@
+{
+  "_comments": {
+    "_usage": "物件內容頁的版面示意資料。可辨識標題與數字取自使用者設計稿，非即時房源；未確認細字留空，畫面使用 labels.pending。",
+    "brandLogo": "彩色 Logo 檔名，放 public/images；未提供時只顯示品牌文字，不用濾鏡修改首頁白色 Logo。",
+    "gallery": "五格相簿，首張跨兩列。image 填 public/images 中的檔名；null 保留原比例位置。",
+    "details": "兩欄詳細資料，value 為 null 表示待補；不推測縮圖中的地址、電話及介紹。",
+    "agent": "avatar 是依使用者指示生成的虛構成年女性插畫，不對應稿中或真實經紀人。姓名、電話、店名留空待填。QR 使用真實素材，不生成假 QR。",
+    "media": "VR、地圖、影音 image 可填圖片檔名，embedUrl 可填正式 iframe 嵌入網址；皆空時只留區塊。",
+    "market": "行情區只保留圖表位置，未提供成交資料不繪製假曲線。",
+    "recommendations": "推薦物件先保留四張卡片。title、subtitle、price、href 與 image 待使用者填入；不虛構房源。",
+    "footer": "頁尾公司資訊、品牌標誌及下載徽章待正式素材，先保留位置。",
+    "inquiry": "前端 Demo 表單，僅顯示提示，沒有發送資料或串接經紀人。"
+  },
+  "brandLogo": null,
+  "id": "1805660",
+  "title": "華城獨棟精品庭園別墅☆大台北華城☆華城特區康橋學校",
+  "shortTitle": "華城獨棟精品庭園別墅",
+  "address": null,
+  "price": "5,880",
+  "priceUnit": "萬",
+  "breadcrumbs": ["買屋條件找屋", "區域找屋", "新北市", "新店區"],
+  "gallery": [
+    { "id": "exterior", "label": "房屋外觀", "image": null },
+    { "id": "garden", "label": "庭園照片", "image": null },
+    { "id": "terrace", "label": "露臺照片", "image": null },
+    { "id": "living", "label": "室內照片", "image": null },
+    { "id": "view", "label": "景觀照片", "image": null }
+  ],
+  "summary": [
+    { "icon": "area", "label": "建物登記", "value": "73.04 坪", "note": "主建物 60.10 坪" },
+    { "icon": "bed", "label": "格局", "value": "5 房 2 廳 4 衛" },
+    { "icon": "floor", "label": "所在樓層", "value": "1–2 樓 / 共 2 樓" },
+    { "icon": "home", "label": "屋齡", "value": "40 年 7 個月" },
+    { "icon": "layout", "label": "每坪單價", "value": null }
+  ],
+  "quickActions": ["貸款試算", "降價通知我", "附近成交行情"],
+  "details": [
+    { "label": "建物登記", "value": "73.04 坪" },
+    { "label": "主建物", "value": "60.10 坪" },
+    { "label": "土地坪數", "value": "145.05 坪" },
+    { "label": "格局", "value": "5 房 2 廳 4 衛" },
+    { "label": "公設比", "value": null },
+    { "label": "所在樓層", "value": "1–2 樓 / 共 2 樓" },
+    { "label": "建物朝向", "value": null },
+    { "label": "車位類型", "value": null },
+    { "label": "管理費", "value": null },
+    { "label": "車位管理費", "value": null },
+    { "label": "建物結構", "value": null },
+    { "label": "屋齡", "value": "40 年 7 個月" },
+    { "label": "用途", "value": "集合住宅" },
+    { "label": "是否帶租約", "value": null },
+    { "label": "使用現況", "value": null }
+  ],
+  "agent": {
+    "avatar": "property-agent.png",
+    "avatarAlt": "虛構女性經紀人手繪插畫",
+    "store": null,
+    "name": null,
+    "mobile": null,
+    "phone": null,
+    "company": null,
+    "address": null,
+    "qrCodes": [
+      { "label": "經紀人 QR", "image": null },
+      { "label": "物件 QR", "image": null }
+    ]
+  },
+  "inquiry": {
+    "tabs": ["預約看屋", "房屋詢問"],
+    "namePlaceholder": "請輸入您的姓名或稱謂",
+    "phonePlaceholder": "您的手機",
+    "timeLabel": "聯絡時間",
+    "times": ["皆可", "上午", "中午", "下午", "晚上"],
+    "submitLabel": "送出",
+    "privacyNotice": "※當您留下個人資料時，表示您已了解閱讀並同意中信房仲網之隱私權政策。"
+  },
+  "introduction": {
+    "notice": null,
+    "sections": [
+      { "heading": "華城簡介", "paragraphs": [] },
+      { "heading": "環境特色", "paragraphs": [] }
+    ]
+  },
+  "media": {
+    "vr": { "label": "VR 環景看屋", "image": null, "embedUrl": null },
+    "map": { "label": "交通與環境設施", "image": null, "embedUrl": null },
+    "video": { "label": "影音區塊", "image": null, "embedUrl": null }
+  },
+  "environment": {
+    "tabs": ["交通", "生活機能", "學校", "醫療"],
+    "items": []
+  },
+  "market": { "image": null, "notes": [] },
+  "recommendations": [
+    { "id": "related-1", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
+    { "id": "related-2", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
+    { "id": "related-3", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
+    { "id": "related-4", "image": null, "title": null, "subtitle": null, "price": null, "href": "" }
+  ],
+  "footer": {
+    "companyLines": [],
+    "serviceLines": [],
+    "partnerLogos": [null, null, null, null, null, null, null, null],
+    "downloads": [
+      { "label": "Google Play", "image": null, "href": "" },
+      { "label": "App Store", "image": null, "href": "" }
+    ]
+  },
+  "sections": [
+    { "id": "details", "label": "詳細資料" },
+    { "id": "introduction", "label": "物件介紹" },
+    { "id": "vr", "label": "VR 環景看屋" },
+    { "id": "environment", "label": "交通與環境設施" },
+    { "id": "market", "label": "區域開價落點" },
+    { "id": "recommendations", "label": "推薦物件" }
+  ],
+  "labels": {
+    "pending": "資料待補",
+    "photos": "所有照片",
+    "layout": "格局圖",
+    "detailHeading": "詳細資料",
+    "map": "地圖位置",
+    "agent": "專人諮詢",
+    "recommendationHeading": "看過此物件的人也看了",
+    "recommendationImage": "推薦物件照片",
+    "recommendationTitle": "推薦物件",
+    "recommendationPrice": "價格待補",
+    "marketHeading": "區域開價落點",
+    "marketPlaceholder": "區域行情圖表",
+    "copy": "複製連結",
+    "print": "列印",
+    "favorite": "收藏物件",
+    "favorited": "已收藏",
+    "toTop": "回到頂部",
+    "previousPhoto": "上一張照片",
+    "nextPhoto": "下一張照片",
+    "close": "關閉照片",
+    "company": "公司資訊",
+    "service": "服務資訊",
+    "logo": "品牌 Logo",
+    "partner": "品牌標誌",
+    "companyPlaceholder": "公司資訊待補",
+    "servicePlaceholder": "服務資訊待補",
+    "environmentPlaceholder": "周邊設施資料待補",
+    "copySuccess": "物件連結已複製。",
+    "copyFailure": "請複製瀏覽器網址列的物件連結。",
+    "demoInquiry": "此為 Demo 表單，尚未傳送資料。",
+    "demoAction": "此為版面示意，功能尚未串接。"
+  }
+}
