@@ -1,5 +1,10 @@
 // 沿用 Orange Cat 實驗室的 600ms cosine 加減速；回傳清理函式，供元件移除或再次點擊時取消。
 export function animateScrollToTop(duration = 600) {
+  // 僅在瀏覽器明示減少動態時直接回頂；一般模式仍使用完整加減速動畫。
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+    return () => {}
+  }
   const start = window.scrollY
   const scrollRoot = document.documentElement
   const previousBehavior = scrollRoot.style.scrollBehavior

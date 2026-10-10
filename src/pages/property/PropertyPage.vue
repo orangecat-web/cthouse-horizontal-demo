@@ -8,6 +8,7 @@ import PropertyIcon from '../../components/property/PropertyIcon.vue'
 import PanoramaViewer from '../../components/property/PanoramaViewer.vue'
 import DemoMap from '../../components/property/DemoMap.vue'
 import PriceScatterChart from '../../components/property/PriceScatterChart.vue'
+import PropertyLightbox from '../../components/property/PropertyLightbox.vue'
 import { imageUrl } from '../../utils/images'
 import { animateScrollToTop } from '../../utils/animated-scroll'
 
@@ -23,7 +24,6 @@ const recommendationIndex = ref(0)
 const recommendationCount = ref(4)
 const visibleRecommendations = computed(() => property.recommendations.slice(recommendationIndex.value, recommendationIndex.value + recommendationCount.value))
 const recommendationDialog = ref(null)
-const selectedRecommendation = ref(null)
 let recommendationMedia, cancelScroll
 function updateRecommendationCount() {
   recommendationCount.value = recommendationMedia.matches ? 2 : 4
@@ -36,12 +36,11 @@ function turnRecommendations(direction) {
 function onRecommendationClick(event, item) {
   if (item.href) return
   event.preventDefault()
-  selectedRecommendation.value = item
-  recommendationDialog.value.showModal()
+  recommendationDialog.value.openAt(property.recommendations.indexOf(item), event.currentTarget)
 }
+// 推薦預覽也使用標配燈箱；關閉動畫結束後再捲動至諮詢區。
+async function visitInquiry(close) { await close(); window.location.hash = 'inquiry' }
 const galleryDialog = ref(null)
-const photoIndex = ref(0)
-const currentPhoto = computed(() => property.gallery[photoIndex.value])
 const notice = ref('')
 let noticeTimer
 
@@ -51,20 +50,8 @@ function showNotice(message = property.labels.demoAction) {
   clearTimeout(noticeTimer)
   noticeTimer = setTimeout(() => { notice.value = '' }, 3000)
 }
-// 照片對話框使用原生 dialog，保留 Escape 關閉與焦點返回；未提供照片時仍顯示佔位。
-function openGallery(index = 0) {
-  photoIndex.value = index
-  galleryDialog.value.showModal()
-}
-function turnPhoto(direction) {
-  photoIndex.value = (photoIndex.value + direction + property.gallery.length) % property.gallery.length
-}
-function onGalleryKey(event) {
-  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-    event.preventDefault()
-    turnPhoto(event.key === 'ArrowRight' ? 1 : -1)
-  }
-}
+// 照片元件量測點擊來源，從縮圖位置放大進場；照片未提供時仍保留佔位。
+function openGallery(index = 0, event) { galleryDialog.value.openAt(index, event?.currentTarget) }
 // 空電話不導向假號碼；正式電話由使用者填入 agent 資料。
 const phoneHref = (number) => number ? `tel:${number.replace(/[^\d+]/g, '')}` : undefined
 // 列印與回頂部由瀏覽器執行，不攔截一般頁面的滾輪或觸控。
@@ -136,13 +123,13 @@ onBeforeUnmount(() => {
 
       //- 五格相簿：左側主圖跨兩列，右側四張；素材 null 保留位置與可預覽入口。
       .property-gallery
-        button.gallery-tile(v-for="(photo, index) in property.gallery" :key="photo.id" type="button" :aria-label="photo.label + '，開啟照片'" @click="openGallery(index)")
+        button.gallery-tile(v-for="(photo, index) in property.gallery" :key="photo.id" type="button" :aria-label="photo.label + '，開啟照片'" @click="openGallery(index, $event)")
           PropertyMedia(:image="photo.image" :label="photo.label")
         .gallery-actions
           button(type="button" @click="showNotice()")
             PropertyIcon(name="layout")
             span {{ property.labels.layout }}
-          button(type="button" @click="openGallery(0)")
+          button(type="button" @click="openGallery(0, $event)")
             PropertyIcon(name="image")
             span {{ property.labels.photos }}
       .property-summary-row
@@ -316,32 +303,18 @@ onBeforeUnmount(() => {
               span(v-else) {{ item.label }}
       p.property-copyright © {{ site.brand.name }} · DEMO {{ site.version }}
 
-  //- 原生照片對話框：素材待補時可先確認照片順序、版面及按鈕操作。
-  dialog.property-gallery-dialog(ref="galleryDialog" @keydown="onGalleryKey" @click="event => { if (event.target === galleryDialog) galleryDialog.close() }")
-    .gallery-dialog-toolbar
-      p {{ currentPhoto.label }} · {{ photoIndex + 1 }} / {{ property.gallery.length }}
-      button(type="button" :aria-label="property.labels.close" @click="galleryDialog.close()")
-        PropertyIcon(name="close")
-    PropertyMedia(:image="currentPhoto.image" :label="currentPhoto.label")
-    .gallery-dialog-controls
-      button(type="button" :aria-label="property.labels.previousPhoto" @click="turnPhoto(-1)")
-        PropertyIcon.chevron-back(name="chevron")
-      button(type="button" :aria-label="property.labels.nextPhoto" @click="turnPhoto(1)")
-        PropertyIcon(name="chevron")
+  //- 實驗室同款動畫燈箱：圖集與工具文案從 property.json 傳入。
+  PropertyLightbox.property-gallery-dialog(ref="galleryDialog" :items="property.gallery" :labels="property.labels")
   p.property-toast(v-if="notice" role="status") {{ notice }}
-  //- 推薦物件 Demo 預覽：原生 dialog 保留 Escape 與焦點返回，正式連結不攔截。
-  dialog.property-recommendation-dialog(ref="recommendationDialog")
-    template(v-if="selectedRecommendation")
-      .recommendation-dialog-toolbar
-        p {{ property.labels.recommendationPreview }} · {{ property.labels.recommendationDemoLabel }}
-        button(type="button" :aria-label="property.labels.closeRecommendation" @click="recommendationDialog.close()")
-          PropertyIcon(name="close")
-      PropertyMedia(:image="selectedRecommendation.image" :label="property.labels.recommendationImage")
-      h2 {{ selectedRecommendation.title }}
-      p {{ selectedRecommendation.address }}
-      p {{ selectedRecommendation.layout }}｜{{ selectedRecommendation.area }}
-      p.recommendation-price
-        strong {{ selectedRecommendation.price }}
-        span {{ property.priceUnit }}
-      a.contact-agent-link(href="#inquiry" @click="recommendationDialog.close()") {{ property.labels.inquireRecommendation }}
+  //- 推薦預覽共用動畫燈箱：同樣量測來源卡片，完整保留資料與諮詢入口。
+  PropertyLightbox.property-recommendation-lightbox(ref="recommendationDialog" :items="property.recommendations" :labels="property.labels" :aria-label="property.labels.recommendationPreview" :close-label="property.labels.closeRecommendation")
+    template(#caption="{ item, close }")
+      .recommendation-lightbox-caption
+        p {{ property.labels.recommendationDemoLabel }}
+        h2 {{ item.title }}
+        p {{ item.address }} · {{ item.layout }}｜{{ item.area }}
+        p.recommendation-price
+          strong {{ item.price }}
+          span {{ property.priceUnit }}
+        a.contact-agent-link(href="#inquiry" @click.prevent="visitInquiry(close)") {{ property.labels.inquireRecommendation }}
 </template>

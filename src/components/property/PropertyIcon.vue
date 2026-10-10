@@ -31,6 +31,9 @@ const paths = {
   minus: 'M4 12h16',
   fullscreen: 'M3 9V3h6 M15 3h6v6 M21 15v6h-6 M9 21H3v-6',
   rotate: 'M20 8a9 9 0 1 0 1 7 M20 3v5h-5',
+  thumbnails: 'M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z',
+  pause: 'M8 4v16 M16 4v16',
+  diagonal: 'M5 19L19 5 M8 5h11v11',
   reset: 'M4 8a9 9 0 1 1-1 7 M4 3v5h5',
 }
 </script>

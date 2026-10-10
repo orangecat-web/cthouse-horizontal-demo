@@ -4,7 +4,7 @@
 
 原提案未採用，目前作為作品集 Demo 持續整理。設計範圍只有「首頁」與「房屋物件內容頁」；首頁的五個橫向區塊不代表五個獨立網頁。
 
-目前程式版號為 **1.2.0**，與 package.json、package-lock.json 根套件及頁面 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
+目前程式版號為 **1.3.0**，與 package.json、package-lock.json 根套件及頁面 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
 
 本文依目前 repository 與使用者確認規格維護；舊環境交接紀錄另列於下方，不能取代最新程式狀態。接手時仍須先核對分支、Git 狀態與遠端更新。
 
@@ -15,6 +15,7 @@
 | `README.md` | 專案介紹、啟動方式、規格、設計決策、目前狀態與待辦 |
 | `AGENTS.md` | 開發與修改本專案時需遵循的規則 |
 | `CHANGELOG.md` | 按版本記錄新增、修改與修復，不取代現況說明 |
+| `docs/standards/ui-motion.md` | GoTop／Lightbox 必備 JS 動態與新專案可複製的交接規範 |
 
 開發筆記集中在本 README，目前不另設 `PROJECT_NOTES.md`。內容擴大後再按需要拆分，避免維護多份重複說明。
 
@@ -64,7 +65,7 @@ cthouse-horizontal-demo/
 │   │   └── property/          PropertyPage.vue、style.sass
 │   ├── components/            可重用元件；專屬元件按頁面分組
 │   │   ├── PageRail.vue
-│   │   └── property/          PropertyMedia.vue、PropertyIcon.vue、PanoramaViewer.vue、DemoMap.vue、PriceScatterChart.vue
+│   │   └── property/          PropertyMedia.vue、PropertyIcon.vue、PropertyLightbox.vue、PanoramaViewer.vue、DemoMap.vue、PriceScatterChart.vue
 │   ├── data/                  文案、選項、連結與素材設定 JSON
 │   ├── sass/                  共用字級、字型、mixin 與 Sass partial
 │   ├── utils/                 不依賴畫面狀態的共用 JavaScript 工具
@@ -130,7 +131,8 @@ cthouse-horizontal-demo/
 | 五張物件照片 | `gallery[].image` |
 | 物件資訊與介紹 | `title`、`address`、`price`、`details`、`introduction` |
 | 經紀人頭像、聯絡資料、QR | `agent.avatar`、`agent`、`agent.qrCodes[].image` |
-| VR 場景或 iframe | `media.vr.scenes[]` 的 `id`／`label`／`image`／`initialYaw`／`initialPitch`；正式平台可填 `media.vr.embedUrl` |
+| VR 場景或 iframe | `media.vr.scenes[]` 的 `id`／`label`／`image`／`initialYaw`／`initialPitch`／`hotspots`（`yaw`、`pitch` 為度，`targetSceneId` 對應場景）；正式平台可填 `media.vr.embedUrl` |
+| 環景格局圖 | `media.vr.floorPlan` 的 `image`、`alt`、`caption`、`sceneIds`，以及 `spots[]` 的 `sceneId`／`left`／`top`／`width`／`height`（百分比熱區） |
 | 地圖與影音圖片／iframe | `media.map`、`media.video` 的 `image`／`embedUrl` |
 | 設施分類與示意座標 | `environment.tabs`、`environment.items`（`id`、`category`、`name`、`distance`、`x`、`y`）；座標為 0–100 百分比，地圖設定在 `environment.map` |
 | 區域開價散佈圖 | `market.points`（`id`、`label`、`area`、`unitPrice`、`subject`）、`xDomain`／`yDomain`、`xTicks`／`yTicks`、`notes`；座標須位於軸範圍內 |
@@ -141,22 +143,30 @@ cthouse-horizontal-demo/
 
 `public/images/property-agent.png` 是依使用者指示生成的虛構成年女性手繪動畫風格插畫，並非稿中或真實經紀人的照片。可在 `agent.avatar` 替換；彩色品牌 Logo 仍留空，不對首頁白色 Logo 套濾鏡。
 
-相簿可開啟原生 dialog，支援上一張／下一張、方向鍵及 Escape；收藏只維持本次頁面狀態。預約看屋／房屋詢問表單只顯示 Demo 提示，沒有送出資料。貸款、降價通知、成交查詢尚未串接。區塊錨點、回頂部、複製連結與列印由瀏覽器執行。
+相簿使用 `PropertyLightbox.vue` 的原生 dialog，量測點擊來源放大進場／縮回關閉，支援換圖動畫、前後張、方向鍵、Escape、背景關閉、縮圖清單、縮放／平移、手機滑動、每 4 秒輪播與全螢幕。正式照片未提供時仍顯示佔位，圖片縮放控制停用；填入 gallery[].image 即可啟用。收藏只維持本次頁面狀態。預約看屋／房屋詢問表單只顯示 Demo 提示，沒有送出資料。貸款、降價通知、成交查詢尚未串接。區塊錨點、回頂部、複製連結與列印由瀏覽器執行。
 
 正式建置及 Chromium 驗證通過：根目錄／子目錄入口、1920／1440／1024／768／390／320px 頁面無橫向溢出且文字至少 16px，生成頭像可載入，相簿、表單、錨點、收藏、複製及列印入口正常，無 JS 錯誤。已檢視桌機／手機截圖；首頁五區與背景圖片仍正常。
 
-### 物件頁 Demo 互動（1.2.0）
+### 物件頁 Demo 互動
 
 - 回到頂部沿用實驗室的 600ms cosine 加減速；再次點擊會重啟，滾輪、觸控、指標按下或捲動按鍵會取消，避免與使用者操作互相拉扯。
-- `PanoramaViewer.vue` 支援滑鼠／單指拖曳、滾輪／雙指縮放、鍵盤方向鍵及加減鍵、自動旋轉、重設、切場景與全螢幕。原生 Fullscreen API 不可用時改用頁內全螢幕，Escape 可離開；WebGL／圖片失敗會顯示重試提示。視野角限制 35–100 度，俯仰限制 ±80 度。
+- `PanoramaViewer.vue` 支援滑鼠／單指拖曳、滾輪／雙指縮放、鍵盤方向鍵及加減鍵、自動旋轉、重設、切場景與全螢幕。左上使用實驗室淺色房間選單、左下為可展開的格局圖，畫面熱點可從房間進到走廊並返回；三種入口共用切換流程，舊景淡出 220ms、新景淡入 420ms，快速選景僅套用最後一筆。原生 Fullscreen API 不可用時改用頁內全螢幕，Escape 可離開；WebGL／圖片失敗會顯示重試提示。視野角限制 35–100 度，俯仰限制 ±80 度。
 - `DemoMap.vue` 使用本地示意底圖，交通、生活機能、學校、醫療共十筆假資料；分類切換、列表／標記選取互相連動，可拖曳、縮放及重設。填入正式 `media.map.image` 或 `embedUrl` 時優先顯示正式地圖。
 - `PriceScatterChart.vue` 以坪數及每坪開價繪製 15 筆區域示意資料與本物件示意點，可點選／移入查看數值，圖例可切換資料組；不依賴外部圖表 API。
-- 推薦區有六筆示意資料，左右換組；地址與格局／坪數在左，紅色價格及灰色「萬」在右。照片仍留位置。空 href 點擊開啟本地 Demo 預覽，填入正式 href 後使用一般連結。
+- 推薦區有六筆示意資料，左右換組；地址與格局／坪數在左，紅色價格及灰色「萬」在右。照片仍留位置。空 href 點擊開啟共用動畫燈箱的本地 Demo 預覽，填入正式 href 後使用一般連結。
 - Footer 左側電話與地址／來源夥伴改成兩組逐行對齊，品牌在上；右側徽章、寬度及水平位置沿用原版。
 
 1.2.0 已以 Chromium 實際操作驗證根目錄／子目錄、六種螢幕寬度、回頂部動畫與取消、環景 WebGL 畫面變化、滑鼠／雙指手勢、場景與全螢幕、WebGL 不可用提示、設施選取連動、圖表及推薦換組／預覽；無橫向溢出、低於 16px 的文字、JS 錯誤或本地素材失敗，並檢視桌機與手機截圖。
 
-環景來源是使用者提供的 <https://orangecat.com.tw/lab.html> **上線版**。依公開建置程式的投影與操作方式整理為本專案元件，未取得原始 Vue 檔。既有示範素材下載至本地，無執行時跨站依賴：`public/images/panoramas/demo-room.jpg` 來自 `/images/panoramas/360room.jpg`（醒吾北歐風套房示範），`demo-studio.svg` 來自 `/images/panoramas/design-studio.svg`（向量展間）。兩者均非本房源，畫面及 JSON 保留說明；日後替換正式 2:1 全景圖即可，不使用一般照片冒充環景。
+1.3.0 已驗證來源位置進場／離場、換圖與縮圖、真實圖片縮放／拖曳／輪播／全螢幕、手機滑動、開場途中關閉、推薦預覽、格局圖／選單／熱點、延遲載入切景及減少動態模式。六種寬度沒有橫向溢出或低於 16px 的文字，並檢視桌機／手機截圖。
+
+環景來源是使用者提供的 <https://orangecat.com.tw/lab.html> **上線版**。依公開建置程式的投影與操作方式整理為本專案元件，未取得原始 Vue 檔。既有示範素材下載至本地，無執行時跨站依賴：`public/images/panoramas/demo-room.jpg` 來自 `/images/panoramas/360room.jpg`（醒吾北歐風套房示範），`demo-studio.svg` 來自 `/images/panoramas/design-studio.svg`（向量展間）。另新增 `demo-corridor.png`，來源 `/images/panoramas/corridor-simulated.png`（依格局圖生成的走廊示意，非實拍），及 `demo-floor-plan.jpg`，來源 `/images/panoramas/fourth-floor-plan.jpg`（實驗室示範格局）。所有素材均非本房源，畫面及 JSON 保留說明；日後替換正式 2:1 全景圖即可，不使用一般照片冒充環景。
+
+### 所有新專案都要帶入的動畫規範
+
+使用者確認 **GoTop 平滑加減速與 Lightbox 的 JavaScript 進出場／換圖動畫是標配，不得省略**。規範已寫入 AGENTS.md 及 [網頁互動標配](docs/standards/ui-motion.md)，包含動畫時長、清理、快速操作與瀏覽器驗證要求。新專案建立或移植時，必須把規範文件及 AGENTS 規則帶入新 repository；對話、工作區上層規則及雲端快照都不保證會在另一個專案自動存在。
+
+本工作區另有 `/workspace/AGENTS.md` 指向共用規範，但它不屬於此 repository。Git 可攜版本是上述 docs 檔與本專案 AGENTS；其他工作區需帶入它們。一般模式完整播放動畫，瀏覽器明示 `prefers-reduced-motion` 時保留操作並減少動態。
 
 ## 已確認的首頁規格
 
@@ -249,6 +259,7 @@ QR、品牌標誌、下載徽章與無法辨識的細字仍需正式素材；佔
 | --- | --- |
 | 主畫面與五區結構、標題層級 | `src/pages/home/HomePage.vue` |
 | 房屋物件頁、媒體與版面 | `src/pages/property/PropertyPage.vue`、`src/components/property/PropertyMedia.vue`、`src/pages/property/style.sass` |
+| 燈箱動畫、縮放、縮圖及輪播 | `src/components/property/PropertyLightbox.vue` |
 | 環景互動與 WebGL 投影 | `src/components/property/PanoramaViewer.vue`、`src/utils/panorama-renderer.js` |
 | 示意設施地圖／開價散佈圖 | `src/components/property/DemoMap.vue`、`src/components/property/PriceScatterChart.vue` |
 | 回頂部動畫與取消清理 | `src/utils/animated-scroll.js` |

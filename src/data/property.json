@@ -2,7 +2,7 @@
   "_comments": {
     "_usage": "物件內容頁的版面示意資料。可辨識標題與數字取自使用者設計稿，非即時房源；未確認細字留空，畫面使用 labels.pending。",
     "brandLogo": "彩色 Logo 檔名，放 public/images；未提供時只顯示品牌文字，不用濾鏡修改首頁白色 Logo。",
-    "gallery": "五格相簿，首張跨兩列。image 填 public/images 中的檔名；null 保留原比例位置。",
+    "gallery": "五格相簿，首張跨兩列。image 填本地檔名，null 保留比例位置；PropertyLightbox 必須有來源縮圖進出場及換圖動畫，縮放需真實圖片才能使用。",
     "details": "兩欄詳細資料，value 為 null 表示待補；不推測縮圖中的地址、電話及介紹。",
     "agent": "avatar 是依使用者指示生成的虛構成年女性插畫，不對應稿中或真實經紀人。姓名、電話、店名留空待填。QR 使用真實素材，不生成假 QR。",
     "media": "VR 使用 scenes[].image 的本地 2:1 示範全景，embedUrl 可改用正式 iframe；地圖 image/embedUrl 留空時顯示示意地圖，影音皆空時保留區塊。",
@@ -11,7 +11,7 @@
     "footer": "左側電話、地址與物件來源文字依使用者第三張局部圖；品牌標誌與下載區維持原位置與佔位。",
     "inquiry": "前端 Demo 表單，僅顯示提示，沒有發送資料或串接經紀人。",
     "environment": "交通、生活機能、學校與醫療均為使用者授權的虛構 Demo 資料；x/y 為示意地圖百分比座標，不代表地理定位。",
-    "media.vr": "使用 Orange Cat 實驗室的 WebGL 球面投影與既有示範全景；scenes[].image 放 public/images 的 2:1 圖片，demoLabel 明確標示非本物件。"
+    "media.vr": "沿用 Orange Cat 實驗室示範素材。scenes[].image 使用本地 2:1 圖片；hotspots 的 yaw/pitch 為度，targetSceneId 對應場景；floorPlan 圖片、sceneIds、spots 百分比熱區可替換，三種入口共用選場景與淡出／淡入。"
   },
   "brandLogo": null,
   "id": "1805660",
@@ -220,11 +220,37 @@
       "scenes": [
         {
           "id": "demo-room",
-          "label": "房間示範",
+          "label": "醒吾北歐風套房",
           "image": "panoramas/demo-room.jpg",
           "initialYaw": 0,
           "initialPitch": 0,
-          "credit": "Orange Cat 實驗室：醒吾北歐風套房示範素材，非此房源"
+          "credit": "Orange Cat 實驗室：醒吾北歐風套房示範素材，非此房源",
+          "hotspots": [
+            {
+              "id": "room-door",
+              "label": "走出房間 · 走廊示意",
+              "yaw": 169,
+              "pitch": -7,
+              "targetSceneId": "demo-corridor"
+            }
+          ]
+        },
+        {
+          "id": "demo-corridor",
+          "label": "四樓走廊（模擬）",
+          "image": "panoramas/demo-corridor.png",
+          "initialYaw": 0,
+          "initialPitch": 0,
+          "credit": "Orange Cat 實驗室：依格局圖生成的走廊示意，非實拍、非此房源",
+          "hotspots": [
+            {
+              "id": "corridor-door",
+              "label": "返回醒吾北歐風套房",
+              "yaw": -135,
+              "pitch": -3,
+              "targetSceneId": "demo-room"
+            }
+          ]
         },
         {
           "id": "demo-studio",
@@ -234,7 +260,40 @@
           "initialPitch": 0,
           "credit": "Orange Cat 實驗室：向量展間示範素材，非實拍"
         }
-      ]
+      ],
+      "menuLabel": "ROOMS",
+      "currentLocationLabel": "目前位置",
+      "expandFloorPlanLabel": "展開格局圖",
+      "collapseFloorPlanLabel": "收起格局圖",
+      "floorPlan": {
+        "image": "panoramas/demo-floor-plan.jpg",
+        "sceneIds": [
+          "demo-room",
+          "demo-corridor"
+        ],
+        "alt": "實驗室示範四樓格局圖：407 套房與走廊，非本物件",
+        "caption": "Demo 格局圖 · 非本物件。點選房間或走廊切換環景。",
+        "spots": [
+          {
+            "id": "room-407",
+            "label": "407 房間",
+            "sceneId": "demo-room",
+            "left": 63,
+            "top": 53,
+            "width": 32,
+            "height": 40
+          },
+          {
+            "id": "corridor",
+            "label": "四樓走廊",
+            "sceneId": "demo-corridor",
+            "left": 23,
+            "top": 44,
+            "width": 53,
+            "height": 7
+          }
+        ]
+      }
     },
     "map": {
       "label": "交通與環境設施",
@@ -664,6 +723,14 @@
     "recommendationPreview": "推薦物件預覽",
     "closeRecommendation": "關閉物件預覽",
     "inquireRecommendation": "詢問此物件",
-    "facilityListLabel": "周邊設施列表"
+    "facilityListLabel": "周邊設施列表",
+    "showThumbnails": "顯示縮圖",
+    "hideThumbnails": "隱藏縮圖",
+    "zoomInPhoto": "放大圖片",
+    "zoomOutPhoto": "縮小圖片",
+    "startSlideshow": "開始輪播",
+    "pauseSlideshow": "暫停輪播",
+    "lightboxFullscreen": "燈箱全螢幕",
+    "exitLightboxFullscreen": "退出燈箱全螢幕"
   }
 }

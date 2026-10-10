@@ -106,3 +106,20 @@ export class PanoramaRenderer {
     this.hasImage = false
   }
 }
+
+// 世界座標經逆視角旋轉後投影到畫面，與 shader 的 yaw／pitch 保持一致，單位均為度。
+export function projectPanoramaHotspot(hotspot, view, size) {
+  if (!size.width || !size.height) return null
+  const radians = degrees => degrees * Math.PI / 180
+  const yaw = radians(hotspot.yaw), pitch = radians(hotspot.pitch)
+  const x = Math.sin(yaw) * Math.cos(pitch), y = Math.sin(pitch), z = Math.cos(yaw) * Math.cos(pitch)
+  const cy = Math.cos(radians(view.yaw)), sy = Math.sin(radians(view.yaw))
+  const rotatedX = cy * x - sy * z, rotatedZ = sy * x + cy * z
+  const cp = Math.cos(radians(view.pitch)), sp = Math.sin(radians(view.pitch))
+  const cameraY = cp * y - sp * rotatedZ, cameraZ = sp * y + cp * rotatedZ
+  if (cameraZ <= 0) return null
+  const focal = 1 / Math.tan(radians(view.fov) / 2)
+  const screenX = rotatedX / cameraZ * focal / (size.width / size.height), screenY = cameraY / cameraZ * focal
+  if (Math.abs(screenX) > 1 || Math.abs(screenY) > 1) return null
+  return { left: `${(screenX + 1) * 50}%`, top: `${(1 - screenY) * 50}%` }
+}

@@ -16,7 +16,7 @@ body
   margin: 0
   font-size: type.size('body', 'property')
 
-body:has(.property-gallery-dialog[open])
+body:has(.property-lightbox[open])
   overflow: hidden
 
 button, input, select
@@ -634,33 +634,175 @@ button, input, select
     padding: 1rem
     border-top: 1px solid #c6cac7
 
-// 照片原生對話框與提示：Escape 自動關閉，沒有全域事件或額外套件。
-.property-gallery-dialog
-  width: min(90vw, 80rem)
-  padding: 1.2rem
+// 標配動畫燈箱：1150ms 來源位置進場、380ms 縮回與換圖淡入，動畫由元件 JS 驅動。
+.property-lightbox
+  width: 100vw
+  max-width: none
+  height: 100dvh
+  max-height: none
+  position: fixed
+  inset: 0
+  margin: 0
+  padding: 0
   border: 0
-  border-radius: .5rem
-  color: #646866
-  font-size: type.size('body', 'property')
+  overflow: hidden
+  background: #121315f5
+  color: #f7f7f7
+  font-size: type.size('small', 'property')
   &::backdrop
-    background: #0009
-  .gallery-dialog-toolbar
+    background: transparent
+  &[open]:not(.is-ready)
+    opacity: 0
+  button
+    border: 0
+    background: transparent
+    color: inherit
+    display: grid
+    place-items: center
+    padding: 0
+    &:hover, &[aria-pressed='true']
+      background: #ffffff1f
+    &:disabled
+      opacity: .35
+  .property-icon
+    width: 1.6rem
+    height: 1.6rem
+  .chevron-back
+    transform: rotate(180deg)
+  .lightbox-shell
+    height: 100%
+    display: grid
+    grid-template-rows: 3.2rem minmax(0, 1fr) auto
+    &:fullscreen
+      width: 100vw
+      height: 100dvh
+      background: #121315
+  .lightbox-toolbar
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 1rem
-    margin-bottom: 1rem
-  > .property-media
-    height: min(60vh, 40rem)
-  .gallery-dialog-controls
+    padding-left: 1.5rem
+    min-width: 0
+    z-index: 3
+  .lightbox-count
+    margin: 0
+    white-space: nowrap
+  .lightbox-actions
     display: flex
-    justify-content: center
-    gap: 2rem
-    margin-top: 1rem
-  button
-    padding: .5rem
-  .chevron-back
-    transform: rotate(180deg)
+    height: 100%
+    button
+      width: 3.2rem
+      height: 3.2rem
+  .lightbox-stage
+    position: relative
+    display: grid
+    place-items: center
+    min-height: 0
+    overflow: hidden
+  .lightbox-motion
+    display: grid
+    width: min(80rem, calc(100vw - 10rem))
+    height: 100%
+    max-height: calc(100dvh - 10rem)
+    position: relative
+  .lightbox-media
+    grid-area: 1 / 1
+    width: 100%
+    height: 100%
+    min-height: 0
+    display: grid
+    align-items: center
+    touch-action: pan-y
+    .property-media
+      width: 100%
+      height: 100%
+      background: transparent
+      transition: transform .25s
+      img
+        object-fit: contain
+        pointer-events: none
+        user-select: none
+    .media-placeholder
+      background: #e9edea
+    &.is-zoomed
+      cursor: grab
+      touch-action: none
+    &.is-dragging
+      cursor: grabbing
+      .property-media
+        transition: none
+  .lightbox-arrow
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    width: 3.2rem
+    height: 3.5rem
+    z-index: 2
+    background: #0006
+  .lightbox-prev
+    left: 0
+  .lightbox-next
+    right: 0
+  .lightbox-bottom
+    z-index: 2
+    min-height: 3.5rem
+  .lightbox-caption
+    text-align: center
+    margin: .5rem 0 1rem
+  .lightbox-thumbnails
+    display: flex
+    justify-content: safe center
+    gap: .5rem
+    overflow-x: auto
+    padding: .5rem 1rem
+    button
+      flex: 0 0 5.5rem
+      height: 3.5rem
+      border: 2px solid transparent
+      border-radius: .2rem
+      overflow: hidden
+      font-size: type.size('small', 'property')
+      background: #ffffff14
+      &[aria-current='true']
+        border-color: #ff9a3d
+      img
+        width: 100%
+        height: 100%
+        object-fit: cover
+  .lightbox-switch-enter-active, .lightbox-switch-leave-active
+    transition: opacity .42s, transform .42s
+  .lightbox-switch-enter-from
+    opacity: 0
+    transform: scale(1.025)
+  .lightbox-switch-leave-to
+    opacity: 0
+    transform: scale(.985)
+  &.is-ready:not(.is-closing)
+    .lightbox-toolbar, .lightbox-bottom, .lightbox-arrow
+      animation: lightbox-tools-in .48s .12s both
+@keyframes lightbox-tools-in
+  from
+    opacity: 0
+  to
+    opacity: 1
+@media (max-width: 48rem)
+  .property-lightbox
+    .lightbox-toolbar
+      padding-left: .6rem
+    .lightbox-actions button
+      width: 2.5rem
+    .lightbox-motion
+      width: calc(100vw - 5rem)
+      max-height: calc(100dvh - 12rem)
+    .lightbox-arrow
+      width: 2.4rem
+@media (prefers-reduced-motion: reduce)
+  .property-lightbox
+    .lightbox-switch-enter-active, .lightbox-switch-leave-active, .lightbox-media .property-media
+      transition: none
+    .lightbox-toolbar, .lightbox-bottom, .lightbox-arrow
+      animation: none !important
+
 .property-toast
   position: fixed
   bottom: 2rem
@@ -844,26 +986,159 @@ button, input, select
     outline: none
     &:active
       cursor: grabbing
-  .panorama-scene-bar
+  // 實驗室浮動選單、格局圖與空間熱點；配色與位置沿用，文字遵守 16px 下限。
+  .panorama-scene-menu, .panorama-floorplan
     position: absolute
-    top: 1rem
-    left: 1rem
-    right: 1rem
+    z-index: 5
+    left: 1.5rem
+    border: 1px solid #fffcf780
+    border-radius: .8rem
+    background: #fffcf7e6
+    backdrop-filter: blur(12px)
+    color: #1c2420
+    box-shadow: 0 .6rem 2rem #1c242038
+    font-size: type.size('small', 'property')
+    button
+      color: inherit
+      border: 0
+      background: transparent
+      font-size: inherit
+      text-align: left
+      &:hover
+        background: #ffe7d0
+  .panorama-scene-menu
+    top: 1.5rem
+    width: min(15rem, calc(100% - 3rem))
+    padding: .4rem
+  .panorama-menu-toggle
+    width: 100%
     display: flex
     align-items: center
     justify-content: space-between
-    gap: .6rem
-    pointer-events: none
-    font-size: type.size('small', 'property')
+    gap: .7rem
+    border-radius: .4rem
+    padding: .45rem .6rem
+  .panorama-menu-toggle-text
+    display: grid
+    min-width: 0
+    gap: .2rem
+    font-weight: 700
+    small
+      color: #65716b
+      font-size: type.size('small', 'property')
+      letter-spacing: .07em
     > span
-      background: #17251edb
-      padding: .4rem .6rem
-    select
-      pointer-events: auto
-      max-width: 40%
-      border: 0
-      background: #17251edb
-      color: white
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+  .panorama-menu-list
+    max-height: 11rem
+    overflow-y: auto
+    overscroll-behavior: contain
+    display: grid
+  .panorama-menu-option
+    width: 100%
+    min-height: 2.7rem
+    padding: .5rem .65rem
+    border-radius: .35rem
+    &.is-active
+      background: #ff9a3d
+  .panorama-topline
+    position: absolute
+    z-index: 2
+    top: 1.6rem
+    right: 1.5rem
+    padding: .2rem .4rem
+    text-shadow: 0 2px 8px #142c31
+    background: #1c24204d
+    font-size: type.size('small', 'property')
+    pointer-events: none
+  .panorama-floorplan
+    bottom: 1.3rem
+    width: 11rem
+    display: flex
+    flex-direction: column
+    max-height: calc(100% - 10rem)
+    overflow: hidden
+    &.is-open
+      width: min(18rem, calc(100% - 3rem))
+  .panorama-floorplan-toggle
+    width: 100%
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: .7rem .85rem
+    gap: .5rem
+    font-weight: 700
+    flex: 0 0 auto
+  .panorama-floorplan-content
+    min-height: 0
+    max-height: min(55vh, 24rem)
+    padding: 0 .6rem .6rem
+    overflow-y: auto
+    img
+      display: block
+      width: 100%
+      height: auto
+    p
+      color: #65716b
+      margin: .5rem .15rem 0
+      line-height: 1.5
+  .panorama-floorplan-map
+    position: relative
+  .panorama-map-spot
+    position: absolute
+    display: grid
+    place-items: center
+    padding: 0
+    min-height: 1.6rem
+    border: 1px dashed #d45b13 !important
+    border-radius: .2rem
+    background: #ff9a3d17 !important
+    span
+      font-size: type.size('small', 'property')
+      line-height: 1.25
+      background: #fffcf7ed
+      border-radius: .2rem
+      padding: .1rem .25rem
+      white-space: nowrap
+    &.is-current, &:hover
+      background: #ff9a3d4d !important
+      border: 2px solid #e75c0a !important
+  .panorama-hotspot
+    position: absolute
+    z-index: 3
+    display: grid
+    justify-items: center
+    gap: .7rem
+    max-width: 14rem
+    transform: translate(-50%, -50%)
+    border: 0
+    background: transparent
+    padding: .5rem
+    color: white
+    font-size: type.size('small', 'property')
+    .panorama-hotspot-icon
+      display: grid
+      place-items: center
+      width: 3.2rem
+      height: 3.2rem
+      border-radius: 50%
+      background: #ff9a3d
+      border: 2px solid #fffcf7
+      color: #1c2420
+      box-shadow: 0 0 0 .45rem #fffcf73b, 0 .25rem 1.2rem #1c2420a6
+      transition: transform .2s
+      .property-icon
+        width: 1.6rem
+        height: 1.6rem
+    .panorama-hotspot-label
+      text-align: center
+      padding: .3rem .6rem
+      background: #1c2420db
+      line-height: 1.4
+    &:hover .panorama-hotspot-icon
+      transform: scale(1.12)
   .panorama-status
     position: absolute
     inset: 0
@@ -883,7 +1158,8 @@ button, input, select
   .panorama-help
     position: absolute
     bottom: 1rem
-    left: 1rem
+    left: 14rem
+    right: 17rem
     padding: .4rem .6rem
     font-size: type.size('small', 'property')
     background: #17251edb
@@ -1190,38 +1466,23 @@ button, input, select
     font-size: type.size('small', 'property')
 .property-recommendations .recommendation-card .recommendation-price strong
   margin-top: 0
-.property-recommendation-dialog
-  width: min(90vw, 42rem)
-  padding: 1.3rem
-  border: 0
-  border-radius: .5rem
-  color: #646866
-  font-size: type.size('body', 'property')
-  &::backdrop
-    background: #0009
-  .recommendation-dialog-toolbar
-    display: flex
-    justify-content: space-between
-    align-items: center
-    margin-bottom: 1rem
-    gap: 1rem
-  > .property-media
-    height: auto
-    aspect-ratio: 1.6
-    margin-bottom: 1rem
+.recommendation-lightbox-caption
+  text-align: center
+  max-height: 28dvh
+  overflow-y: auto
+  padding: .5rem 1rem 1rem
+  font-size: type.size('small', 'property')
+  p, h2
+    margin: 0
   h2
     font-size: type.size('subheading', 'property')
     font-weight: 400
-    margin-bottom: .6rem
   .contact-agent-link
-    display: block
+    display: inline-block
+    margin-top: .5rem
+    padding: .3rem 1rem
     background: #12a2a5
     color: white
-    text-align: center
-    margin-top: 1rem
-    padding: .5rem
-body:has(.property-recommendation-dialog[open])
-  overflow: hidden
 
 // 只調整 Footer 的左側文字組：電話與地址／來源兩組逐行對齊；右側布局沿用原規則。
 .property-footer
@@ -1249,24 +1510,37 @@ body:has(.property-recommendation-dialog[open])
     column-gap: 0
     .footer-company
       margin-bottom: 2rem
+  // 手機採實驗室的右側直排控制；展開格局圖時收起選單，不讓浮層互相遮蓋。
   .panorama-viewer
-    .panorama-scene-bar
-      top: .5rem
-      left: .5rem
-      right: .5rem
-      align-items: flex-start
-      > span
-        max-width: 57%
-      select
-        max-width: 43%
-    .panorama-controls
-      bottom: .5rem
-      right: .5rem
-    .panorama-help
-      left: .5rem
-      bottom: 3.6rem
-      right: .5rem
+    min-height: 30rem
+    .panorama-scene-menu
+      left: .9rem
+      top: .9rem
+      width: min(14rem, calc(100% - 4.5rem))
+    .panorama-topline
+      top: auto
+      bottom: .7rem
+      left: .9rem
+      right: 4.2rem
       text-align: center
+    .panorama-floorplan
+      left: .9rem
+      bottom: 3.4rem
+      width: 11rem
+      max-height: calc(100% - 11rem)
+      &.is-open
+        width: min(17rem, calc(100% - 5rem))
+    .panorama-floorplan-content
+      max-height: min(58vh, 22rem)
+    .panorama-controls
+      flex-direction: column
+      bottom: .9rem
+      right: .9rem
+      button
+        width: 2.35rem
+        height: 2.35rem
+    .panorama-help
+      display: none
   .property-recommendations
     .recommendation-card
       padding-left: .5rem
