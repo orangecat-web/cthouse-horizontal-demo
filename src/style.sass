@@ -121,24 +121,25 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
   z-index: 31
   top: 29%
   left: 0
-  display: grid
   padding: 0.8rem 0.4rem
-  background: rgba(255, 255, 255, .68)
+  background: rgba(255, 255, 255, .35)
   border-radius: 0 0.533333rem 0.533333rem 0
   box-shadow: 0 0.2rem 1.466667rem #0002
-  backdrop-filter: blur(0.466667rem)
-  a
-    +sp.tac
-  button, a
-    width: 2.133333rem
-    height: 2.533333rem
-    padding: 0
-    border: 0
-    background: transparent
-    color: #333
-    font-size: 1rem
-    &.selected, &:hover
-      color: #169f9f
+  backdrop-filter: blur(.7rem)
+  div
+    display: grid
+    a
+      +sp.tac
+    button, a
+      width: 2.133333rem
+      height: 2.533333rem
+      padding: 0
+      border: 0
+      background: transparent
+      color: #333
+      font-size: 1rem
+      &.selected, &:hover
+        color: #169f9f
 
   // Google 圖示覆寫字型預設尺寸，沿用本專案 rem 單位。
   .material-symbols-outlined
