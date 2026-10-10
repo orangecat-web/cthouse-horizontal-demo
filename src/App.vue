@@ -100,11 +100,6 @@ function goTo(index) {
   active.value = next
   if (compact()) document.getElementById(pages[next].id)?.scrollIntoView({ behavior: 'smooth' })
 }
-// 上方導覽以 JSON 的 page/id 找到頁面，再交給 goTo 切換。
-function goToPage(id) {
-  const index = pages.findIndex(page => page.id === id)
-  if (index !== -1) goTo(index)
-}
 // 固定切頁間隔，不因持續收到滾輪事件而無限延長；反向滾動可立即返回。
 function onWheel(event) {
   if (compact() || event.ctrlKey) return
@@ -171,15 +166,15 @@ onBeforeUnmount(() => {
 <template lang="pug">
 //- 整頁容器：接收觸控手勢；以下 //- 為 Pug 原始碼註解，不會產生畫面元素。
 .site-shell(@touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd")
-  //- 共用導覽：黑至透明漸層、固定白色文字及原始白色 Logo，不隨場景變色。
+  //- 共用導覽：連結網址由 navigation 提供；黑至透明漸層、固定白色文字及 Logo。
   header.site-header
     nav.top-nav(aria-label="主要導覽")
-      button(v-for="item in site.navigation.primary" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
+      a.nav-link(v-for="item in site.navigation.primary" :key="item.label" :href="item.href || undefined") {{ item.label }}
       //- 網站唯一 H1：品牌 Logo；品牌文字作為圖片替代文字。
       h1.brand-heading
-        button.brand(:aria-label="site.brand.name + '，回首頁'" @click="goTo(0)")
+        a.brand(:aria-label="site.brand.name + '，回首頁'" :href="site.navigation.homeHref")
           img.brand-logo(:src="imageUrl(site.images.logo)" :alt="site.brand.name" width="80" height="37")
-      button(v-for="item in site.navigation.company" :key="item.label" @click="goToPage(item.page)") {{ item.label }}
+      a.nav-link(v-for="item in site.navigation.company" :key="item.label" :href="item.href || undefined") {{ item.label }}
 
   //- 側邊欄：連結到其他頁面
   PageRail(:links="site.sidebarLinks")

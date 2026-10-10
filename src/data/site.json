@@ -2,8 +2,9 @@
   "_comments": {
     "_usage": "此區是說明資料，App.vue 不使用它產生畫面；標準 JSON 不支援 //，因此用 _comments 記錄欄位用途。",
     "version": "右下角 DEMO 版本，與 package.json、package-lock.json 根套件及 CHANGELOG 的目前版號同步。",
-    "brand": "品牌名稱與英文；name 同時用於 Logo 按鈕的朗讀名稱和聯絡頁標題。",
-    "navigation.primary / navigation.company": "上方導覽的兩組連結；label 是顯示文字，page 對應 pages[].id。",
+    "brand": "品牌名稱與英文；name 同時用於 Logo 連結的朗讀名稱和聯絡頁標題。",
+    "navigation.primary / navigation.company": "上方導覽的兩組其他頁面連結；label 是顯示文字，href 是目標網址。未提供的 href 留空，不切換首頁場景，也不猜造頁面。",
+    "navigation.homeHref": "品牌 Logo 的首頁連結；./ 相對於目前部署目錄。",
     "pages": "首頁橫向區塊與頁碼；與側邊外部連結 sidebarLinks 分開。",
     "pages[].id / label / number / icon": "id 對應 section ID；label 是頁籤朗讀名稱；number 是右下頁碼；icon 是 Google Material Symbols Outlined 的圖示名稱，例如 home、star、verified、article、mail。",
     "home": "01 首頁／找屋介面。",
@@ -39,46 +40,47 @@
     "service.inquiry.contactTimes": "五個可複選聯絡時段，使用獨立 label 與相同欄位名稱，值以時段文字區分。",
     "service.inquiry.captcha / refreshLabel": "純前端示意驗證碼，更新僅替換顯示文字，沒有後端驗證能力。"
   },
-  "version": "1.0.5",
+  "version": "1.0.6",
   "brand": {
     "name": "中信房屋",
     "english": "CHINATRUST REAL ESTATE CO."
   },
   "navigation": {
+    "homeHref": "./",
     "primary": [
       {
         "label": "我要買屋",
-        "page": "home"
+        "href": ""
       },
       {
         "label": "我要租屋",
-        "page": "home"
+        "href": ""
       },
       {
         "label": "售屋委託",
-        "page": "service"
+        "href": ""
       },
       {
         "label": "成交行情",
-        "page": "news"
+        "href": ""
       }
     ],
     "company": [
       {
         "label": "服務據點",
-        "page": "service"
+        "href": ""
       },
       {
         "label": "關於中信",
-        "page": "about"
+        "href": ""
       },
       {
         "label": "徵才公告",
-        "page": "news"
+        "href": ""
       },
       {
         "label": "會員專區",
-        "page": "contact"
+        "href": ""
       }
     ]
   },

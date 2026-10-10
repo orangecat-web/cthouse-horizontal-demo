@@ -4,7 +4,7 @@
 
 原提案未採用，目前作為作品集 Demo 持續整理。設計範圍只有「首頁」與「房屋物件內容頁」；首頁的五個橫向區塊不代表五個獨立網頁。
 
-目前程式版號為 **1.0.5**，與 package.json、package-lock.json 根套件及右下角 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
+目前程式版號為 **1.0.6**，與 package.json、package-lock.json 根套件及右下角 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
 
 文件整理日期：2026-10-09（Asia/Taipei）。內容依本對話可見的 v1.0 更新快照、已確認規格，以及使用者提供的 Codex 環境回報整理；本次未直接讀取 Codex repository 的最新提交。接手時請先核對目前分支與原始碼，不能把這份交接文件當作最新程式驗證結果。
 
@@ -85,7 +85,9 @@ npm run preview
 8. 徵才公告
 9. 會員專區
 
-Logo 包在首頁唯一的 H1，圖片需提供品牌名稱作為替代文字。「找到你的最適生活圈」改為 H2。不要額外加入「關於中信」造成導覽項目變多。
+Logo 包在首頁唯一的 H1，圖片需提供品牌名稱作為替代文字。「找到你的最適生活圈」為 H2；保留目前導覽中的「關於中信」。
+
+上方八個文字項目都是其他頁面的 `a` 連結，網址填在 `site.json` 的 `navigation.primary[].href` 與 `navigation.company[].href`，與首頁五個場景分開。目前依使用者指示將網址留空待填，空值不輸出 `href`，避免意外重新載入或切換場景；填入後由瀏覽器正常導頁。Logo 使用 `navigation.homeHref: "./"` 回到目前部署目錄的首頁。
 
 Header 改用由上方黑色漸變至下方透明的垂直背景，Nav 文字與原始白色 Logo 固定白色；文字 hover 顯示 1px 白色底線，預留透明底線避免布局跳動。已移除原有混色與 Logo 變色濾鏡。
 
@@ -126,7 +128,7 @@ Header 改用由上方黑色漸變至下方透明的垂直背景，Nav 文字與
 
 `PageRail.vue` 現在接收 `links`，使用 `<a>`，不是首頁切頁元件。不能只把 `pages` 改名成 `sidebarLinks`，否則 `site.pages`、切頁與頁碼會失去資料。
 
-若將 `pages` 整理成 `sections`，需同步修改 JS、導覽查找與 `_comments`，並驗證切頁；這項命名整理不代表已完成。
+若將 `pages` 整理成 `sections`，需同步修改 JS、場景引用與 `_comments`，並驗證切頁；這項命名整理不代表已完成。上方 Nav 的 href 不依賴場景 ID。
 
 Google 圖示的 `icon` 填名稱，例如 `home`、`bookmark_border`、`verified`，由 `.material-symbols-outlined` 顯示。未指定的目標網址保持待辦，不猜造路徑。空 `href` 不是已完成的連結，驗收前需逐項核對。
 
@@ -157,7 +159,8 @@ QR、品牌標誌、下載徽章與無法辨識的細字仍需正式素材；佔
 | 要修改的內容 | 檔案／搜尋名稱 |
 | --- | --- |
 | 主畫面與五區結構、標題層級 | `src/App.vue` |
-| 切頁與導覽定位 | `goTo`、`goToPage`、`trackOffset` |
+| 首頁場景切換 | `goTo`、`trackOffset` |
+| 上方頁面連結及 Logo 首頁網址 | `navigation.primary`、`navigation.company`、`navigation.homeHref` |
 | 滾輪、鍵盤、觸控 | `onWheel`、`onKey`、`onTouchStart`、`onTouchEnd` |
 | 全域事件註冊與清理 | `onMounted`、`onBeforeUnmount` |
 | 側邊連結 | `src/components/PageRail.vue` |
