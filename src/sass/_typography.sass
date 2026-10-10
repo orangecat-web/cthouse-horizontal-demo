@@ -1,0 +1,37 @@
+// 共用文字系統：集中維護字級角色，容器縮放由同一公式計算。
+@use 'sass:map'
+@use 'sass:math'
+@use 'sass:list'
+
+// 最小值與上限以設計像素定義；大標題保留較大的最小值。
+$roles: (
+  small: (16px, 16px),
+  body: (16px, 20px),
+  body-large: (16px, 26px),
+  subheading: (24px, 32px),
+  callout: (24px, 40px),
+  heading: (32px, 64px),
+  hero: (32px, 96px),
+  feature: (32px, 86px),
+  display: (48px, 208px),
+  icon: (16px, 24px),
+  icon-large: (16px, 32px),
+  captcha: (24px, 32px)
+) !default
+$design-widths: (page: 1920px, form: 1200px) !default
+$reference-root: 15px !default
+
+// cqw 取最近的查詢容器；設計寬度只是將目標字級換成比例的參考值。
+@function size($role: body, $context: page)
+  $range: map.get($roles, $role)
+  $width: map.get($design-widths, $context)
+  @if $range == null or $width == null
+    @error 'Unknown typography role or context: #{$role} / #{$context}'
+  $minimum: max(16px, list.nth($range, 1))
+  $target: max($minimum, list.nth($range, 2))
+  // rem 上下限保留瀏覽器字級放大；16px 下限避免根字級縮小時看不清楚。
+  $lower: max($minimum, math.div($minimum, $reference-root) * 1rem)
+  $upper: max($lower, math.div($target, $reference-root) * 1rem)
+  $fluid: math.div($target, $width) * 100cqw
+  @return clamp($lower, $fluid, $upper)
+

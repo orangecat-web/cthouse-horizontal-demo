@@ -5,6 +5,7 @@
 @use './sass/include' as font
 @use './sass/spacing' as sp
 @use './sass/icons' as icons
+@use './sass/typography' as type
 
 // 全站基底：字型、文字色與背景；根字級依開發規範設為 15px；場景比例以參考圖校正。
 :root
@@ -18,8 +19,8 @@
 
 body
   margin: 0
-  // 預設文字 1rem = 15px；各區特別標示的字級依設計保留。
-  font-size: fn.$baseFont
+  // 根字級維持原本布局基準；內文依共用字級公式縮放，最小 16px。
+  font-size: type.size('body')
 
 button, input, select
   font: inherit
@@ -94,14 +95,14 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       background: none
       color: inherit
       white-space: nowrap
-      font-size: clamp(0.733333rem, 1.088rem, 1rem)
+      font-size: type.size('small')
       letter-spacing: .06em
       +oc.transition(border-bottom-color, .2s)
       &:hover, &:focus-visible
         border-bottom-color: #fff
   .brand-heading
     margin: 0
-    font-size: 1rem
+    font-size: type.size('small')
     line-height: 1
     flex: 0 0 auto
   .brand
@@ -137,13 +138,13 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       border: 0
       background: transparent
       color: #333
-      font-size: 1rem
+      font-size: type.size('small')
       &.selected, &:hover
         color: #169f9f
 
-  // Google 圖示覆寫字型預設尺寸，沿用本專案 rem 單位。
+  // Google 圖示使用共用字級角色，保留至少 16px。
   .material-symbols-outlined
-    font-size: 1.333333rem
+    font-size: type.size('icon')
     line-height: 1
     vertical-align: middle
 
@@ -160,7 +161,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
   border-radius: 0.266667rem
   background: rgba(255, 255, 255, .75)
   color: #34413e
-  font: 0.733333rem Arial, sans-serif
+  font: #{type.size('small')} Arial, sans-serif
   > div
     display: flex
     gap: 0.466667rem
@@ -170,7 +171,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     border: 0.066667rem solid #aab8b4
     background: transparent
     color: inherit
-    font-size: 1.133333rem
+    font-size: type.size('body')
     &:hover:not(:disabled)
       background: #30aaa8
       color: #fff
@@ -230,7 +231,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     text-shadow: 0 0.133333rem 1.466667rem #24353088
     h2
       margin: 0
-      font-size: clamp(2.333333rem, 4.096rem, 4.133333rem)
+      font-size: type.size('heading')
       +oc.fontWeight(100)
       letter-spacing: .12em
       white-space: nowrap
@@ -255,7 +256,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       border-radius: 0.4rem
       background: #f5f5f3aa
       color: #53605d
-      font-size: 1.2rem
+      font-size: type.size('body')
       &:hover
         color: #fff
         background: #287a79
@@ -306,7 +307,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     border: 0
     background: transparent
     color: #fff
-    font-size: 3rem
+    font-size: type.size('callout')
     font-weight: 200
 
 // 02 星級服務：依參考圖量測，照片寬 70%、高 76%；標題跨照片右邊界。
@@ -326,7 +327,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     width: 34.2%
     h2
       margin: 0
-      font-size: 6.4rem
+      font-size: type.size('hero')
       font-weight: 100
       letter-spacing: .025em
       line-height: 1.15
@@ -345,12 +346,12 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       gap: .6cqw
       min-height: 3cqw
       color: #777
-      font-size: 1.728rem
+      font-size: type.size('body-large')
       font-weight: 300
       letter-spacing: .03em
     .material-symbols-outlined
       flex: 0 0 auto
-      font-size: 2.304rem
+      font-size: type.size('icon-large')
   // 立即委託底列依清晰參考圖排列，四欄與下方兩組資訊共用同一網格。
   .service-bottom
     position: absolute
@@ -368,7 +369,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       writing-mode: vertical-rl
       border-right: .066667rem solid #ccc
       padding-right: 1.2cqw
-      font-size: 2.688rem
+      font-size: type.size('callout')
       font-weight: 200
       line-height: 1.1
       letter-spacing: .1em
@@ -402,7 +403,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       border-radius: 0
       padding: 0 1cqw
       font: inherit
-      font-size: 0.828439rem
+      font-size: type.size('small', 'form')
       color: #666
       background-color: #fff
       &::placeholder
@@ -426,7 +427,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       flex-wrap: wrap
       align-items: center
       gap: .4cqw .65cqw
-      font-size: 0.828439rem
+      font-size: type.size('small', 'form')
       label
         display: inline-flex
         align-items: center
@@ -439,7 +440,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         accent-color: #139fa2
     .inquiry-privacy-notice
       margin: .65cqw 0 0
-      font-size: 0.710091rem
+      font-size: type.size('small', 'form')
       line-height: 1.6
       overflow-wrap: anywhere
     // 右下示意驗證碼：色點只是視覺佔位，並非真實安全驗證圖。
@@ -457,14 +458,14 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       height: 2.7cqw
       border: .066667rem solid #c4c4c4
       text-align: center
-      font: italic 700 2.130272rem/1 Georgia, serif
+      font: italic 700 #{type.size('captcha', 'form')}/1 Georgia, serif
       color: #675187
       background: radial-gradient(circle, #64bfa8 .05rem, transparent .09rem) 0 0 / .4rem .5rem, radial-gradient(circle, #df85b7 .05rem, transparent .09rem) .15rem .2rem / .5rem .4rem, #fff
     .captcha-refresh
       border: 0
       padding: 0
       font: inherit
-      font-size: 0.828439rem
+      font-size: type.size('small', 'form')
       white-space: nowrap
       color: #666
       background: transparent
@@ -482,12 +483,12 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       border: 0
       padding: .8cqw
       font: inherit
-      font-size: 0.946787rem
+      font-size: type.size('small', 'form')
       background: #139fa2
       color: #fff
       cursor: pointer
     .inquiry-submit-arrow
-      font-size: 1.262383rem
+      font-size: type.size('body', 'form')
       font-weight: 200
     // 右側兩個等寬圓角服務入口，圖示與文案由 JSON 提供。
     .service-actions
@@ -505,7 +506,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         border: 0
         border-radius: 1.4cqw
         font: inherit
-        font-size: 1.28rem
+        font-size: type.size('body')
         white-space: nowrap
         color: #fff
         background: #139fa2
@@ -545,10 +546,10 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     color: #656565
     h3
       margin: 0
-      font: 700 5.76rem/1 Georgia, serif
+      font: 700 #{type.size('feature')}/1 Georgia, serif
       letter-spacing: -.035em
     .advantage-subtitle
-      font-size: 2.112rem
+      font-size: type.size('subheading')
       font-weight: 300
     .advantage-rule
       width: 3.2cqw
@@ -557,7 +558,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       background: #888
     p
       margin: 0
-      font-size: 1.344rem
+      font-size: type.size('body')
       font-weight: 300
       line-height: 1.65
     &.assets
@@ -582,19 +583,19 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     border-radius: 50%
     background: #ff7108
     color: #fff
-    font-size: 2.688rem
+    font-size: type.size('callout')
     font-weight: 300
     line-height: 1.2
     .witness-arrow
       display: block
-      font-size: 1.792rem
+      font-size: type.size('body-large')
   .advantage-slogan
     position: absolute
     left: 26.9%
     top: 79.5%
     margin: 0
     white-space: nowrap
-    font-size: 5.632rem
+    font-size: type.size('feature')
     font-weight: 100
     letter-spacing: 0
 
@@ -615,7 +616,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       left: 21.8%
       top: 69.5%
       color: #777
-      font-size: 4.864rem
+      font-size: type.size('heading')
       font-weight: 100
       line-height: 1
     h2
@@ -623,7 +624,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       left: 5.8%
       bottom: 4%
       margin: 0
-      font: 400 13.824rem/1 Georgia, serif
+      font: 400 #{type.size('display')}/1 Georgia, serif
       color: #fff
       mix-blend-mode: difference
   .news-content
@@ -645,7 +646,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         background: transparent
         text-align: left
         color: #555
-        font-size: 1.6rem
+        font-size: type.size('body-large')
         font-weight: 300
       .news-entry
         display: flex
@@ -653,9 +654,9 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         gap: .7cqw
       time
         color: #999
-        font-size: 1.152rem
+        font-size: type.size('body')
       .news-arrow
-        font-size: 1.6rem
+        font-size: type.size('body-large')
     .news-more
       margin-top: 1.3cqw
       padding: .25cqw .65cqw
@@ -663,7 +664,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       border-radius: 1cqw
       background: #333
       color: #fff
-      font-size: 0.96rem
+      font-size: type.size('small')
   .forest-photo
     position: absolute
     inset: 0 0 0 79.2%
@@ -677,7 +678,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
   flex-basis: var(--contact-width, 36.67vw)
   width: var(--contact-width, 36.67vw)
   background: #d9dadb
-  // 此區字級以整個視窗 1920 寬的比例計算，不以較窄尾段的寬度計算。
+  // 聯絡尾段同樣使用共用文字角色；cqw 依此較窄容器計算，但不低於最小字級。
   .contact-social-top
     position: absolute
     top: 6.4%
@@ -695,7 +696,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       width: 1.5vw
       height: 1.5vw
       .material-symbols-outlined
-        font-size: 1.536rem
+        font-size: type.size('icon')
   .contact-card
     position: absolute
     top: 51.5%
@@ -716,12 +717,12 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       display: grid
       place-items: center
       border: .066667rem solid #777
-      font-size: 3.84rem
+      font-size: type.size('heading')
       line-height: 1
     .contact-copy
       p
         margin: 0 0 .75vw
-        font-size: 1.344rem
+        font-size: type.size('body')
         font-weight: 300
         letter-spacing: .04em
     .partner-logos
@@ -734,7 +735,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         height: 2.7vw
         display: grid
         place-items: center
-        font-size: 0.768rem
+        font-size: type.size('small')
         color: #777
         border: .066667rem dashed #aaa
     .download-links
@@ -747,11 +748,11 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         border-radius: 1vw
         background: #111
         color: white
-        font-size: 1.024rem
+        font-size: type.size('small')
         white-space: nowrap
     small
       margin-top: 1.3vw
-      font-size: 0.832rem
+      font-size: type.size('small')
       color: #777
 
 // 只供朗讀的標題：保留每個場景的語意，但不額外增加設計稿沒有的可見標題。
@@ -778,83 +779,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
   border-radius: 0.266667rem
   box-shadow: 0 0.333333rem 1.6rem #0003
   white-space: nowrap
-  font-size: 0.866667rem
-
-// 文字以 rem 維護，較窄桌機用明確斷點調整字級；布局與欄位尺寸沿用原設定。
-@mixin text-rem-scale($scale)
-  .site-header .top-nav button
-    font-size: clamp(0.733333rem, #{1.088rem * $scale}, 1rem)
-  .panel-home .home-title h2
-    font-size: clamp(2.333333rem, #{4.096rem * $scale}, 4.133333rem)
-  .panel-service .service-copy h2
-    font-size: #{6.4rem * $scale}
-  .panel-service .service-points li
-    font-size: #{1.728rem * $scale}
-  .panel-service .service-points .material-symbols-outlined
-    font-size: #{2.304rem * $scale}
-  .panel-service .service-bottom .inquiry-label
-    font-size: #{2.688rem * $scale}
-  .panel-service .service-bottom input:not([type="checkbox"]), .panel-service .service-bottom select
-    font-size: #{0.828439rem * $scale}
-  .panel-service .service-bottom .inquiry-times
-    font-size: #{0.828439rem * $scale}
-  .panel-service .service-bottom .inquiry-privacy-notice
-    font-size: #{0.710091rem * $scale}
-  .panel-service .service-bottom .captcha
-    font: italic 700 #{2.130272rem * $scale}/1 Georgia, serif
-  .panel-service .service-bottom .captcha-refresh
-    font-size: #{0.828439rem * $scale}
-  .panel-service .service-bottom .inquiry-submit
-    font-size: #{0.946787rem * $scale}
-  .panel-service .service-bottom .inquiry-submit-arrow
-    font-size: #{1.262383rem * $scale}
-  .panel-service .service-bottom .service-actions button
-    font-size: #{1.28rem * $scale}
-  .panel-advantage .advantage-item h3
-    font: 700 #{5.76rem * $scale}/1 Georgia, serif
-  .panel-advantage .advantage-item .advantage-subtitle
-    font-size: #{2.112rem * $scale}
-  .panel-advantage .advantage-item p
-    font-size: #{1.344rem * $scale}
-  .panel-advantage .witness
-    font-size: #{2.688rem * $scale}
-  .panel-advantage .witness .witness-arrow
-    font-size: #{1.792rem * $scale}
-  .panel-advantage .advantage-slogan
-    font-size: #{5.632rem * $scale}
-  .panel-news .news-title span
-    font-size: #{4.864rem * $scale}
-  .panel-news .news-title h2
-    font: 400 #{13.824rem * $scale}/1 Georgia, serif
-  .panel-news .news-content .faq button
-    font-size: #{1.6rem * $scale}
-  .panel-news .news-content .faq time
-    font-size: #{1.152rem * $scale}
-  .panel-news .news-content .faq .news-arrow
-    font-size: #{1.6rem * $scale}
-  .panel-news .news-content .news-more
-    font-size: #{0.96rem * $scale}
-  .panel-contact .contact-social-top button .material-symbols-outlined
-    font-size: #{1.536rem * $scale}
-  .panel-contact .contact-card .qr-placeholder
-    font-size: #{3.84rem * $scale}
-  .panel-contact .contact-card .contact-copy p
-    font-size: #{1.344rem * $scale}
-  .panel-contact .contact-card .partner-logos span
-    font-size: #{0.768rem * $scale}
-  .panel-contact .contact-card .download-links button
-    font-size: #{1.024rem * $scale}
-  .panel-contact .contact-card small
-    font-size: #{0.832rem * $scale}
-
-@media (max-width: 100rem)
-  @include text-rem-scale(.75)
-
-@media (max-width: 75rem)
-  @include text-rem-scale(.533333333)
-
-@media (max-width: 56.25rem)
-  @include text-rem-scale(.416666667)
+  font-size: type.size('small')
 
 // 較窄桌機：縮小導覽間距，調整首頁搜尋卡及服務文案寬度。
 @media (max-width: 68.75rem)
@@ -866,7 +791,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
     .top-nav
       gap: 0.533333rem
       button
-        font-size: 0.666667rem
+        font-size: type.size('small')
   .panel-home .search-card
     width: 64%
     left: 18%
@@ -907,7 +832,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       width: 84%
       h2
         white-space: normal
-        font-size: 4rem
+        font-size: type.size('heading')
     .search-card
       top: 42%
       left: 5%
@@ -931,7 +856,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       left: auto
       width: 100%
       h2
-        font-size: 2.4rem
+        font-size: type.size('hero')
         white-space: normal
     .service-points
       position: static
@@ -939,9 +864,9 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       margin-top: 1rem
       li
         min-height: 2.6rem
-        font-size: 1rem
+        font-size: type.size('small')
       .material-symbols-outlined
-        font-size: 1.3rem
+        font-size: type.size('icon')
     // 手機直向閱讀：四欄改兩欄，時段、驗證碼與送出各自獨立一列。
     .service-bottom
       position: static
@@ -953,7 +878,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         writing-mode: horizontal-tb
         border: 0
         padding: 0
-        font-size: 1.5rem
+        font-size: type.size('body-large')
       .inquiry-form
         grid-template-columns: repeat(2, minmax(0, 1fr))
         gap: 1rem
@@ -961,7 +886,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       input:not([type="checkbox"]), select
         height: 2.7rem
         padding: 0 .6rem
-        font-size: .9rem
+        font-size: type.size('small', 'form')
       .inquiry-name, .inquiry-region
         grid-column: 1
       .inquiry-phone, .inquiry-dealer
@@ -971,7 +896,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         grid-row: 3
       .inquiry-times
         gap: .5rem .7rem
-        font-size: .9rem
+        font-size: type.size('small', 'form')
         label
           gap: .4rem
         input
@@ -979,7 +904,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
           height: 1rem
       .inquiry-privacy-notice
         margin-top: .6rem
-        font-size: .85rem
+        font-size: type.size('small', 'form')
       .inquiry-code
         grid-column: 1 / -1
         grid-row: 4
@@ -991,18 +916,18 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       .captcha
         flex-basis: 6rem
         height: 2.7rem
-        font-size: 2rem
+        font-size: type.size('captcha', 'form')
       .captcha-refresh
-        font-size: .9rem
+        font-size: type.size('small', 'form')
       .inquiry-submit
         grid-column: 1 / -1
         grid-row: 5
         min-height: 3.5rem
         flex-direction: row
         gap: .6rem
-        font-size: 1rem
+        font-size: type.size('small', 'form')
       .inquiry-submit-arrow
-        font-size: 1.4rem
+        font-size: type.size('body', 'form')
       .service-actions
         margin-top: 1rem
         gap: .7rem
@@ -1014,7 +939,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
           gap: .4rem
           padding: .5rem
           border-radius: 1rem
-          font-size: .85rem
+          font-size: type.size('small')
           white-space: normal
         .service-action-icon
           width: 1.5rem
@@ -1036,25 +961,25 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
       width: 100%
       margin-bottom: 2rem
       h3
-        font-size: 2.4rem
+        font-size: type.size('feature')
       .advantage-subtitle
-        font-size: 1.2rem
+        font-size: type.size('body')
       .advantage-rule
         width: 3rem
         margin: 1rem 0
       p
-        font-size: 1rem
+        font-size: type.size('small')
     .witness
       position: static
       width: 6rem
       height: 6rem
-      font-size: 1.2rem
+      font-size: type.size('body')
       .witness-arrow
-        font-size: 1rem
+        font-size: type.size('small')
     .advantage-slogan
       position: static
       margin-top: 2rem
-      font-size: 1.8rem
+      font-size: type.size('feature')
       white-space: normal
   .panel-news
     min-height: 56rem
@@ -1069,11 +994,11 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         left: 7%
         top: 6rem
         color: white
-        font-size: 1.7rem
+        font-size: type.size('heading')
       h2
         left: 7%
         bottom: 1rem
-        font-size: 5.2rem
+        font-size: type.size('display')
     .news-content
       position: static
       width: 100%
@@ -1081,15 +1006,15 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         height: auto
         min-height: 5rem
         padding: 1rem 0
-        font-size: 1rem
+        font-size: type.size('small')
       .faq time
-        font-size: .85rem
+        font-size: type.size('small')
       .faq .news-arrow
-        font-size: 1.2rem
+        font-size: type.size('body')
       .news-more
         margin-top: 1rem
         padding: .3rem .8rem
-        font-size: .9rem
+        font-size: type.size('small')
         border-radius: 1rem
     .forest-photo
       inset: auto 0 0
@@ -1107,7 +1032,7 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         height: 2rem
         border-radius: .2rem
         .material-symbols-outlined
-          font-size: 1.5rem
+          font-size: type.size('icon')
     .contact-card
       position: static
       .qr-placeholder, .qr-image
@@ -1115,10 +1040,10 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         height: 4rem
         margin-bottom: 1rem
       .qr-placeholder
-        font-size: 3.5rem
+        font-size: type.size('heading')
       .contact-copy p
         margin-bottom: .8rem
-        font-size: .95rem
+        font-size: type.size('small')
       .partner-logos
         flex-wrap: wrap
         gap: .5rem
@@ -1126,17 +1051,17 @@ input:focus, select:focus, textarea:focus, form button:focus, .search-card butto
         span
           width: 2.5rem
           height: 2.5rem
-          font-size: .6rem
+          font-size: type.size('small')
       .download-links
         flex-wrap: wrap
         gap: .5rem
         button
           padding: .4rem .8rem
-          font-size: .8rem
+          font-size: type.size('small')
           border-radius: 1rem
       small
         margin-top: 1.5rem
-        font-size: .7rem
+        font-size: type.size('small')
   .toast
     width: max-content
     max-width: 90vw
