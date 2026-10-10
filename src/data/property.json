@@ -5,11 +5,13 @@
     "gallery": "五格相簿，首張跨兩列。image 填 public/images 中的檔名；null 保留原比例位置。",
     "details": "兩欄詳細資料，value 為 null 表示待補；不推測縮圖中的地址、電話及介紹。",
     "agent": "avatar 是依使用者指示生成的虛構成年女性插畫，不對應稿中或真實經紀人。姓名、電話、店名留空待填。QR 使用真實素材，不生成假 QR。",
-    "media": "VR、地圖、影音 image 可填圖片檔名，embedUrl 可填正式 iframe 嵌入網址；皆空時只留區塊。",
-    "market": "行情區只保留圖表位置，未提供成交資料不繪製假曲線。",
-    "recommendations": "推薦物件先保留四張卡片。title、subtitle、price、href 與 image 待使用者填入；不虛構房源。",
-    "footer": "頁尾公司資訊、品牌標誌及下載徽章待正式素材，先保留位置。",
-    "inquiry": "前端 Demo 表單，僅顯示提示，沒有發送資料或串接經紀人。"
+    "media": "VR 使用 scenes[].image 的本地 2:1 示範全景，embedUrl 可改用正式 iframe；地圖 image/embedUrl 留空時顯示示意地圖，影音皆空時保留區塊。",
+    "market": "使用者授權的 Demo 開價散佈圖資料，非成交行情；area 為坪數，unitPrice 為每坪萬元，subject 點取設計稿數字作示意。",
+    "recommendations": "使用者授權的 Demo 推薦物件；照片仍留空，物件名稱、地址與價格為示意，href 未指定留空，卡片可開啟本地預覽。",
+    "footer": "左側電話、地址與物件來源文字依使用者第三張局部圖；品牌標誌與下載區維持原位置與佔位。",
+    "inquiry": "前端 Demo 表單，僅顯示提示，沒有發送資料或串接經紀人。",
+    "environment": "交通、生活機能、學校與醫療均為使用者授權的虛構 Demo 資料；x/y 為示意地圖百分比座標，不代表地理定位。",
+    "media.vr": "使用 Orange Cat 實驗室的 WebGL 球面投影與既有示範全景；scenes[].image 放 public/images 的 2:1 圖片，demoLabel 明確標示非本物件。"
   },
   "brandLogo": null,
   "id": "1805660",
@@ -18,38 +20,133 @@
   "address": null,
   "price": "5,880",
   "priceUnit": "萬",
-  "breadcrumbs": ["買屋條件找屋", "區域找屋", "新北市", "新店區"],
+  "breadcrumbs": [
+    "買屋條件找屋",
+    "區域找屋",
+    "新北市",
+    "新店區"
+  ],
   "gallery": [
-    { "id": "exterior", "label": "房屋外觀", "image": null },
-    { "id": "garden", "label": "庭園照片", "image": null },
-    { "id": "terrace", "label": "露臺照片", "image": null },
-    { "id": "living", "label": "室內照片", "image": null },
-    { "id": "view", "label": "景觀照片", "image": null }
+    {
+      "id": "exterior",
+      "label": "房屋外觀",
+      "image": null
+    },
+    {
+      "id": "garden",
+      "label": "庭園照片",
+      "image": null
+    },
+    {
+      "id": "terrace",
+      "label": "露臺照片",
+      "image": null
+    },
+    {
+      "id": "living",
+      "label": "室內照片",
+      "image": null
+    },
+    {
+      "id": "view",
+      "label": "景觀照片",
+      "image": null
+    }
   ],
   "summary": [
-    { "icon": "area", "label": "建物登記", "value": "73.04 坪", "note": "主建物 60.10 坪" },
-    { "icon": "bed", "label": "格局", "value": "5 房 2 廳 4 衛" },
-    { "icon": "floor", "label": "所在樓層", "value": "1–2 樓 / 共 2 樓" },
-    { "icon": "home", "label": "屋齡", "value": "40 年 7 個月" },
-    { "icon": "layout", "label": "每坪單價", "value": null }
+    {
+      "icon": "area",
+      "label": "建物登記",
+      "value": "73.04 坪",
+      "note": "主建物 60.10 坪"
+    },
+    {
+      "icon": "bed",
+      "label": "格局",
+      "value": "5 房 2 廳 4 衛"
+    },
+    {
+      "icon": "floor",
+      "label": "所在樓層",
+      "value": "1–2 樓 / 共 2 樓"
+    },
+    {
+      "icon": "home",
+      "label": "屋齡",
+      "value": "40 年 7 個月"
+    },
+    {
+      "icon": "layout",
+      "label": "每坪單價",
+      "value": null
+    }
   ],
-  "quickActions": ["貸款試算", "降價通知我", "附近成交行情"],
+  "quickActions": [
+    "貸款試算",
+    "降價通知我",
+    "附近成交行情"
+  ],
   "details": [
-    { "label": "建物登記", "value": "73.04 坪" },
-    { "label": "主建物", "value": "60.10 坪" },
-    { "label": "土地坪數", "value": "145.05 坪" },
-    { "label": "格局", "value": "5 房 2 廳 4 衛" },
-    { "label": "公設比", "value": null },
-    { "label": "所在樓層", "value": "1–2 樓 / 共 2 樓" },
-    { "label": "建物朝向", "value": null },
-    { "label": "車位類型", "value": null },
-    { "label": "管理費", "value": null },
-    { "label": "車位管理費", "value": null },
-    { "label": "建物結構", "value": null },
-    { "label": "屋齡", "value": "40 年 7 個月" },
-    { "label": "用途", "value": "集合住宅" },
-    { "label": "是否帶租約", "value": null },
-    { "label": "使用現況", "value": null }
+    {
+      "label": "建物登記",
+      "value": "73.04 坪"
+    },
+    {
+      "label": "主建物",
+      "value": "60.10 坪"
+    },
+    {
+      "label": "土地坪數",
+      "value": "145.05 坪"
+    },
+    {
+      "label": "格局",
+      "value": "5 房 2 廳 4 衛"
+    },
+    {
+      "label": "公設比",
+      "value": null
+    },
+    {
+      "label": "所在樓層",
+      "value": "1–2 樓 / 共 2 樓"
+    },
+    {
+      "label": "建物朝向",
+      "value": null
+    },
+    {
+      "label": "車位類型",
+      "value": null
+    },
+    {
+      "label": "管理費",
+      "value": null
+    },
+    {
+      "label": "車位管理費",
+      "value": null
+    },
+    {
+      "label": "建物結構",
+      "value": null
+    },
+    {
+      "label": "屋齡",
+      "value": "40 年 7 個月"
+    },
+    {
+      "label": "用途",
+      "value": "集合住宅"
+    },
+    {
+      "label": "是否帶租約",
+      "value": null
+    },
+    {
+      "label": "使用現況",
+      "value": null
+    }
   ],
   "agent": {
     "avatar": "property-agent.png",
@@ -61,58 +158,473 @@
     "company": null,
     "address": null,
     "qrCodes": [
-      { "label": "經紀人 QR", "image": null },
-      { "label": "物件 QR", "image": null }
+      {
+        "label": "經紀人 QR",
+        "image": null
+      },
+      {
+        "label": "物件 QR",
+        "image": null
+      }
     ]
   },
   "inquiry": {
-    "tabs": ["預約看屋", "房屋詢問"],
+    "tabs": [
+      "預約看屋",
+      "房屋詢問"
+    ],
     "namePlaceholder": "請輸入您的姓名或稱謂",
     "phonePlaceholder": "您的手機",
     "timeLabel": "聯絡時間",
-    "times": ["皆可", "上午", "中午", "下午", "晚上"],
+    "times": [
+      "皆可",
+      "上午",
+      "中午",
+      "下午",
+      "晚上"
+    ],
     "submitLabel": "送出",
     "privacyNotice": "※當您留下個人資料時，表示您已了解閱讀並同意中信房仲網之隱私權政策。"
   },
   "introduction": {
     "notice": null,
     "sections": [
-      { "heading": "華城簡介", "paragraphs": [] },
-      { "heading": "環境特色", "paragraphs": [] }
+      {
+        "heading": "華城簡介",
+        "paragraphs": []
+      },
+      {
+        "heading": "環境特色",
+        "paragraphs": []
+      }
     ]
   },
   "media": {
-    "vr": { "label": "VR 環景看屋", "image": null, "embedUrl": null },
-    "map": { "label": "交通與環境設施", "image": null, "embedUrl": null },
-    "video": { "label": "影音區塊", "image": null, "embedUrl": null }
+    "vr": {
+      "label": "VR 環景看屋",
+      "embedUrl": null,
+      "demoLabel": "Demo 環景 · 非本物件",
+      "canvasLabel": "360 度環景，拖曳觀看，滾輪或雙指縮放",
+      "sceneLabel": "選擇環景場景",
+      "loadingLabel": "環景載入中…",
+      "retryLabel": "重新載入",
+      "loadError": "環景圖片載入失敗，請重試。",
+      "webglError": "環景暫時無法顯示，請重新載入或使用支援 WebGL 的瀏覽器。",
+      "helpLabel": "拖曳觀看 · 滾輪／雙指縮放",
+      "controlsLabel": "環景控制",
+      "zoomInLabel": "放大環景",
+      "zoomOutLabel": "縮小環景",
+      "rotateLabel": "自動旋轉",
+      "resetLabel": "重設視角",
+      "fullscreenLabel": "環景全螢幕",
+      "scenes": [
+        {
+          "id": "demo-room",
+          "label": "房間示範",
+          "image": "panoramas/demo-room.jpg",
+          "initialYaw": 0,
+          "initialPitch": 0,
+          "credit": "Orange Cat 實驗室：醒吾北歐風套房示範素材，非此房源"
+        },
+        {
+          "id": "demo-studio",
+          "label": "設計展間示範",
+          "image": "panoramas/demo-studio.svg",
+          "initialYaw": 0,
+          "initialPitch": 0,
+          "credit": "Orange Cat 實驗室：向量展間示範素材，非實拍"
+        }
+      ]
+    },
+    "map": {
+      "label": "交通與環境設施",
+      "image": null,
+      "embedUrl": null
+    },
+    "video": {
+      "label": "影音區塊",
+      "image": null,
+      "embedUrl": null
+    }
   },
   "environment": {
-    "tabs": ["交通", "生活機能", "學校", "醫療"],
-    "items": []
+    "tabs": [
+      "交通",
+      "生活機能",
+      "學校",
+      "醫療"
+    ],
+    "items": [
+      {
+        "id": "facility-1",
+        "category": "交通",
+        "name": "示範公車站 A",
+        "distance": "步行 3 分鐘 / 210m",
+        "x": 28,
+        "y": 28
+      },
+      {
+        "id": "facility-2",
+        "category": "交通",
+        "name": "示範捷運站 B",
+        "distance": "步行 8 分鐘 / 560m",
+        "x": 43,
+        "y": 62
+      },
+      {
+        "id": "facility-3",
+        "category": "交通",
+        "name": "示範公車站 C",
+        "distance": "步行 5 分鐘 / 350m",
+        "x": 66,
+        "y": 40
+      },
+      {
+        "id": "facility-4",
+        "category": "生活機能",
+        "name": "示範便利商店",
+        "distance": "步行 2 分鐘 / 140m",
+        "x": 23,
+        "y": 56
+      },
+      {
+        "id": "facility-5",
+        "category": "生活機能",
+        "name": "示範超級市場",
+        "distance": "步行 6 分鐘 / 420m",
+        "x": 47,
+        "y": 30
+      },
+      {
+        "id": "facility-6",
+        "category": "生活機能",
+        "name": "示範社區公園",
+        "distance": "步行 4 分鐘 / 280m",
+        "x": 36,
+        "y": 76
+      },
+      {
+        "id": "facility-7",
+        "category": "學校",
+        "name": "示範國民小學",
+        "distance": "步行 5 分鐘 / 350m",
+        "x": 24,
+        "y": 35
+      },
+      {
+        "id": "facility-8",
+        "category": "學校",
+        "name": "示範國民中學",
+        "distance": "步行 9 分鐘 / 630m",
+        "x": 59,
+        "y": 27
+      },
+      {
+        "id": "facility-9",
+        "category": "醫療",
+        "name": "示範社區診所",
+        "distance": "步行 4 分鐘 / 280m",
+        "x": 26,
+        "y": 59
+      },
+      {
+        "id": "facility-10",
+        "category": "醫療",
+        "name": "示範藥局",
+        "distance": "步行 3 分鐘 / 210m",
+        "x": 55,
+        "y": 48
+      }
+    ],
+    "demoLabel": "周邊設施與距離為 Demo 示意",
+    "map": {
+      "demoLabel": "Demo 示意地圖 · 非真實定位",
+      "roadLabel": "示範大道",
+      "laneLabel": "社區路",
+      "parkLabel": "示範公園",
+      "propertyPosition": {
+        "x": 48,
+        "y": 52
+      },
+      "propertyLabel": "物件示意位置",
+      "controlsLabel": "地圖控制",
+      "zoomInLabel": "放大地圖",
+      "zoomOutLabel": "縮小地圖",
+      "resetLabel": "重設地圖"
+    }
   },
-  "market": { "image": null, "notes": [] },
+  "market": {
+    "notes": [
+      "圖中為功能展示用假資料，不代表市場行情。",
+      "本物件示意點依設計稿坪數與總價計算。"
+    ],
+    "demoLabel": "Demo 示意資料 · 非真實成交行情",
+    "demoSeriesLabel": "區域示意開價",
+    "subjectSeriesLabel": "本物件示意",
+    "yLabel": "每坪開價（萬元）",
+    "xLabel": "建物登記（坪）",
+    "xDomain": [
+      10,
+      90
+    ],
+    "yDomain": [
+      10,
+      100
+    ],
+    "xTicks": [
+      20,
+      40,
+      60,
+      80
+    ],
+    "yTicks": [
+      10,
+      40,
+      70,
+      100
+    ],
+    "emptyLabel": "點選圖例顯示資料",
+    "hintLabel": "點選圖中資料查看坪數與開價",
+    "points": [
+      {
+        "id": "market-1",
+        "label": "區域示意物件 1",
+        "area": 18,
+        "unitPrice": 55,
+        "subject": false
+      },
+      {
+        "id": "market-2",
+        "label": "區域示意物件 2",
+        "area": 22,
+        "unitPrice": 61,
+        "subject": false
+      },
+      {
+        "id": "market-3",
+        "label": "區域示意物件 3",
+        "area": 25,
+        "unitPrice": 43,
+        "subject": false
+      },
+      {
+        "id": "market-4",
+        "label": "區域示意物件 4",
+        "area": 29,
+        "unitPrice": 68,
+        "subject": false
+      },
+      {
+        "id": "market-5",
+        "label": "區域示意物件 5",
+        "area": 33,
+        "unitPrice": 51,
+        "subject": false
+      },
+      {
+        "id": "market-6",
+        "label": "區域示意物件 6",
+        "area": 37,
+        "unitPrice": 47,
+        "subject": false
+      },
+      {
+        "id": "market-7",
+        "label": "區域示意物件 7",
+        "area": 39,
+        "unitPrice": 74,
+        "subject": false
+      },
+      {
+        "id": "market-8",
+        "label": "區域示意物件 8",
+        "area": 42,
+        "unitPrice": 56,
+        "subject": false
+      },
+      {
+        "id": "market-9",
+        "label": "區域示意物件 9",
+        "area": 45,
+        "unitPrice": 62,
+        "subject": false
+      },
+      {
+        "id": "market-10",
+        "label": "區域示意物件 10",
+        "area": 48,
+        "unitPrice": 39,
+        "subject": false
+      },
+      {
+        "id": "market-11",
+        "label": "區域示意物件 11",
+        "area": 52,
+        "unitPrice": 59,
+        "subject": false
+      },
+      {
+        "id": "market-12",
+        "label": "區域示意物件 12",
+        "area": 57,
+        "unitPrice": 48,
+        "subject": false
+      },
+      {
+        "id": "market-13",
+        "label": "區域示意物件 13",
+        "area": 62,
+        "unitPrice": 66,
+        "subject": false
+      },
+      {
+        "id": "market-14",
+        "label": "區域示意物件 14",
+        "area": 68,
+        "unitPrice": 53,
+        "subject": false
+      },
+      {
+        "id": "market-15",
+        "label": "區域示意物件 15",
+        "area": 78,
+        "unitPrice": 45,
+        "subject": false
+      },
+      {
+        "id": "subject",
+        "label": "本物件（設計稿示意）",
+        "area": 73.04,
+        "unitPrice": 80.5,
+        "subject": true
+      }
+    ]
+  },
   "recommendations": [
-    { "id": "related-1", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
-    { "id": "related-2", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
-    { "id": "related-3", "image": null, "title": null, "subtitle": null, "price": null, "href": "" },
-    { "id": "related-4", "image": null, "title": null, "subtitle": null, "price": null, "href": "" }
+    {
+      "id": "related-1",
+      "image": null,
+      "title": "捷運江子翠全新 2 房含車",
+      "address": "新北市板橋區華江一路",
+      "layout": "2 房 2 廳 1 衛",
+      "area": "38.82 坪",
+      "subtitle": null,
+      "price": "2,650",
+      "href": ""
+    },
+    {
+      "id": "related-2",
+      "image": null,
+      "title": "河畔景觀採光兩房",
+      "address": "新北市板橋區示範路二段",
+      "layout": "2 房 2 廳 1 衛",
+      "area": "38.17 坪",
+      "subtitle": null,
+      "price": "2,425",
+      "href": ""
+    },
+    {
+      "id": "related-3",
+      "image": null,
+      "title": "綠意庭園舒適三房",
+      "address": "新北市新店區示範路",
+      "layout": "3 房 2 廳 2 衛",
+      "area": "30.76 坪",
+      "subtitle": null,
+      "price": "1,280",
+      "href": ""
+    },
+    {
+      "id": "related-4",
+      "image": null,
+      "title": "明亮美景精緻兩房",
+      "address": "臺北市中山區示範街",
+      "layout": "2 房 2 廳 1 衛",
+      "area": "35.33 坪",
+      "subtitle": null,
+      "price": "1,780",
+      "href": ""
+    },
+    {
+      "id": "related-5",
+      "image": null,
+      "title": "公園旁寬敞家庭三房",
+      "address": "新北市新店區示範大道",
+      "layout": "3 房 2 廳 2 衛",
+      "area": "42.60 坪",
+      "subtitle": null,
+      "price": "2,380",
+      "href": ""
+    },
+    {
+      "id": "related-6",
+      "image": null,
+      "title": "城市景觀電梯兩房",
+      "address": "臺北市松山區示範路",
+      "layout": "2 房 1 廳 1 衛",
+      "area": "28.50 坪",
+      "subtitle": null,
+      "price": "1,980",
+      "href": ""
+    }
   ],
   "footer": {
-    "companyLines": [],
-    "serviceLines": [],
-    "partnerLogos": [null, null, null, null, null, null, null, null],
+    "companyLines": [
+      "免付費諮詢電話：0800-083-666",
+      "總機：02-8501-2225　傳真：02-8501-1319"
+    ],
+    "serviceLines": [
+      "台北市中山區敬業一路 99 號 4 樓",
+      "物件來源夥伴　信義房屋｜住商不動產｜太平洋房屋"
+    ],
+    "partnerLogos": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
     "downloads": [
-      { "label": "Google Play", "image": null, "href": "" },
-      { "label": "App Store", "image": null, "href": "" }
+      {
+        "label": "Google Play",
+        "image": null,
+        "href": ""
+      },
+      {
+        "label": "App Store",
+        "image": null,
+        "href": ""
+      }
     ]
   },
   "sections": [
-    { "id": "details", "label": "詳細資料" },
-    { "id": "introduction", "label": "物件介紹" },
-    { "id": "vr", "label": "VR 環景看屋" },
-    { "id": "environment", "label": "交通與環境設施" },
-    { "id": "market", "label": "區域開價落點" },
-    { "id": "recommendations", "label": "推薦物件" }
+    {
+      "id": "details",
+      "label": "詳細資料"
+    },
+    {
+      "id": "introduction",
+      "label": "物件介紹"
+    },
+    {
+      "id": "vr",
+      "label": "VR 環景看屋"
+    },
+    {
+      "id": "environment",
+      "label": "交通與環境設施"
+    },
+    {
+      "id": "market",
+      "label": "區域開價落點"
+    },
+    {
+      "id": "recommendations",
+      "label": "推薦物件"
+    }
   ],
   "labels": {
     "pending": "資料待補",
@@ -145,6 +657,13 @@
     "copySuccess": "物件連結已複製。",
     "copyFailure": "請複製瀏覽器網址列的物件連結。",
     "demoInquiry": "此為 Demo 表單，尚未傳送資料。",
-    "demoAction": "此為版面示意，功能尚未串接。"
+    "demoAction": "此為版面示意，功能尚未串接。",
+    "recommendationDemoLabel": "Demo 示意物件",
+    "previousRecommendation": "上一組推薦物件",
+    "nextRecommendation": "下一組推薦物件",
+    "recommendationPreview": "推薦物件預覽",
+    "closeRecommendation": "關閉物件預覽",
+    "inquireRecommendation": "詢問此物件",
+    "facilityListLabel": "周邊設施列表"
   }
 }

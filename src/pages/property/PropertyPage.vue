@@ -1,17 +1,44 @@
 <script setup>
 // 物件頁：文案與素材由 property.json 管理，共用導覽連結沿用 site.json。
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import site from '../../data/site.json'
 import property from '../../data/property.json'
 import PropertyMedia from '../../components/property/PropertyMedia.vue'
 import PropertyIcon from '../../components/property/PropertyIcon.vue'
+import PanoramaViewer from '../../components/property/PanoramaViewer.vue'
+import DemoMap from '../../components/property/DemoMap.vue'
+import PriceScatterChart from '../../components/property/PriceScatterChart.vue'
 import { imageUrl } from '../../utils/images'
+import { animateScrollToTop } from '../../utils/animated-scroll'
 
 // 收藏及分頁僅維持本次頁面狀態；不代表後端或會員功能已串接。
 const favorite = ref(false)
 const inquiryTab = ref(0)
 const environmentTab = ref(property.environment.tabs[0])
 const environmentItems = computed(() => property.environment.items.filter(item => item.category === environmentTab.value))
+const selectedFacilityId = ref(environmentItems.value[0]?.id || null)
+watch(environmentTab, () => { selectedFacilityId.value = environmentItems.value[0]?.id || null })
+// 推薦物件依桌機四張／手機兩張換組；只改此區資料，不切換整個物件頁。
+const recommendationIndex = ref(0)
+const recommendationCount = ref(4)
+const visibleRecommendations = computed(() => property.recommendations.slice(recommendationIndex.value, recommendationIndex.value + recommendationCount.value))
+const recommendationDialog = ref(null)
+const selectedRecommendation = ref(null)
+let recommendationMedia, cancelScroll
+function updateRecommendationCount() {
+  recommendationCount.value = recommendationMedia.matches ? 2 : 4
+  recommendationIndex.value = Math.min(recommendationIndex.value, Math.max(0, property.recommendations.length - recommendationCount.value))
+}
+function turnRecommendations(direction) {
+  recommendationIndex.value = Math.max(0, Math.min(property.recommendations.length - recommendationCount.value, recommendationIndex.value + direction))
+}
+// 正式 href 交給瀏覽器；未指定網址的 Demo 卡片開啟本地資訊預覽。
+function onRecommendationClick(event, item) {
+  if (item.href) return
+  event.preventDefault()
+  selectedRecommendation.value = item
+  recommendationDialog.value.showModal()
+}
 const galleryDialog = ref(null)
 const photoIndex = ref(0)
 const currentPhoto = computed(() => property.gallery[photoIndex.value])
@@ -42,7 +69,7 @@ function onGalleryKey(event) {
 const phoneHref = (number) => number ? `tel:${number.replace(/[^\d+]/g, '')}` : undefined
 // 列印與回頂部由瀏覽器執行，不攔截一般頁面的滾輪或觸控。
 function printPage() { window.print() }
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }) }
+function scrollToTop() { cancelScroll?.(); cancelScroll = animateScrollToTop(600) }
 // 僅將目前頁面連結寫入剪貼簿；無法使用時提供手動複製提示。
 async function copyLink() {
   try {
@@ -52,8 +79,18 @@ async function copyLink() {
     showNotice(property.labels.copyFailure)
   }
 }
-onMounted(() => { document.title = `${property.shortTitle}｜${site.brand.name} Demo` })
-onBeforeUnmount(() => { clearTimeout(noticeTimer) })
+onMounted(() => {
+  document.title = `${property.shortTitle}｜${site.brand.name} Demo`
+  recommendationMedia = window.matchMedia('(max-width: 48rem)')
+  updateRecommendationCount()
+  recommendationMedia.addEventListener('change', updateRecommendationCount)
+})
+// 解除換組斷點監聽、回頂部動畫與提示計時器，避免離開頁面後仍執行。
+onBeforeUnmount(() => {
+  clearTimeout(noticeTimer)
+  cancelScroll?.()
+  recommendationMedia?.removeEventListener('change', updateRecommendationCount)
+})
 </script>
 
 <template lang="pug">
@@ -187,32 +224,37 @@ onBeforeUnmount(() => { clearTimeout(noticeTimer) })
             p(v-for="paragraph in section.paragraphs" :key="paragraph") {{ paragraph }}
           p(v-else) {{ property.labels.pending }}
 
-      //- VR 大幅橫向區塊：image／embedUrl 留空，後續可直接替換素材。
+      //- VR 大幅橫向區塊：正式 iframe 優先，否則顯示可操作的本地示範環景。
       section#vr.property-section(aria-labelledby="vr-heading")
         h2#vr-heading.property-section-heading {{ property.media.vr.label }}
-        PropertyMedia.property-vr(:image="property.media.vr.image" :embed-url="property.media.vr.embedUrl" :label="property.media.vr.label" icon="vr")
+        PropertyMedia.property-vr(v-if="property.media.vr.embedUrl" :embed-url="property.media.vr.embedUrl" :label="property.media.vr.label" icon="vr")
+        PanoramaViewer.property-vr(v-else :config="property.media.vr")
 
-      //- 交通與環境設施：左側地圖、右側分類清單；沒有資料時保留清單區。
+      //- 交通與環境設施：正式地圖優先，Demo 底圖與右側分類清單互相選取設施。
       section#environment.property-section(aria-labelledby="environment-heading")
         h2#environment-heading.property-section-heading {{ property.media.map.label }}
         .property-environment-layout
-          PropertyMedia.property-map(:image="property.media.map.image" :embed-url="property.media.map.embedUrl" :label="property.labels.map" icon="map")
+          PropertyMedia.property-map(v-if="property.media.map.image || property.media.map.embedUrl" :image="property.media.map.image" :embed-url="property.media.map.embedUrl" :label="property.labels.map" icon="map")
+          DemoMap.property-map(v-else :items="environmentItems" :selected-id="selectedFacilityId" :config="property.environment.map" @select="selectedFacilityId = $event")
           .property-environment-list
             label.environment-category
               span.sr-only {{ property.media.map.label }}
               select(v-model="environmentTab")
                 option(v-for="tab in property.environment.tabs" :key="tab") {{ tab }}
-            ul(v-if="environmentItems.length")
-              li(v-for="item in environmentItems" :key="item.name")
-                span {{ item.name }}
-                span {{ item.distance }}
+            ul(v-if="environmentItems.length" :aria-label="property.labels.facilityListLabel")
+              li(v-for="(item, index) in environmentItems" :key="item.id")
+                button(type="button" :class="{ 'is-selected': selectedFacilityId === item.id }" :aria-pressed="selectedFacilityId === item.id" @click="selectedFacilityId = item.id")
+                  span.facility-number {{ index + 1 }}
+                  span.facility-name {{ item.name }}
+                  span.facility-distance {{ item.distance }}
             p(v-else) {{ property.labels.environmentPlaceholder }}
+            small.facility-demo-label {{ property.environment.demoLabel }}
 
-      //- 區域行情與影音並排：行情不放假資料，影音保留原稿比例。
+      //- 區域行情與影音並排：圖表使用明確標示的 Demo 開價，影音仍保留素材位置。
       .property-insights
         section#market.property-section(aria-labelledby="market-heading")
           h2#market-heading.property-section-heading {{ property.labels.marketHeading }}
-          PropertyMedia.property-market(:image="property.market.image" :label="property.labels.marketPlaceholder" icon="chart")
+          PriceScatterChart.property-market(:config="property.market")
           .market-notes
             p(v-for="note in property.market.notes" :key="note") {{ note }}
             p(v-if="!property.market.notes.length") {{ property.labels.pending }}
@@ -220,15 +262,26 @@ onBeforeUnmount(() => { clearTimeout(noticeTimer) })
           h2#video-heading.property-section-heading {{ property.media.video.label }}
           PropertyMedia.property-video(:image="property.media.video.image" :embed-url="property.media.video.embedUrl" :label="property.media.video.label" icon="play")
 
-      //- 推薦物件：四欄卡片，圖片、文字、價格及連結皆由 JSON 替換。
+      //- 推薦物件：假資料可換組與預覽，卡片地址／格局靠左、紅色價格與灰色單位靠右。
       section#recommendations.property-section.property-recommendations(aria-labelledby="recommendations-heading")
         h2#recommendations-heading.property-section-heading {{ property.labels.recommendationHeading }}
+        p.recommendation-demo-label {{ property.labels.recommendationDemoLabel }}
         .recommendation-grid
-          a.recommendation-card(v-for="item in property.recommendations" :key="item.id" :href="item.href || undefined")
+          a.recommendation-card(v-for="item in visibleRecommendations" :key="item.id" :href="item.href || undefined" :tabindex="item.href ? undefined : 0" :role="item.href ? undefined : 'button'" @click="onRecommendationClick($event, item)" @keydown.enter="onRecommendationClick($event, item)" @keydown.space="onRecommendationClick($event, item)")
             PropertyMedia(:image="item.image" :label="property.labels.recommendationImage")
             h3 {{ item.title || property.labels.recommendationTitle }}
-            p {{ item.subtitle || property.labels.pending }}
-            strong {{ item.price ? item.price + property.priceUnit : property.labels.recommendationPrice }}
+            .recommendation-meta
+              .recommendation-copy
+                p {{ item.address || item.subtitle || property.labels.pending }}
+                p {{ item.layout }}｜{{ item.area }}
+              p.recommendation-price
+                strong {{ item.price || property.labels.recommendationPrice }}
+                span(v-if="item.price") {{ property.priceUnit }}
+        .recommendation-pager
+          button(type="button" :aria-label="property.labels.previousRecommendation" :disabled="recommendationIndex === 0" @click="turnRecommendations(-1)")
+            PropertyIcon.chevron-back(name="chevron")
+          button(type="button" :aria-label="property.labels.nextRecommendation" :disabled="recommendationIndex >= property.recommendations.length - recommendationCount" @click="turnRecommendations(1)")
+            PropertyIcon(name="chevron")
 
   //- 右側快捷工具：待補 QR 保留位置，諮詢與回頂部使用錨點。
   aside.property-floating-tools(aria-label="物件快捷工具")
@@ -244,15 +297,16 @@ onBeforeUnmount(() => { clearTimeout(noticeTimer) })
       a(v-for="item in [...site.navigation.primary, ...site.navigation.company]" :key="item.label" :href="item.href || undefined") {{ item.label }}
     .property-footer-body
       .property-container.footer-columns
-        .footer-company
+        .footer-info
           .footer-brand
             img(v-if="property.brandLogo" :src="imageUrl(property.brandLogo)" :alt="site.brand.name")
             span(v-else) {{ site.brand.name }}
-          p(v-for="line in property.footer.companyLines" :key="line") {{ line }}
-          p(v-if="!property.footer.companyLines.length") {{ property.labels.companyPlaceholder }}
-        .footer-service
-          p(v-for="line in property.footer.serviceLines" :key="line") {{ line }}
-          p(v-if="!property.footer.serviceLines.length") {{ property.labels.servicePlaceholder }}
+          .footer-company
+            p(v-for="line in property.footer.companyLines" :key="line") {{ line }}
+            p(v-if="!property.footer.companyLines.length") {{ property.labels.companyPlaceholder }}
+          .footer-service
+            p(v-for="line in property.footer.serviceLines" :key="line") {{ line }}
+            p(v-if="!property.footer.serviceLines.length") {{ property.labels.servicePlaceholder }}
         .footer-partners
           .partner-logo-row
             PropertyMedia(v-for="(image, index) in property.footer.partnerLogos" :key="index" :image="image" :label="property.labels.partner")
@@ -275,4 +329,19 @@ onBeforeUnmount(() => { clearTimeout(noticeTimer) })
       button(type="button" :aria-label="property.labels.nextPhoto" @click="turnPhoto(1)")
         PropertyIcon(name="chevron")
   p.property-toast(v-if="notice" role="status") {{ notice }}
+  //- 推薦物件 Demo 預覽：原生 dialog 保留 Escape 與焦點返回，正式連結不攔截。
+  dialog.property-recommendation-dialog(ref="recommendationDialog")
+    template(v-if="selectedRecommendation")
+      .recommendation-dialog-toolbar
+        p {{ property.labels.recommendationPreview }} · {{ property.labels.recommendationDemoLabel }}
+        button(type="button" :aria-label="property.labels.closeRecommendation" @click="recommendationDialog.close()")
+          PropertyIcon(name="close")
+      PropertyMedia(:image="selectedRecommendation.image" :label="property.labels.recommendationImage")
+      h2 {{ selectedRecommendation.title }}
+      p {{ selectedRecommendation.address }}
+      p {{ selectedRecommendation.layout }}｜{{ selectedRecommendation.area }}
+      p.recommendation-price
+        strong {{ selectedRecommendation.price }}
+        span {{ property.priceUnit }}
+      a.contact-agent-link(href="#inquiry" @click="recommendationDialog.close()") {{ property.labels.inquireRecommendation }}
 </template>

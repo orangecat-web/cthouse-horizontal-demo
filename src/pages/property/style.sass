@@ -826,6 +826,457 @@ button, input, select
       .property-media
         width: calc(25% - .4rem)
 
+// 可操作的本地環景：canvas 投影與控制列分開，畫面內所有文字仍遵守 16px 下限。
+.panorama-viewer
+  position: relative
+  width: 100%
+  background: #17251e
+  overflow: hidden
+  min-height: 20rem
+  color: white
+  .panorama-canvas
+    position: absolute
+    inset: 0
+    width: 100%
+    height: 100%
+    touch-action: none
+    cursor: grab
+    outline: none
+    &:active
+      cursor: grabbing
+  .panorama-scene-bar
+    position: absolute
+    top: 1rem
+    left: 1rem
+    right: 1rem
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: .6rem
+    pointer-events: none
+    font-size: type.size('small', 'property')
+    > span
+      background: #17251edb
+      padding: .4rem .6rem
+    select
+      pointer-events: auto
+      max-width: 40%
+      border: 0
+      background: #17251edb
+      color: white
+  .panorama-status
+    position: absolute
+    inset: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    gap: 1rem
+    background: #17251ecc
+    text-align: center
+    padding: 2rem
+    font-size: type.size('body', 'property')
+    button
+      border: 1px solid #fff9
+      color: white
+      padding: .4rem 1rem
+  .panorama-help
+    position: absolute
+    bottom: 1rem
+    left: 1rem
+    padding: .4rem .6rem
+    font-size: type.size('small', 'property')
+    background: #17251edb
+    pointer-events: none
+  .panorama-controls
+    position: absolute
+    bottom: 1rem
+    right: 1rem
+    display: flex
+    gap: .3rem
+    button
+      width: 2.7rem
+      height: 2.7rem
+      display: grid
+      place-items: center
+      background: #17251edb
+      color: white
+      &[aria-pressed='true']
+        background: #159e97
+      &:disabled
+        opacity: .4
+      .property-icon
+        width: 1.4rem
+        height: 1.4rem
+  &:fullscreen, &.is-fullscreen-fallback
+    width: 100vw
+    height: 100dvh
+    min-height: 0
+    aspect-ratio: auto
+  &.is-fullscreen-fallback
+    position: fixed
+    z-index: 100
+    inset: 0
+
+// 示意地圖：底圖可縮放拖曳，設施標記與列表共用選取狀態。
+.demo-map
+  position: relative
+  overflow: hidden
+  background: #f1eee7
+  .demo-map-stage
+    position: absolute
+    inset: 0
+    overflow: hidden
+    touch-action: none
+    cursor: grab
+    &:active
+      cursor: grabbing
+  .demo-map-world
+    position: absolute
+    inset: 0
+    transform-origin: center
+  .demo-map-background
+    width: 100%
+    height: 100%
+  .demo-road, .demo-park
+    position: absolute
+    color: #8e9189
+    font-size: type.size('small', 'property')
+    pointer-events: none
+  .demo-road-horizontal
+    top: 29%
+    left: 31%
+  .demo-road-vertical
+    top: 69%
+    left: 42%
+  .demo-park
+    top: 81%
+    left: 8%
+  .demo-map-marker
+    position: absolute
+    width: 2rem
+    height: 2rem
+    transform: translate(-50%, -50%)
+    border: 2px solid white
+    border-radius: 50%
+    color: white
+    background: #82a399
+    box-shadow: 0 .1rem .4rem #0002
+    font-size: type.size('small', 'property')
+    &.is-selected
+      background: var(--property-teal)
+      box-shadow: 0 0 0 .25rem #12a2a529
+  .demo-property-pin
+    position: absolute
+    transform: translate(-50%, -50%)
+    display: flex
+    align-items: center
+    flex-direction: column
+    font-size: type.size('small', 'property')
+    pointer-events: none
+    .property-icon
+      width: 2.5rem
+      height: 2.5rem
+      fill: #ee5c61
+      color: white
+    span
+      background: #fff
+      padding: .1rem .4rem
+      white-space: nowrap
+  .demo-map-zoom
+    position: absolute
+    top: .5rem
+    right: .5rem
+    display: flex
+    flex-direction: column
+    gap: 1px
+    button
+      background: #fff
+      width: 2.2rem
+      height: 2.2rem
+      display: grid
+      place-items: center
+      box-shadow: 0 1px 4px #0001
+      &:disabled
+        color: #bbb
+      .property-icon
+        width: 1.3rem
+        height: 1.3rem
+  .demo-map-caption
+    position: absolute
+    bottom: 0
+    right: 0
+    left: 0
+    background: #ffffffd9
+    padding: .2rem .5rem
+    font-size: type.size('small', 'property')
+.property-environment-layout .property-environment-list
+  display: flex
+  flex-direction: column
+  ul
+    padding: .5rem
+    li
+      display: block
+      padding: 0
+      button
+        display: flex
+        align-items: flex-start
+        width: 100%
+        gap: .5rem
+        padding: .65rem .5rem
+        text-align: left
+        font-size: type.size('small', 'property')
+        &.is-selected
+          background: #12a2a50b
+          color: #129d9f
+      .facility-number
+        color: white
+        background: #82a399
+        border-radius: 50%
+        flex: 0 0 1.5rem
+        text-align: center
+      .facility-name
+        flex: 1
+      .facility-distance
+        flex: 0 1 45%
+        text-align: right
+  .facility-demo-label
+    margin-top: auto
+    padding: .7rem
+    font-size: type.size('small', 'property')
+    color: #9ca59f
+
+// 散佈圖的字與資料提示使用 HTML，不以縮放 SVG 字體讓手機文字變小。
+.price-scatter-chart.property-market
+  width: 100%
+  // 圖表高度由文字與繪圖區共同撐開，避免提示被舊媒體比例壓到下方說明。
+  aspect-ratio: auto
+  display: flex
+  flex-direction: column
+  min-height: 27rem
+  padding: .6rem 1rem .6rem 0
+  font-size: type.size('small', 'property')
+  .chart-demo-label
+    color: #969e99
+    margin-bottom: .5rem
+  .chart-legend
+    display: flex
+    flex-wrap: wrap
+    gap: .5rem 1.2rem
+    margin-bottom: 1rem
+    button
+      display: flex
+      align-items: center
+      gap: .35rem
+      padding: 0
+      font-size: type.size('small', 'property')
+      &[aria-pressed='false']
+        opacity: .35
+  .legend-dot
+    width: .55rem
+    height: .55rem
+    border-radius: 50%
+    background: #62b6a5
+    &.is-subject
+      background: #ee8f4e
+  .chart-y-title
+    color: #8b958e
+    margin-bottom: .5rem
+  .chart-plot
+    position: relative
+    flex: 1 0 auto
+    aspect-ratio: 2
+    min-height: 13rem
+    margin: 1rem 1rem 2rem 2.7rem
+  .chart-grid
+    position: absolute
+    inset: 0
+    width: 100%
+    height: 100%
+  .chart-y-tick
+    position: absolute
+    right: calc(100% + .8rem)
+    transform: translateY(-50%)
+    color: #8a948d
+  .chart-x-tick
+    position: absolute
+    top: calc(100% + .5rem)
+    transform: translateX(-50%)
+    color: #8a948d
+  .chart-point
+    position: absolute
+    transform: translate(-50%, -50%)
+    width: 1.7rem
+    height: 1.7rem
+    padding: .5rem
+    z-index: 1
+    &::after
+      content: ''
+      display: block
+      width: 100%
+      height: 100%
+      border-radius: 50%
+      background: #62b6a5
+    &.is-subject::after
+      background: #ee8f4e
+    &.is-selected::after
+      box-shadow: 0 0 0 .25rem #62b6a533
+      outline: 1px solid #46967d
+  .chart-empty
+    position: absolute
+    inset: 0
+    display: grid
+    place-items: center
+    color: #98a19a
+  .chart-x-title
+    text-align: center
+    color: #8b958e
+  .chart-point-detail
+    min-height: 3.5rem
+    margin-top: .8rem
+    padding: .5rem .6rem
+    background: #f4f7f5
+    strong
+      display: block
+      font-weight: 400
+
+// 推薦卡依局部圖對齊：左側地址及格局、右側紅色數字與灰色萬字。
+.property-recommendations
+  .recommendation-demo-label
+    font-size: type.size('small', 'property')
+    color: #a0a6a2
+    text-align: center
+    margin: -1.2rem 0 1.5rem
+  .recommendation-card
+    border-left: 1px solid var(--property-line)
+    padding-left: 1rem
+    cursor: pointer
+    .recommendation-meta
+      display: flex
+      align-items: flex-end
+      gap: .7rem
+      margin-top: 1.1rem
+    .recommendation-copy
+      flex: 1
+      min-width: 0
+      p
+        margin-top: 0
+        overflow-wrap: anywhere
+  .recommendation-pager
+    display: flex
+    justify-content: center
+    gap: 1.8rem
+    margin-top: 1.8rem
+    button
+      padding: .4rem
+      color: #929994
+      &:disabled
+        color: #d7ddda
+  .chevron-back
+    transform: rotate(180deg)
+.recommendation-price
+  display: flex
+  align-items: baseline
+  justify-content: flex-end
+  gap: .3rem
+  white-space: nowrap
+  flex: 0 0 auto
+  strong
+    color: var(--property-red)
+    font-size: type.size('body-large', 'property')
+    font-weight: 300
+  span
+    color: #737b75
+    font-size: type.size('small', 'property')
+.property-recommendations .recommendation-card .recommendation-price strong
+  margin-top: 0
+.property-recommendation-dialog
+  width: min(90vw, 42rem)
+  padding: 1.3rem
+  border: 0
+  border-radius: .5rem
+  color: #646866
+  font-size: type.size('body', 'property')
+  &::backdrop
+    background: #0009
+  .recommendation-dialog-toolbar
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 1rem
+    gap: 1rem
+  > .property-media
+    height: auto
+    aspect-ratio: 1.6
+    margin-bottom: 1rem
+  h2
+    font-size: type.size('subheading', 'property')
+    font-weight: 400
+    margin-bottom: .6rem
+  .contact-agent-link
+    display: block
+    background: #12a2a5
+    color: white
+    text-align: center
+    margin-top: 1rem
+    padding: .5rem
+body:has(.property-recommendation-dialog[open])
+  overflow: hidden
+
+// 只調整 Footer 的左側文字組：電話與地址／來源兩組逐行對齊；右側布局沿用原規則。
+.property-footer
+  .footer-columns > .footer-info
+    // 覆蓋原左側兩欄加中間間距，右側品牌欄保留原本寬度與水平位置。
+    flex: 0 1 calc((100% - 6rem) / 3 * 2 + 3rem)
+    display: grid
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr)
+    column-gap: 3rem
+    align-items: start
+    .footer-brand
+      grid-column: 1 / -1
+  .footer-company, .footer-service
+    p
+      line-height: 1.75
+      font-weight: 300
+    p + p
+      margin-top: .25rem
+
+@media (max-width: 48rem)
+  .property-footer .footer-columns > .footer-info
+    flex: initial
+    width: 100%
+    grid-template-columns: minmax(0, 1fr)
+    column-gap: 0
+    .footer-company
+      margin-bottom: 2rem
+  .panorama-viewer
+    .panorama-scene-bar
+      top: .5rem
+      left: .5rem
+      right: .5rem
+      align-items: flex-start
+      > span
+        max-width: 57%
+      select
+        max-width: 43%
+    .panorama-controls
+      bottom: .5rem
+      right: .5rem
+    .panorama-help
+      left: .5rem
+      bottom: 3.6rem
+      right: .5rem
+      text-align: center
+  .property-recommendations
+    .recommendation-card
+      padding-left: .5rem
+      .recommendation-meta
+        flex-direction: column
+        align-items: stretch
+        gap: .4rem
+    .recommendation-price
+      margin-top: .3rem
+
 // 列印只呈現物件內容，避免工具遮住資料。
 @media print
   .property-page
