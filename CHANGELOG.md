@@ -4,6 +4,13 @@
 
 當前開發狀態、限制與待辦見 README；開發規則見 AGENTS。
 
+## 1.0.5
+
+- 修正正式建置後背景圖片的相對路徑：依頁面位置解析完整網址，避免外部 CSS 誤向 `assets/images/` 請求圖片。
+- 保留相對 Vite base，支援網站根目錄與子目錄部署；補充上傳完整 `dist/` 內容的說明。
+- 同步套件、lockfile 根套件與 DEMO 版號為 1.0.5。
+- 正式建置通過；Chromium 驗證根目錄及 `/cthouse-horizontal-demo/` 子目錄的桌機／手機版本，五張背景與 Logo 皆 HTTP 200、圖片可解碼，無 JS 錯誤，並檢視服務區截圖。
+
 ## 1.0.4
 
 - 新增共用 `_typography.sass` 字級角色及自動計算公式，以 cqw 隨容器縮放、clamp 控制最小值和上限。
