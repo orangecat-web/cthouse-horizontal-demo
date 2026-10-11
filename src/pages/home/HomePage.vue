@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
       //- 消息森林圖片：與聯絡頁共用 images.closing。
       .forest-photo(:style="photoStyle('closing')" aria-hidden="true")
 
-    //- 05 聯絡資訊／頁尾：森林、品牌資訊卡、QR 示意、社群與版權。
+    //- 05 聯絡資訊／頁尾：品牌文字、社群與版權；QR 與品牌列依 JSON 顯示開關暫時隱藏。
     section#contact.panel.panel-contact(
       :class="{ 'is-active': active === 4 }"
       :style="{ '--contact-width': site.layout.contactWidthVw + 'vw' }"
@@ -351,13 +351,13 @@ onBeforeUnmount(() => {
       .contact-social-top(aria-label="社群與服務")
         button(v-for="icon in site.contact.topIcons" :key="icon" :aria-label="icon" @click="demoAction")
           span.material-symbols-outlined(aria-hidden="true") {{ icon }}
-      //- 原圖資訊靠右排列，沒有白色卡片邊框；QR 和素材區可由 JSON 替換。
+      //- 原圖資訊靠右排列；QR／品牌資料保留，關閉顯示時不渲染素材或佔位。
       .contact-card.anim.rise
-        img.qr-image(v-if="site.images.qrCode" :src="imageUrl(site.images.qrCode)" alt="中信房屋 QR Code")
-        .qr-placeholder(v-else aria-label="QR Code 素材待置換") ▦
+        img.qr-image(v-if="site.contact.showQrCode && site.images.qrCode" :src="imageUrl(site.images.qrCode)" alt="中信房屋 QR Code")
+        .qr-placeholder(v-else-if="site.contact.showQrCode" aria-label="QR Code 素材待置換") ▦
         .contact-copy
           p(v-for="line in site.contact.lines" :key="line") {{ line }}
-        .partner-logos(aria-label="關係品牌素材待置換")
+        .partner-logos(v-if="site.contact.showPartnerLogos" aria-label="關係品牌素材待置換")
           span(v-for="label in site.contact.partnerLabels" :key="label") {{ label }}
         .download-links
           button(v-for="label in site.contact.downloads" :key="label" @click="demoAction") {{ label }}

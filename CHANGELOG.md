@@ -4,6 +4,12 @@
 
 當前開發狀態、限制與待辦見 README；開發規則見 AGENTS。
 
+## 1.3.1
+
+- 暫時隱藏首頁灰色聯絡區的 QR code 與關係品牌列，包含佔位；保留品牌文字、下載／服務按鈕及版權。
+- 在 site.json 新增 showQrCode／showPartnerLogos 開關，目前皆 false；保留素材與品牌資料，供日後恢復。
+- 同步 package、lockfile 根套件與 DEMO 版號為 1.3.1；正式建置與 Chromium 桌機／手機隱藏效果驗證通過。
+
 ## 1.3.0
 
 - 相簿改用 PropertyLightbox，參考實驗室 03 / MEDIA & LIGHTBOX 的 JavaScript 動態：量測點擊來源、1150ms 放大進場、380ms 縮回離場及 420ms 換圖淡入；換到不同照片後以中心離場，避免回到錯誤縮圖。
