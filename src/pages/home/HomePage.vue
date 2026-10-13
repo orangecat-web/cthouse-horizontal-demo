@@ -3,6 +3,7 @@
 // Vue 工具、頁籤元件與網站資料
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import PageRail from '../../components/PageRail.vue'
+import SearchSelect from '../../components/home/SearchSelect.vue'
 import site from '../../data/site.json'
 import { imageUrl } from '../../utils/images'
 
@@ -11,6 +12,8 @@ const pages = site.pages
 const active = ref(0)
 // 首頁搜尋模式與 Demo 提示訊息；目前尚未串接房屋搜尋 API。
 const searchMode = ref(site.home.defaultMode)
+// 搜尋條件由 Vue 保存，模式切換、提示及場景重繪仍保留使用者選值。
+const searchFilters = ref(Object.fromEntries(site.home.filters.map(filter => [filter.label, filter.options[0] || ''])))
 const notice = ref('')
 // 示意驗證碼獨立於 JSON 初始值；只更新顯示，不作安全驗證或送出資料。
 const inquiryCaptcha = ref(site.service.inquiry.captcha)
@@ -32,8 +35,7 @@ let lastPageChangeAt = -Infinity
 let lastWheelDirection = 0
 // 提示的自動關閉計時器，以及觸控手勢的起始座標。
 let noticeTimer
-let touchX = 0
-let touchY = 0
+let touchStart = null
 // 滑鼠拖曳只處理桌機左鍵；位移以 CSS 像素表示，與觸控既有 60px 門檻一致。
 const mouseDragOffset = ref(0)
 const isMouseDragging = ref(false)
@@ -96,9 +98,15 @@ function goTo(index) {
   active.value = next
   if (compact()) document.getElementById(pages[next].id)?.scrollIntoView({ behavior: 'smooth' })
 }
+// 原生欄位、頁內下拉及可編輯內容需要自己的滾輪／鍵盤行為，避免切頁搶走操作。
+function isEditingField(target) {
+  return target instanceof Element && !!target.closest('input, select, textarea, [role="combobox"], [role="listbox"], [contenteditable]:not([contenteditable="false"])')
+}
 // 固定切頁間隔，不因持續收到滾輪事件而無限延長；反向滾動可立即返回。
 function onWheel(event) {
   if (compact() || event.ctrlKey) return
+  // 原生選單可能把事件送到焦點元素；檢查兩者，且清掉先前累積避免選完立即誤切頁。
+  if (isEditingField(event.target) || isEditingField(document.activeElement)) { wheelTotal = 0; lastWheelAt = 0; return }
   event.preventDefault()
   // 拖曳中不混入滾輪位移，結束後恢復原本滾輪控制。
   if (mouseDrag) return
@@ -124,17 +132,27 @@ function onWheel(event) {
 }
 // 鍵盤切頁：方向鍵、PageUp/Down、空白鍵、Home/End；輸入欄位內不攔截。
 function onKey(event) {
-  if (compact() || /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || '')) return
+  if (compact() || isEditingField(event.target) || isEditingField(document.activeElement)) return
   const direction = ['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key) ? 1 : ['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key) ? -1 : 0
   if (direction) { event.preventDefault(); goTo(active.value + direction) }
   else if (event.key === 'Home' || event.key === 'End') { event.preventDefault(); goTo(event.key === 'Home' ? 0 : pages.length - 1) }
 }
 // 記下觸控起點；桌機橫向模式下，水平滑動超過 60 才切頁。
-function onTouchStart(event) { touchX = event.changedTouches[0].screenX; touchY = event.changedTouches[0].screenY }
+function onTouchStart(event) {
+  touchStart = null
+  // 選單／表單等互動區不啟動場景手勢；多指及取消亦不沿用上一次起點。
+  if (event.touches.length !== 1 || event.target.closest('a, button, input, select, textarea, label, [contenteditable]:not([contenteditable="false"]), [role="button"]')) return
+  const touch = event.changedTouches[0]
+  touchStart = { id: touch.identifier, x: touch.screenX, y: touch.screenY }
+}
 function onTouchEnd(event) {
-  if (compact()) return
-  const dx = touchX - event.changedTouches[0].screenX
-  const dy = touchY - event.changedTouches[0].screenY
+  const start = touchStart
+  touchStart = null
+  if (compact() || !start) return
+  const touch = Array.from(event.changedTouches).find(item => item.identifier === start.id)
+  if (!touch) return
+  const dx = start.x - touch.screenX
+  const dy = start.y - touch.screenY
   if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) goTo(active.value + Math.sign(dx))
 }
 // 尚未串接的搜尋／服務／消息按鈕：顯示 JSON 設定的提示，3 秒後關閉。
@@ -161,7 +179,7 @@ onBeforeUnmount(() => {
 
 <template lang="pug">
 //- 整頁容器：接收觸控手勢；以下 //- 為 Pug 原始碼註解，不會產生畫面元素。
-.site-shell(@touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd")
+.site-shell(@touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd" @touchcancel.passive="touchStart = null")
   //- 共用導覽：連結網址由 navigation 提供；黑至透明漸層、固定白色文字及 Logo。
   header.site-header
     nav.top-nav(aria-label="主要導覽")
@@ -207,12 +225,9 @@ onBeforeUnmount(() => {
             :aria-pressed="searchMode === mode"
             @click="searchMode = mode"
           ) {{ mode }}
-        //- 條件下拉：由 home.filters 產生，目前僅呈現介面。
+        //- 頁內條件下拉：JSON 提供選項、v-model 保留值；搜尋仍為未串接 API 的 Demo。
         .search-options
-          label(v-for="filter in site.home.filters" :key="filter.label")
-            span {{ filter.label }}
-            select(:aria-label="filter.label")
-              option(v-for="option in filter.options" :key="option") {{ option }}
+          SearchSelect(v-for="filter in site.home.filters" :key="filter.label" v-model="searchFilters[filter.label]" :label="filter.label" :options="filter.options")
         //- 關鍵字與搜尋按鈕：點擊顯示 Demo 提示。
         .search-keyword
           input(aria-label="關鍵字" :placeholder="site.home.keywordPlaceholder")

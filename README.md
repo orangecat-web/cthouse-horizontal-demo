@@ -4,7 +4,7 @@
 
 原提案未採用，目前作為作品集 Demo 持續整理。設計範圍只有「首頁」與「房屋物件內容頁」；首頁的五個橫向區塊不代表五個獨立網頁。
 
-目前程式版號為 **1.3.1**，與 package.json、package-lock.json 根套件及頁面 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
+目前程式版號為 **1.3.2**，與 package.json、package-lock.json 根套件及頁面 DEMO 顯示同步。後續每批修改同步更新版號；版號更新與 Git 推送不表示網站或雲端環境已發布。
 
 本文依目前 repository 與使用者確認規格維護；舊環境交接紀錄另列於下方，不能取代最新程式狀態。接手時仍須先核對分支、Git 狀態與遠端更新。
 
@@ -64,6 +64,7 @@ cthouse-horizontal-demo/
 │   │   ├── home/              HomePage.vue、style.sass
 │   │   └── property/          PropertyPage.vue、style.sass
 │   ├── components/            可重用元件；專屬元件按頁面分組
+│   │   ├── home/              SearchSelect.vue 首頁條件下拉
 │   │   ├── PageRail.vue
 │   │   └── property/          PropertyMedia.vue、PropertyIcon.vue、PropertyLightbox.vue、PanoramaViewer.vue、DemoMap.vue、PriceScatterChart.vue
 │   ├── data/                  文案、選項、連結與素材設定 JSON
@@ -189,6 +190,8 @@ Logo 包在首頁唯一的 H1，圖片需提供品牌名稱作為替代文字。
 上方八個文字項目都是其他頁面的 `a` 連結，網址填在 `site.json` 的 `navigation.primary[].href` 與 `navigation.company[].href`，與首頁五個場景分開。目前依使用者指示將網址留空待填，空值不輸出 `href`，避免意外重新載入或切換場景；填入後由瀏覽器正常導頁。Logo 使用 `navigation.homeHref: "./"` 回到目前部署目錄的首頁。
 
 Header 改用由上方黑色漸變至下方透明的垂直背景，Nav 文字與原始白色 Logo 固定白色；文字 hover 顯示 1px 白色底線，預留透明底線避免布局跳動。已移除原有混色與 Logo 變色濾鏡。
+
+首頁搜尋的地區、總價、坪數及類型使用 `src/components/home/SearchSelect.vue` 頁內下拉，沿用底線外觀；JSON 提供選項，`searchFilters`／`v-model` 保存選值，模式切換、Demo 提示及場景返回仍保留選擇。滑鼠／觸控可直接點選，鍵盤方向鍵／Home／End 移動、Enter／Space 選取、Escape／Tab 關閉，外部點擊收起。欄位與下拉焦點期間的滾輪／鍵盤，以及從表單開始的觸控手勢，不觸發場景切換；搜尋仍未串接 API。
 
 ### 橫向切換與動畫
 
